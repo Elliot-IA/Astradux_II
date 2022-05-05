@@ -1,0 +1,22 @@
+{
+  "name": "webcamtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serveCam.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "image-data-uri": "^2.0.1",
+    "mongodb": "^4.5.0",
+    "node-webcam": "^0.8.0",
+    "require-https": "^1.1.3",
+    "saveimagetodisk": "^1.0.1",
+    "webcam-easy": "^1.0.5",
+    "bcrypt": "^5.0.1"
+  }
+}
