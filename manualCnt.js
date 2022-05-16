@@ -9,11 +9,11 @@ const path = require('path');
 
 var collection = null;
 client.connect(err => {
-    collection = client.db("Astradata").collection("astradata");
+    collection = client.db("Astradata").collection("astracore");
 
 
 
-
+    /*
     //Initialize files object
     var fileObject = {};
     //put stringified versions of each INVENTORY file's contents into the object with the file's name as the key
@@ -28,13 +28,20 @@ client.connect(err => {
         });
     });
     //Finish up by 
+    */
 
-
-    collection.findOne({systemName: "Taylor's House"}),(error, data)=>{
-        console.log("Loading in astrasystem "+data.username+"'s Inventory Data" );
-        collection.updateOne({username: data.username},{$set:{superpowers:true}});
-    }   
-
+    collection.updateOne(
+        {doc:"MasterData"},
+        //{$set: { master_Cat: [] }}
+        { $push: { master_Cat: {testField: "testValue! Yay!!"} } }
+    ).then(()=>{
+        console.log("Data should be changed");
+        collection.find({doc:"MasterData"}).toArray((error, data)=>{
+            data.forEach((user)=>{
+                console.log(JSON.stringify(user));
+            });
+        });
+    });
 
 
 
@@ -49,7 +56,7 @@ client.connect(err => {
 
 
 
-
+/*
 var picURI = null;
 function convertToURI(imgToConvert){
     const reader = new FileReader();
@@ -65,7 +72,7 @@ function convertToURI(imgToConvert){
 
 
 convertToURI("./Inventory_Images/2021-8-14_18_0_30_874.png");
-
+*/
 
 
 
