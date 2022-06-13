@@ -29,6 +29,7 @@
             <div id="search"><label id="searchLabel">Search: </label><input id="inquiry" size="10">
             </div>
         </div>
+        <div id="widener"></div>
         <br>
         <br>
         <br>
@@ -51,10 +52,12 @@
             <button id="resetBtn" onclick="resetPartInput()">reset</button>
             <div id="SuperFastModeBar" onclick="toggleSpeedMode()">Enter Speed Mode</div>
         </div>
-        
+
+        <div id="CatagorySliderBtn" class="sliderBtn">Catagoies</div>
         <div id="selectCatContainer"><div id="catlabel">Category Map</div><div id="mainCatCont"></div></div>
         <div id="addCat2"><button id="addLeafButton" onclick="executeAddCat()" style="font-size: 10px">Add Leaf</button><input id="newCatInput" style="font-size: 10px"> to Branch <input value="Focus to select from map" id="branchInput" style="font-size: 10px"></div>
 
+        <div id="LocationSliderBtn" class="sliderBtn">Locations</div>
         <div id="locationMultitool"><div id="catlabel" style="margin-left: 2px"><i>Locations</i></div><img id="canvasBackground" src="" width="300" height="200"><canvas id="locationCanvas" height="200" width="300"></canvas><div id="drawingMarkersMessage">Drawing Markers...</div><div id="locMapHome" onclick="goHome()"><img src="Images/homeicon.svg" height="25" style="padding: 2px"></div><div id="locMapBack" onclick="goBack()"><img src="Images/backicon.png" height="25" style="padding: 2px"></div><div id="locMapEdit"><img id="locMapEditImg" src="Images/pencilIcon.png" height="20px"></div><div id="locCreationWrap"><div id="locCreationWrap_text">New Location Name:</div><input id="locCreateInput"></div><button id="createPathwayButton" onclick="initialte_or_cancel_CreateLoc()">Add Location</button></div>
 
         <div id="container"><video autoplay="true" id="videoElement"></video></div>
@@ -83,6 +86,9 @@
 
         <div id="curtian"></div>
 
+
+        <div></div>
+
         <div id="cameraBox_border">
             <video id="webcam" autoplay playsinline></video>
             <canvas id="canvas" class="d-none" style="display:none"></canvas>
@@ -102,6 +108,8 @@
         </form>
 
         <script type="text/javascript" src="js/addPart.js"></script>
-        <script type="text/javascript" src="js/locationMap.js"></script>
+        <script type="text/javascript" src="./js/locationMap.js"></script>
+        <img src = "Images/subtleLoading.gif" style="visibility: hidden">     
+        <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
     </body>
 </html>

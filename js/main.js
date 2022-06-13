@@ -23,6 +23,8 @@ var forignSearchDelay = 500;
 
 window.onload = function(){
     createAndShuffle_CycleOrder();
+    optimizeForDevice();
+
 
     if(document.querySelector("meta[name=queryDATA]").getAttribute("content") != "[\"\",\"\"]"){
         console.log("Running forign search...");
@@ -109,7 +111,10 @@ window.onload = function(){
 }
 
 window.addEventListener('resize',()=> {
-    resizeZoomImg();
+    console.log("window resized...");
+    setTimeout(()=>{
+        optimizeForDevice();
+    },100);
     $("#noResultsBanner")[0].style.fontSize = document.body.clientWidth/20;
 });
 
@@ -182,7 +187,7 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
     var secondNode = document.createTextNode(locationText);
     var DOM_img = document.createElement("img");
     if(Inventory[index][0][0][5] != ""){
-        DOM_img.src = "Inventory_Images/"+Inventory[index][0][0][5];
+        DOM_img.src = "Images/subtleLoading.gif";   //"Inventory_Images/"+Inventory[index][0][0][5];
         DOM_img.style = "width: 96px; ; display: block; margin-left: auto; margin-right: auto; margin: 1px; border: black 1px solid; border-radius: 2px;";
     }else{      //If there's no image included for this part, us the "noImg" image
         DOM_img.src = "Images/noImg.png";
@@ -209,7 +214,7 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
     if(Inventory[index][0][0][4] == "0"){
         DOM_img.style.borderColor = "red";
     }
-    
+
     locInfo.appendChild(secondNode);
 
     if(Inventory[index][0][0][6]){
@@ -304,7 +309,7 @@ function build_partView(partIndex){
         inventoryLoc = document.getElementById("fooTile").children[0].children[0].children[2].getAttribute("content");
     }catch{}
     if(fooTileHeight > 160 && Inventory[partIndex][0][0][4] != ""){
-       $("#PV_tileWrap")[0].style = "transform: scale(0.8); margin-top: -22px; margin-bottom: -24px; margin-left: -19px";
+        $("#PV_tileWrap")[0].style = "transform: scale(0.8); margin-top: -22px; margin-bottom: -24px; margin-left: -19px";
     }else if(fooTileHeight > 140 && fooTileHeight < 160 && Inventory[partIndex][0][0][4] != ""){
         $("#PV_tileWrap")[0].style = "transform: scale(0.85); margin-top: -16px; margin-bottom: -18px; margin-left: -15px;";
     }else if(fooTileHeight > 125 && fooTileHeight < 140 && Inventory[partIndex][0][0][4] != ""){
@@ -1187,7 +1192,7 @@ function search_recursiveDriver(typeOfSearch){   //The recursive function that h
             result_fragIndexes = [];
             console.log("Inventory fragment from: INVENTORY"+INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun]+" searched and inventoryFragment[] wiped");
             INVENTORYFiles_CyclesRun++;
-            
+
         };
         INVENTORY_script.src = "Inventory_Files/INVENTORY"+INVENTORYFiles_CycleOrder[(INVENTORYFiles_CyclesRun)]+".js";
         document.head.appendChild(INVENTORY_script);
@@ -1212,7 +1217,6 @@ document.addEventListener('keydown', (e)=> { //a to go to addAPart, arrow keys t
         }*/
     }
 });
-
 
 var catagories = eval(document.querySelector("meta[name=CaragoryDATA]").getAttribute("content"));
 

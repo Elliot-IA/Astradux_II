@@ -8,19 +8,54 @@ const bodyParser = require("body-parser");
 const imageDataURI = require("image-data-uri");
 const https = require('https');
 
+var account = "Ian_Alexander";
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@astradata.3dnfp.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+var astrasystem = ""; 
+client.connect((res,err)=>{
+    console.log("~Database Connection Established~");
+    astrasystem = client.db(account);
+});
+
+/*
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, data)=>{
+        console.log(data);
+    });
+*/
+
+/*
+const astrasystem = client.db("account").collection("garden");
+garden.insertOne({"test":123});
+client.close();
+*/
+
+var fileRegenerationComplete = true;
+
 console.log("Server Initiated! Working Directory (for server js file):"+path.join(__dirname, "."));
 
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
 
-app.get("/", function(req, res){   //(request, response) hey callbacks!
-    res.sendFile(__dirname+"/Astradux.html");
+app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
+    if(!fileRegenerationComplete){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    }else{
+        res.sendFile(__dirname+"/Astradux.html");
+        update_FILECOUNTjs();
+
+    }
 });
-app.get("/Astradux.html", function(req, res){
-    res.sendFile(__dirname+"/Astradux.html");
-    update_FILECOUNTjs();
-});
+/*app.get("/Astradux.html", function(req, res){
+
+    if(!fileRegenerationComplete){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    }else{
+        res.sendFile(__dirname+"/Astradux.html");
+        update_FILECOUNTjs();
+    }
+});*/
 
 app.post(["/Astradux.html", "/"], function(req, res){
     if(req.body.command == "modData"){
@@ -39,13 +74,26 @@ app.post(["/Astradux.html", "/"], function(req, res){
         console.log("Transfering Location...");
         transfereLocation(req.body.data);
         res.status(204).send();
+    }else if(req.body.command == "fetchInventoryImgURI"){
+        console.log("Fetching Inventory Image URI from Database...");
+
+        astrasystem.collection("INVENTORY_Images").findOne({"name":req.body.data},(error, imgJSON)=>{
+            console.log(imgJSON.uri);
+            //Somehow send imgJSON.uri to the frontend
+        });
+
+        res.status(204).send();
     }else{
         console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
     }
 });
 
 app.get("/addPart.html", function(req, res){
-    res.sendFile(__dirname+"/addPart.html");
+    if(!fileRegenerationComplete){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    }else{
+        res.sendFile(__dirname+"/addPart.html");
+    }
 });
 app.post("/addPart.html", function(req, res){
     if(req.body.command == "addCat"){
@@ -56,14 +104,15 @@ app.post("/addPart.html", function(req, res){
         console.log("partData from addPart.js:" + req.body.data);
         addPart(req.body.data, true, res);
     }else if(req.body.command == "addPart_URI"){
-
-        var dataURI = req.body.uri;
         var filePath = req.body.timestamp;
+        var dataURI = req.body.uri;
+        console.log("Timestamp: "+req.body.timestamp);
+        console.log("URI: "+req.body.uri);
+        storeImage(filePath, dataURI);
         imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)
         // RETURNS image path of the created file 'out/path/fileName.png'
             .then(res => console.log(res));
         addPart(req.body.data, true, res);
-
     }else if(req.body.command == "updateLOCs"){
         console.log("locData from addPart.js:" + req.body.data);
         updateLocArray(req.body.data);
@@ -91,7 +140,11 @@ app.post("/addPart.html", function(req, res){
 });
 
 app.get("/catagoryMap.html", function(req, res){   //(request, response) hey callbacks!
-    res.sendFile(__dirname+"/catagoryMap.html");
+    if(!fileRegenerationComplete){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    }else{
+        res.sendFile(__dirname+"/catagoryMap.html");
+    }
 });
 app.post("/catagoryMap.html", function(req, res){
     if(req.body.command == "addCat"){
@@ -137,7 +190,7 @@ function addPart(partData, firstTime, res){
     var partsIn_nthFile = nthFile_contentArray.length-4;
     //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
     var newFile = false;
-    
+
     if(partsIn_nthFile >= 100){
         findSpace:{
             for(var i = n; i > 0; i--){
@@ -150,6 +203,7 @@ function addPart(partData, firstTime, res){
                     ithFile_contentArray.splice(ithFile_contentArray.length-3, 0, "\t"+eval(partData));
                     ithFile_content = ithFile_contentArray.join("\n");
                     fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", ithFile_content);
+                    astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, { $set: {data: ithFile_content}} );          //DB
                     partDataAddedTo_fileNum = i;
                     break findSpace;
                 }
@@ -157,6 +211,7 @@ function addPart(partData, firstTime, res){
             var xthFile_contentArray = newINVENTORY_File_structure.split("\n");
             var xthFile_content = xthFile_contentArray.join("\n");
             fs.writeFileSync("./Inventory_Files/INVENTORY"+(n+1)+".js", xthFile_content);
+            astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+(n+1)+".js"}, {$set: {data: xthFile_content}});    //DB
             partDataAddedTo_fileNum = n+1;
             update_FILECOUNTjs();
             setUpPartMod("", n+1);
@@ -180,8 +235,9 @@ function addPart(partData, firstTime, res){
     nthFile_content = nthFile_contentArray.join("\n");
     //console.log("File data being loaded into INVENTORY"+n+".js:\n "+nthFile_content);
     fs.writeFileSync("./Inventory_Files/INVENTORY"+n+".js", nthFile_content);
+    astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+n+".js"}, {$set: {data: nthFile_content}});    //DB
     setUpPartMod("", n);
-    
+
     try{
         var rerunCheckArray = fs.readFileSync("./Inventory_Files/INVENTORY"+partDataAddedTo_fileNum+".js").toString().split("\n");
         rerunCheckArray[rerunCheckArray.length-1] = "";
@@ -191,7 +247,7 @@ function addPart(partData, firstTime, res){
     }catch{
         if(firstTime){
             console.log("(!)Uh oh, data corruption or invalid characters detected in INVENTORY_File"+partDataAddedTo_fileNum+", attempting to repair...");
-            
+
             setTimeout(()=>{
                 addPart(partData, false, res);
             },100);
@@ -211,6 +267,7 @@ function updateCatArray(newCatArray){
     CAT_array.splice(0, 1, "var catagories = "+ newCatArray +";");
     CAT_content = CAT_array.join("\n");
     fs.writeFileSync("./js/CATAGORIES.js", CAT_content);
+    astrasystem.collection("DATA_Files").updateOne({name: "CATAGORIES.js"}, {$set: {data: CAT_content}});    //DB
     console.log("Cat Array Updated");
 }
 
@@ -220,6 +277,7 @@ function updateLocArray(newLocArray){
     LOC_array.splice(0, 1, "var locations = "+ newLocArray +";");
     LOC_content = LOC_array.join("\n");
     fs.writeFileSync("./js/LOCATIONS.js", LOC_content);
+    astrasystem.collection("DATA_Files").updateOne({name: "LOCATIONS.js"}, {$set: {data: LOC_content}});     //DB
     console.log("Loc Array Updated");
 }
 
@@ -253,6 +311,7 @@ function modifyPartData(File_and_Data, res){
                 }
                 FRAG_content = FRAG_array.join("\n");
                 fs.writeFileSync("./Inventory_Files/"+INVENTORY_file+".js", FRAG_content);
+                astrasystem.collection("INVENTORY_Files").updateOne({name: INVENTORY_file+".js"}, {$set: {data: FRAG_content}});    //DB
                 console.log("A part in file "+INVENTORY_file+" was modified");
                 break Loop;
             }
@@ -306,7 +365,15 @@ function transfereLocation(locData){
         var oldLoc_Globalified = new RegExp(oldLoc, "g");
         var newFrag = FRAG_content.replace(oldLoc_Globalified, newLoc);
         fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", newFrag);  //just replace all instances of oldLoc with newLoc using a JS method and save
+        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, {$set: {data: newFrag}});    //DB
         //console.log("\n\nINVENTORY"+i+" after loc transfere: "+fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString());
     }
     console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+getAllDirFiles("./Inventory_Files").length+" INVENTORY files detected)");
 }
+function storeImage(name, URI){
+    astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
+}
+
+
+
+

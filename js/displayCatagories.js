@@ -62,7 +62,7 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
     /*For Debugging:*/console.log("collapseRow PARAMETERS:  LOC:"+loc_stringForm_shallow+" DEPTH:" + depth);
     /*For Debugging:*/console.log("PREVIOUS COLLAPSE DEPTH:"+previousCollapseDepth);
     for(var j = previousCollapseDepth; previousCollapseDepth >= depth; previousCollapseDepth--){    //This takes care of deleting the catRows 
-        document.body.children[4].children[previousCollapseDepth-1].remove();                       //that should no longer be displayed
+        document.body.children[5].children[previousCollapseDepth-1].remove();                       //that should no longer be displayed
     }
     var DOM_catRow = document.createElement("div");     //create a new catRow for your row to collapse into
     DOM_catRow.className = "catRow";                           //^
@@ -70,7 +70,7 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
     for(var i = 0; i < loc_shallow.length; i++){    //Builds a catBlock of id cat+depth for each object in that array location
         build_catBlock(loc_shallow[i], rowStyle_shallow, loc_stringForm_shallow+"["+i+"]",depth);
         var isHovered = false;      //This varible is used to prevent "multiple clicks" (in this case multiple hovers)
-        document.body.children[4].children[depth-1].children[i].children[0].onmouseover = function(){   //asisgns an event listener to each new block
+        document.body.children[5].children[depth-1].children[i].children[0].onmouseover = function(){   //asisgns an event listener to each new block
             var innerArray = this.parentElement.children[1].getAttribute('content');    //stores the leaves of that array entry we're making a block for  
             if(!isHovered && eval(innerArray) != undefined){                //checks, "are there any leaves?" (also "has this already been hovered?")
                 /*For Debugging:*/console.log("innerArray: "+eval(innerArray));
@@ -89,7 +89,7 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
                 }
             }
         };
-        document.body.children[4].children[depth-1].children[i].children[0].onmouseleave = function(){ //When the mouse leaves the catBlock...
+        document.body.children[5].children[depth-1].children[i].children[0].onmouseleave = function(){ //When the mouse leaves the catBlock...
             isHovered = false;  //reset is hovered to false so catBlocks' can react to being hovered over again
         };
     }

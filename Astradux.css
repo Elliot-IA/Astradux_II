@@ -183,13 +183,14 @@ button{
     display: none;
     position: fixed;
     top: 20%;
-    left: 50.5%;
+    left: 50%;
     transform: translateX(-50%);
     /*right: 19.3%;*/
     height: 350px;
     width: 830px;
     text-align:center;
     z-index:100;
+    background-color: white;
 }
 #curtian{
     z-index:50;
@@ -448,7 +449,44 @@ button{
 #description_text{
     font-family: monospace;
     font-style: italic;
-}    
+}   
+#scopeWrap{
+    background-color: blue;position: fixed;top: 0px;left: 0px;width: 100%;display: none;height: 100%;
+}
+#scopeContainer{
+    border: 4px black solid;
+    border-radius: 15px;
+    
+    box-shadow: 0px 0px 4px 2px #cccccc;
+    /* display: none; */
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    /*right: 19.3%;*/
+    height: 400px;
+    width: 1030px;
+    text-align:center;
+    z-index:100;
+    background-color: white;
+}
+#setScopesButtonWrap{
+    border: 4px black solid;
+    border-radius: 15px;
+    box-shadow: 0px 0px 4px 2px #cccccc;
+    position: fixed;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 40px;
+    width: 130px;
+    text-align:center;
+    z-index:100;
+    background-color: white;
+}
+#setScopesButton{
+    
+margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 #hiddenBtn{
     position: fixed;
     top: 50%;
@@ -1062,6 +1100,12 @@ button{
 #camFlipBtn:hover{
     opacity: 1;
 }
+#CatagorySliderBtn{
+    display: none;
+}
+#LocationSliderBtn{
+    display: none;
+}
                                                                                         /*---- Categories ----*/
 #catagoriesContianer{
     text-align: center;
@@ -1637,11 +1681,40 @@ a:active{
     font-weight: bold;
     cursor: pointer;
     user-select: none;
+    border-radius: 3px 3px 0px 0px;
 }
 #keyboardShortcutsTab:hover{
     background-color: #cccccc;
 }
 #keyboardShortcutsTab:active{
+    background-color: yellow;
+    color: white;
+}
+#scopeButton{
+    position: fixed;
+    right: -19px;
+    bottom: 77%;
+    z-index: 5;
+    transform: rotate(-90deg);
+    margin-left: 90px;
+    font-size: 10px;    
+    border: #0000004d 2px solid;
+    background-color: #f5f5f5;
+    padding: 4px;
+    padding-bottom: 6px;
+    width: 46px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    border-radius: 10px 10px 5px 5px;
+}
+#scopeButton:hover{
+    background-color: #cccccc;
+    right: -15px;
+    border-radius: 10px;
+}
+#scopeButton:active{
     background-color: yellow;
     color: white;
 }

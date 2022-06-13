@@ -72,9 +72,9 @@ function refreshImage(){
     var URL_pieces = picURL.split("\\"); //This actually splits at a single \, since \ is a special JS character
     picURL = URL_pieces[URL_pieces.length-1];
     console.log(picURL);
-    document.getElementById("imagePlaceholder").src = "Inventory_Images/" + picURL;
+    //document.getElementById("imagePlaceholder").src = "Inventory_Images/" + picURL;
     document.getElementById("name").focus();
-    URIActive = false;
+    //URIActive = false;
 }
 
 function resetPartInput(){
@@ -113,7 +113,7 @@ function resetPartInput(){
     }
     $("#redArrowWrap")[0].style.display = "none";
     $("#locInexistentMessage")[0].style.display = "none";
-    URIActive = false;
+    //URIActive = false;
     
     if(speedMode){
         activateCamera();
@@ -130,12 +130,12 @@ function addtoInventory(){
     var description = fixQuoteMarks(document.getElementById("description").value);
     var isBin = document.getElementById("isBin").checked.toString();
     
-    if(URIActive){
+    //if(URIActive){
         picURL = timestamp_picName;
         document.getElementById("command_hiddenInput").value = "addPart_URI";
-    }else{
-        document.getElementById("command_hiddenInput").value = "addPart";
-    }
+    //}else{
+        //document.getElementById("command_hiddenInput").value = "addPart";
+    //}
     
     if(description == ""){
         partInfo = "[\""+partName+"\", \""+partLocation+"\", \""+partCatagory+"\", ["+tags+"], \""+partQuantity+"\", \""+picURL+"\", "+ isBin +"]";
@@ -522,38 +522,53 @@ document.getElementById("undoBtn").addEventListener("click", ()=>{
     fillInPartData(eval(lastDataAdded));
 });
 
-var dropArea = document.getElementById('imagePlaceholder');
+var picURI = null;
+var imageElement = document.getElementById("imagePlaceholder");
+var inputElement = document.getElementById('picInput');
 
-dropArea.addEventListener("drop", (e)=>{
+imageElement.addEventListener("drop", (e)=>{
+    imageElement.src = "Images/subtleLoading.gif";
     var droppedFiles = e.dataTransfer.files;
+
     console.log("Drop Heard! Here's what I captured: "+droppedFiles);
     //Future: droppedFiles can hold multiple files! Good jumping off point for assigning multiple images to the same part
     if(droppedFiles.length == 1){
+        
+        
         var imgName = droppedFiles[0].name;
         console.log("The file you dropped is called\""+imgName+"\"");
-        document.getElementById("imagePlaceholder").src = "Inventory_Images/"+imgName;
-        picURL = imgName;
+        //document.getElementById("imagePlaceholder").src = "Inventory_Images/"+imgName;
+        //picURL = imgName;
+        picURL = createTimestamp();
+
+        var droppedFiles = e.dataTransfer.files;
+        console.log("Drop Heard! Here's what I captured:");
+        console.log(droppedFiles);
+        
+        convertToURI(droppedFiles[0]);
+        storeURIData();
+        
     }else{
-        console.log("It looks like you tried to drop multiple files into the drop zone. We're not quite ready for that yet, please try again!");
+        alert("It looks like you tried to drop multiple files into the drop zone. We're not quite ready for that yet, please try again!");
+        imageElement.src = "Images/DropImageHere.png";
     }
     document.getElementById('imagePlaceholder').style.opacity = 1;
     stop_borderAnimation();
-    document.getElementById("name").focus();
-    document.getElementById('imagePlaceholder').style.border = "dashed 3px black";
+    imageElement.style.border = "dashed 3px black";
     setTimeout(()=>{
-        document.getElementById('imagePlaceholder').style.border = "dashed 3px black";
-    }, 100);
+        imageElement.style.border = "dashed 3px black";
+    }, 200);
 });
-
-dropArea.addEventListener("dragenter", (e)=>{
+                              
+imageElement.addEventListener("dragenter", (e)=>{
     console.log("Dragged over");
     borderAnimation();
 });
 
-dropArea.addEventListener("dragleave", (e)=>{
+imageElement.addEventListener("dragleave", (e)=>{
     console.log("Drag left");
     stop_borderAnimation();
-    document.getElementById('imagePlaceholder').style.border = "dashed 3px black";
+    imageElement.style.border = "dashed 3px black";
 });
 
 function preventDefaults(e) {
@@ -561,27 +576,58 @@ function preventDefaults(e) {
     e.stopPropagation();
 }
 
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false);
+imageElement.addEventListener("mouseup", (e)=>{
+    console.log("UP!");
 });
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    imageElement.addEventListener(eventName, preventDefaults, false);
+});
+
+inputElement.addEventListener("change",(e)=>{
+    console.log("Picture Input Changed!");
+    convertToURI(inputElement.files[0]);
+    storeURIData();
+});
+
+function storeURIData(){
+    console.log("Stroing image uri data and timestamp...");
+    timestamp_picName = createTimestamp();
+    jQuery($("#uri_hiddenInput")[0]).attr("value",picURI);
+    jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+    console.log("~storage compete~");
+}
+
+function convertToURI(imgToConvert){
+    const reader = new FileReader();
+    reader.addEventListener("load", ()=>{
+        picURI = reader.result;
+        console.log("~URI TRANSLATION COMPLETE!...");
+        imageElement.src = picURI;
+        picURI = "\'"+picURI+"\'";
+        console.log(picURI);
+        storeURIData();
+    })
+    reader.readAsDataURL(imgToConvert);
+}
 
 var frameA;
 var frameB;
 function borderAnimation(){
     var blinkInterval = 400;
-    document.getElementById('imagePlaceholder').style.border = "dashed 3px white";
+    imageElement.style.border = "dashed 3px white";
     setTimeout(()=>{
-        document.getElementById('imagePlaceholder').style.border = "dashed 3px black";
+        imageElement.style.border = "dashed 3px black";
     }, blinkInterval/2);
     setTimeout(()=>{
-        document.getElementById('imagePlaceholder').style.border = "dashed 3px white";
+        imageElement.style.border = "dashed 3px white";
     }, blinkInterval);
     frameA = setInterval(()=>{
-        document.getElementById('imagePlaceholder').style.border = "dashed 3px white";
+        imageElement.style.border = "dashed 3px white";
     }, blinkInterval);
     setTimeout(()=>{
         frameB =setInterval(()=>{
-            document.getElementById('imagePlaceholder').style.border = "dashed 3px black";
+            imageElement.style.border = "dashed 3px black";
         }, blinkInterval);
     }, blinkInterval/2);
 }
@@ -591,12 +637,18 @@ function stop_borderAnimation(){
     clearInterval(frameB);
 }
 
-dropArea.addEventListener("mouseenter", ()=>{
-    document.getElementById('imagePlaceholder').style.opacity = 0.5;
+imageElement.addEventListener("mouseenter", ()=>{
+    imageElement.style.opacity = 0.5;
 });
-dropArea.addEventListener("mouseleave", ()=>{
-    document.getElementById('imagePlaceholder').style.opacity = 1;
+imageElement.addEventListener("mouseleave", ()=>{
+    imageElement.style.opacity = 1;
 });
+
+
+
+
+
+
     
 /*-----------------------------From displayCatagories (replace with node.js functionality when figured out)----------------------------*/
 var catagories = eval(document.querySelector("meta[name=CaragoryDATA]").getAttribute("content"))
@@ -808,19 +860,22 @@ function deactivateCamera(){
     webcam.stop();
     document.getElementById("cameraStatus_meta").setAttribute("content","unactive");
 }
-var URIActive = false;
+//var URIActive = false;
 var timestamp_picName = "";
 function cam_caputeImg(){
     var photo = webcam.snap();
-    URIActive = true;
+    //URIActive = true;
     $("#imagePlaceholder")[0].src = photo;
     jQuery($("#uri_hiddenInput")[0]).attr("value",photo);
-    var clock = new Date();
-    timestamp_picName = clock.getFullYear()+"-"+(clock.getMonth()+1)+"-"+clock.getDate()+"_"+clock.getHours()+"_"+clock.getMinutes()+"_"+clock.getSeconds()+"_"+clock.getMilliseconds()+".png";
-    jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+    timestamp_picName = createTimestamp();
     deactivateCamera();
     setTimeout(()=>{
         $("#name")[0].focus();
     },0);
 }
 
+function createTimestamp(){
+    var clock = new Date();
+    return clock.getFullYear()+"-"+(clock.getMonth()+1)+"-"+clock.getDate()+"_"+clock.getHours()+"_"+clock.getMinutes()+"_"+clock.getSeconds()+"_"+clock.getMilliseconds()+".png";
+    jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+}

@@ -1,0 +1,111 @@
+*{
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+#topbar{
+    zoom:2.2;
+    width: 92%;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+p{
+    zoom: 2.49;
+    margin: 10px;
+}
+#keyboardShortcutsWrapper{
+    display: none;
+}
+#toolbox{
+    zoom: 2;
+}
+#loadPartsButton{
+    zoom: 2;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+#tilesHolder{
+    text-align: center;
+}
+#loadingInventoryFileMessage{
+    zoom: 2;
+    margin-bottom: 50px;
+    margin-top: 70px;
+}
+#scopeButton{
+    zoom: 2.3;
+    top:50%;
+    height: 11px;
+}
+#inquiry{
+    margin-right: 8px;
+}
+#partView_location{
+    border: 2px solid #afafff;
+    border-radius: 10px;
+    padding: 0px 22px 0px 22px;
+    background-color: #d2e4ff61;
+
+}
+#blurBar{
+    height: 80px;
+}
+#locationMultitool, #selectCatContainer{
+    border: 1px solid black;
+    zoom: 3;
+    padding: 5px 9px 5px 5px;
+}
+#locationMultitool{
+    left: -100%; 
+}
+#selectCatContainer{
+    right: -50%;
+}
+#goHome{
+    zoom: 2.5;
+}
+#CatagorySliderBtn{
+    display: block;
+    transform: rotate(-90deg);
+    right: -100px;
+    border-radius: 50px 50px 20px 20px;
+    border-width: 0px 0px 10px 0px;
+}
+#LocationSliderBtn{
+    display: block;
+    transform: rotate(90deg);
+    left: -102px;
+    border-radius: 50px 50px 20px 20px;
+    border-width: 0px 0px 10px 0px;
+}
+.sliderBtn{
+    font-size: 50px;
+    background-color: #e5e5e5;
+    position: fixed;
+    padding: 5px 45px 5px 45px;
+    bottom: 50%;
+    border: #b0b0b0 solid;
+}
+#inputContainer{
+    transform: scale(2.1);
+    position: fixed;
+    width: 100%;
+}
+#cameraIconWrap{
+    margin-left: 677px;
+    position: fixed;
+}
+#SuperFastModeBar{
+    bottom: -788px;
+    transform: scale(1.5);
+    margin-left: -49px;
+    /* margin-right: 616px; */
+}
+#resetBtn{
+    position: fixed;
+    left: 22.1%;
+    top:430px;
+    transform: scale(1.4);
+}
+#addCat2{
+    display: none;
+}

@@ -1,0 +1,61 @@
+#scopeButton{
+    zoom: 1.4;
+    top: 36%;
+}
+#toolbox{
+    zoom: 1.4;
+}
+#topbar{
+    width: 94%;
+}
+p{
+    zoom: 1.9;
+}
+#topbar{
+     zoom: 1.5;   
+}
+#tilesHolder{
+    margin-top: 44px;
+}
+#widener{
+
+}
+#col1{
+    display: none;
+}#col2{
+    transform: scale(1.1);
+    top: 18px;
+    height: min-content;
+}
+.pointer{
+    background-color: #ffffff94;
+    padding: 135px 4px 135px 4px;
+    border-radius: 25px;
+    height: 86px;
+    border: 2px solid #000000;
+}
+#leftPointer{
+    top: 24%;
+    left: 1%;
+}
+#rightPointer{
+    top: 24%;
+    right: 1%;
+}
+#viewPart{
+    height: 70%;
+    width: 82%;
+    top:21%;
+    border-radius: 35px;
+    background-size: 100% 116%;
+}
+#zoomImg{
+    transform: scale(1.2);
+    z-index: 1000000;
+}
+#goHome{
+    zoom: 1.4;
+}
+
+
+

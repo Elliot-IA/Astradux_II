@@ -18,6 +18,7 @@
         <script type="text/javascript" src="js/partModification.js"></script>
         <script type="text/javascript" src="js/toolFunctionality.js"></script>
         <script type="text/javascript" src="js/pageNavigation.js"></script>
+        <script type="text/javascript" src="js/cookieFuncs.js"></script>
         <meta name="backCall" content="">
         <meta name="backData" content="">
     </head>
@@ -32,6 +33,7 @@
             </div>
         </div>
         <div id="blurBar"></div>
+        <div id="widener"></div>
         <br>
         <br>
         <br>
@@ -46,7 +48,7 @@
         
         <div id="curtian" onclick=exit_any()></div>
         <div id="partView_SUPERWRAP">
-            <img src="Images/leftPointer.png" id="leftPointer">
+            <img src="Images/leftPointer.png" id="leftPointer" class="pointer">
             <div id="viewPart">
                 <meta id="isActive_meta" name="isActive" content="no">
                 <meta id="homeBlocker_meta" name="homeBlocker" content="off">
@@ -81,7 +83,13 @@
 
                 </div>
             </div>
-            <img src="Images/rightPointer.png" id="rightPointer">
+            <img src="Images/rightPointer.png" id="rightPointer" class="pointer">
+        </div>
+        <div id="scopeWrap">Keep Blue Background
+            <div id="scopeContainer">
+            </div>
+            
+            <div id="setScopesButtonWrap"><button id="setScopesButton">Set Scope</button></div>
         </div>
         <button id="hiddenBtn"></button><!--this button is selected when part view is turned on to prevent the page from scrolling down on spacebar press-->
         <div id="zoomImgCurtain"></div>
@@ -118,6 +126,8 @@
             </div>
         </div>
         
+        <div id="scopeButton">Scopes</div>
+        
         <div id="confirmationBlock"><img src="Images/checkmark.png" height="40px" id="CB_img"><div id="CB_text"></div></div>
         
         <div id="invisableSpacer"></div>
@@ -132,7 +142,7 @@
             <input type="text" name="data" value="" id="data_hiddenInput">
             <input type="text" name="fileN" value="" id="fileN_hiddenInput">
         </form>
-        
+        <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
     </body>
 </html>
 
