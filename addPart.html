@@ -2,6 +2,7 @@
     <head>
         <title>Astradux</title>
         <script type="text/javascript" src="js/jQuery.js"></script>
+        <script type="text/javascript" src="js/globals.js"></script>
         <link href="Astradux.css" rel="stylesheet">
         <link href="animations.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="Images/AstraduxLogo.png">
@@ -19,7 +20,7 @@
         <script type="text/javascript" src="js/universalFuncs.js"></script>
     </head>
     <body id="body">
-        <div id="backdrop"></div>
+        <div id="backdrop" style="z-index: 0"></div>
         <div id="topbar">
             <a href=Astradux.html><img src="Images/AstraduxSignage.png" id="A"></a>
             <div id="menuContainerContainer">
@@ -86,9 +87,6 @@
 
         <div id="curtian"></div>
 
-
-        <div></div>
-
         <div id="cameraBox_border">
             <video id="webcam" autoplay playsinline></video>
             <canvas id="canvas" class="d-none" style="display:none"></canvas>
@@ -109,7 +107,9 @@
 
         <script type="text/javascript" src="js/addPart.js"></script>
         <script type="text/javascript" src="./js/locationMap.js"></script>
-        <img src = "Images/subtleLoading.gif" style="visibility: hidden">     
+         
+        <img src="Images/subtleLoading.gif" style="visibility: hidden;height: 1px;">
+        
         <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
     </body>
 </html>

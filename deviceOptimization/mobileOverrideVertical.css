@@ -21,30 +21,37 @@
     user-select: none;
     width: 22%;
     height: 9%;
-    padding: 36px 113px 36px 113px;
-    border-width: 10px 0px 10px 0px;
+    padding: 24px 113px 24px 113px;
+    border-width: 0px;
 }
 #leftPointer{
-    top: 85%;
+    top: 86%;
     left: 4%;
-    border-radius: 115px 0px 0px 115px;
+    border-radius: 105px 20px  20px 105px;
 }
 #rightPointer{
-    top: 85%;
+    top: 86%;
     right: 4%;
-    border-radius: 0px 105px 105px 0px;
+    border-radius: 20px 105px 105px 20px;
 }
 #viewPart{
     border: 8px black solid;
-    border-radius: 115px;
+    border-radius: 55px;
     background-image: url(../Images/partView_Background_Verticle.png);
     background-size: 100% 116%;
     top:11%;
     height: 72%;
     width: 88%;
+    box-shadow: 0px 0px 9px 8px #cccccc;
 }
 #col1{
-    display: none;
+    /* display: none; */
+    position: absolute;
+    width: 100%;
+    margin-left: 0px;
+    height: max-content;
+    bottom: 23px;
+    left: 0px;
 }
 #col2{
     transform: translateX(-50%);
@@ -56,6 +63,22 @@
     border-radius: 100px;
     border: none;
     padding: 0px;
+    position: relative;
+}
+#col3{
+    position: relative;
+    width: 90%;
+    font-size: 300%;
+    left:50%;
+    transform: translateX(-50%);
+    margin-top: 55px;
+    margin-left: 0px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 26px;
+}
+#description_header{
+    display: none;
 }
 #zoomImg{
     width: 94%;
@@ -63,29 +86,239 @@
     transform: translateX(-50%);
     position: fixed;
     height: unset;
-    
+    top: 30%;
+    border-radius: 90px;
+    margin-top: -256px;
+    z-index: 1000000;
 }
 #partView_tags{
     font-size: 20px;
+    margin-top: 12px;
+    width: fit-content;
+    background-color: #ffffff;
+    border-radius: 49px;
+    padding: 0px 20px 0px 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 #partView_location{
-    font-size: 25px;
+    font-size: 21px;
+    text-overflow: ellipsis;
+
+  /* Needed to make it work */
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 #partView_catagoy{
     font-size: 20px;
+    width: fit-content;
+    margin-top: 3px;
+    background-color: #ffffff;
+    border-radius: 49px;
+    padding: 0px 20px 0px 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 #outofstockOverlayImg{
-    margin-left: 294px;
+    margin-left: 11px;
 }
 #widener{
     height: 110px;
 }
 #retrievedImg{
-    border-width: 2px;
-    box-shadow: 0px 0px 0px 1px #cccccc;
+    border-width: 4px;
+    box-shadow: unset;
     border-radius: 25px;
+    width: 90%;
+    height: unset;
+    left: auto;
+    right: auto;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0px 0px 6px 2px #ffffff;
 }
 #goHome{
     zoom: 2.9;
     right: 10px;
+}
+#controlWrap{
+     border: 6px black solid;
+     width: 126px;
+     margin-left: 31px;
+     border-radius: 51px;
+     box-shadow: 0px 0px 11px 10px #ffffff;
+     margin-top: 15px;
+     border-width: 2px 6px 8px 6px;
+     transform: translateX(-50%);
+     margin-left: 50%;
+     height: 77px;
+     width: 300px;
+}
+#controlPanel{
+    height: 62px;
+    width: 284px;
+    text-align: center;
+    font-size: 100px;
+    border: 8px solid #47daff;
+    border-radius: 69px;
+    background: var(--controlPanel_Background);
+}
+#editPartDataButton{
+    width: 100px;
+    position: relative;
+    background-color: var(--controlPanel_Background);
+    margin-top: 80px;
+    margin-left: 40px;
+    cursor: pointer;
+    font-family: Aldrich-Regular;
+    padding: 4px;
+    border-radius: 106px;
+    font-size: 18px;
+    padding-top: 7px;
+    margin-bottom: -104px;
+    border: 6px solid black;
+    padding: 30px;
+    height: 60px;
+    margin-bottom: -107px;
+    padding-top: 5px;
+    border-width: 2px 6px 8px 6px;
+    transform: translate(0px, -100px);
+    position: absolute;
+    bottom: 8px;
+    box-shadow: 0px 0px 11px 10px #ffffff;
+}
+#minus1{
+    display: block;
+    background-color: var(--controlPanel_Background);
+    color: black;
+    width: 143px;
+    margin-left: 0px;
+    font-size: 105px;
+    height: 68px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    font-weight: bold;
+    margin-top: 37px;
+    border-right: unset;
+    margin-bottom: -86px;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+}
+#add1{
+    display: inline;
+    position: absolute;
+    background-color: var(--controlPanel_Background);
+    color: black;
+    width: 136px;
+    margin-top: 17px;
+    height: 71px;
+    border-top-right-radius: 127px;
+    border-bottom-right-radius: 127px;
+    font-weight: bold;
+    border-left: 8px solid #47daff;
+    font-size: 90px;
+}
+#hiddenMinusBlocker{
+    width: 142px;
+    height: 60px;
+    margin-top: -20px;
+    margin-left: -1px;
+    border-radius: 78px 0px 0px 78px;
+    transform: translate(0px, 42px);
+}
+#delete{
+    display: inline-block;
+    width: 80px;
+    height: 35px;
+    margin-left: 616px;
+    margin-top: -100px;
+    position: relative;
+    background-color: var(--controlPanel_Background);
+    padding: 40px;
+    border-radius: 260px;
+    padding-top: 14px;
+    padding-bottom: 51px;
+    border: 6px solid black;
+    border-width: 2px 6px 8px 6px;
+    box-shadow: 0px 0px 11px 10px #ffffff;
+}
+#numControl_img{
+    height: 65px;
+    margin-top: 4px;
+}
+#locationAnimationWrap{
+    zoom: 3;
+}
+.mobileWrap{background-color: #ffffff80;width: 87%;margin-left: 50%;transform: translate(-50%, 0px);padding: 0px 14px 0px 14px;border-radius: 24px;text-align: center;}
+#partView_partName{
+}
+#inquiry{
+    margin-right: 0px;
+}
+#editPartDataButton:hover{
+    background-color: var(--controlPanel_Background);
+    transform: translateY(-100px);
+}
+#editPartDataButton:active{
+    background-color: yellow;
+}
+#blockZoomOverlay{
+    margin-left: 10px;
+}
+#picContainer{
+    zoom: 1.4;
+}
+#inputBlock, #inputBlock_tags{
+    zoom: 2;
+    margin-top: 30vw;
+}
+#imagePlaceholder{
+    margin-top: 25px;
+    
+}
+#cameraIconWrap{
+    margin-left:50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    zoom: 2;
+}
+#resetBtn{
+    right:0px;
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    left: 40%;
+    top: 11vh;
+}
+#SuperFastModeBar{
+    width: 42px;
+    line-height: 13px;
+    border-radius: 11px;
+    left: 70.7%;
+    px;
+    bottom: -291px;
+}
+#inputContainer{
+}
+#scrollBox{
+    width: 100%;
+    height: 87%;
+    overflow: auto;
+}
+#cat1{
+    font-size: 74px;
+    font-family: sans-serif;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 6px;
+    font-style: italic;
+}
+#catagoriesContianer{
+    margin-top: 20px;
+}
+#driveMap_buttonBar{
+    zoom: 3
 }

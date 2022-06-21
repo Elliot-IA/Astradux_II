@@ -1,3 +1,130 @@
-setTimeout(()=>{
-    $("#loadingInventoryFileMessage")[0].style.marginTop = "-10px";
-},1000);
+console.log("mobileOverride.js Initiated!");
+
+if(pageName == "addPart.html"){
+    console.log("monbileOverride has sensed that you are on addPart, optimizing...");
+    addEl("div", "backPad", "movePad", "body");
+    addEl("div", "nextPad", "movePad", "body");
+    
+}else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
+    $("#goHome")[0].style = "display: none";
+}else{
+    setTimeout(()=>{
+        $("#loadingInventoryFileMessage")[0].style.marginTop = "-10px";
+    },1000);
+
+    var col1 = $("#col1")[0];
+    col1.remove();
+    $("#viewPart")[0].appendChild(col1);
+    
+    var col2 = $("#col2")[0];
+    col2.remove();
+    var col3 = $("#col3")[0];
+    col3.remove();
+    $("#scrollBox")[0].appendChild(col2);
+    $("#scrollBox")[0].appendChild(col3);
+
+    var locAnimation = $("#locationAnimationWrap")[0];
+    locAnimation.remove();
+    document.body.appendChild(locAnimation);
+
+    var pencilImg = "<img id=\"editPartImg\" src=\"./Images/pencilIcon.png\">";
+    var editBtn = $("#editPartDataButton")[0];
+    editBtn.innerHTML = pencilImg;
+
+    $("#partViewBackground")[0].onclick = ()=>{
+        exit_partView();
+    }
+    $("#partView_partName")[0].onclick = ()=>{
+        exit_partView();
+    }
+    $("#col3")[0].onclick = ()=>{
+        exit_partView();
+    }
+    [...$(".mobileWrap")].forEach((ele)=>{
+        ele.onclick = ()=>{
+            exit_partView();
+        }
+    });
+    $("#partViewBackground")[0].onclick = ()=>{
+        exit_partView();
+    }
+    $("#partView_location")[0].onmousedown = ()=>{
+        $("#partView_location")[0].style.borderWidth = "3px 2px 1px 2px";
+        $("#partView_location")[0].style.color = "white";
+        setTimeout(()=>{
+            $("#partView_location")[0].style.borderWidth = "1px 2px 3px 2px";
+            $("#partView_location")[0].style.color = "blue";
+        }, 40);
+    }
+    $("#editPartDataButton")[0].onmousedown = ()=>{
+        $("#editPartDataButton")[0].style.borderWidth = "8px 6px 2px 6px";
+        $("#editPartDataButton")[0].style.backgroundColor = "yellow";
+        setTimeout(()=>{
+            $("#editPartDataButton")[0].style.borderWidth = "2px 6px 8px 6px";
+            $("#editPartDataButton")[0].style.backgroundColor = "var(--controlPanel_Background)";
+            $("#editPartDataButton")[0].innerHTML = dotsAnimation;
+        }, 40);
+    }
+    $("#delete")[0].onmousedown = ()=>{
+        $("#delete")[0].style.borderWidth = "8px 6px 2px 6px";
+        setTimeout(()=>{
+            $("#delete")[0].style.borderWidth = "2px 6px 8px 6px";
+        }, 40);
+    }
+
+    document.getElementById("partView_location").onmouseenter =  function(){};
+    document.getElementById("partView_location").onmouseleave =  function(){};
+
+    var dotsAnimation = "<div class=\"lds-grid\" id=\"dotsAnimation\"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
+
+    $("#rightPointer")[0].onclick = ()=>{
+        $("#rightPointer")[0].style = "display: block;opacity: 1; transform:scale(0.9)";
+        setTimeout(()=>{
+            $("#rightPointer")[0].style = "display: block;";
+        }, 5);
+    }
+    $("#leftPointer")[0].onclick = ()=>{
+        $("#leftPointer")[0].style = "display: block;opacity: 1; transform:scale(0.9)";
+        setTimeout(()=>{
+            $("#leftPointer")[0].style = "display: block;";
+        }, 5);
+    }
+}
+
+var searchBarCover = document.createElement("div");
+searchBarCover.id = "searchBarCover";
+$("#topbar")[0].appendChild(searchBarCover);
+
+var searchCurtain = document.createElement("div");
+searchCurtain.id = "searchCurtain";
+searchCurtain.className = "subCurtian";
+$("body")[0].appendChild(searchCurtain);
+$("#searchCurtain")[0].onclick = () => {
+    unfillSearchbar();
+}
+
+$("#searchBarCover")[0].onclick = ()=>{
+    if(device == "mobileHorizontial"){
+        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 6px;text-align: center;font-size: 26px; width: 100%; transform: translateY(-18px)";
+        $("#search")[0].style = "float: right;height: 0px;width: 100%;height: 100%;position: absolute;top: 0px;margin-top:0px;margin-right:0px";
+    }else if(device == "mobileVertical"){
+        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 11px;text-align: center;font-size: 26px;";
+        $("#search")[0].style = "float: right; width: 100%; height: 100%; position: absolute; top: 0px; margin-top: 0px; margin-right: 0px;";
+    }
+    $("#searchCurtain")[0].style.display = "block";
+    setTimeout(()=>{
+        document.getElementById("inquiry").focus();
+    },10);
+}
+function unfillSearchbar(){
+    $("#inquiry")[0].style = "";
+    $("#search")[0].style = "";
+    document.getElementById("searchCurtain").style.display = "none";
+}
+
+
+
+
+
+
+

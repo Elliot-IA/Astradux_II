@@ -23,8 +23,6 @@ var forignSearchDelay = 500;
 
 window.onload = function(){
     createAndShuffle_CycleOrder();
-    optimizeForDevice();
-
 
     if(document.querySelector("meta[name=queryDATA]").getAttribute("content") != "[\"\",\"\"]"){
         console.log("Running forign search...");
@@ -108,19 +106,49 @@ window.onload = function(){
             confirmationAnimation();
         }, 10);
     });
+
+    if(device == "webpage"){
+        document.getElementById("partView_location").onmouseenter =  function(){
+            pullUpLocAni();
+        };
+        document.getElementById("partView_location").onmouseleave =  function(){
+            closeLocAni();
+        };
+    }else{
+        document.getElementById("partView_location").onclick =  function(){
+            setTimeout(()=>{
+                setTimeout(()=>{
+                    pullUpLocAni();
+                }, 60);
+                $("#locationAniCurtain")[0].style="display: block;";
+            }, 10);
+        };
+        document.getElementById("locationAniCurtain").onclick =  function(){
+            closeLocAni();
+            $("#locationAniCurtain")[0].style="display: none;";
+        };
+        document.getElementById("locationAnimationWrap").onclick =  function(){
+            closeLocAni();
+            $("#locationAniCurtain")[0].style="display: none;";
+        };
+    }
 }
 
 window.addEventListener('resize',()=> {
     console.log("window resized...");
     setTimeout(()=>{
         optimizeForDevice();
-    },100);
+    },10);
     $("#noResultsBanner")[0].style.fontSize = document.body.clientWidth/20;
 });
 
 function resizeZoomImg(){
-    document.getElementById("zoomImg").style.marginLeft = (document.body.clientWidth-document.getElementById("zoomImg").clientWidth)/2-6;
-    document.getElementById("zoomImg").style.top = (document.body.clientHeight-document.getElementById("zoomImg").clientHeight)/2-6;
+    if(device == "webpage"){
+        document.getElementById("zoomImg").style.marginLeft = (document.body.clientWidth-document.getElementById("zoomImg").clientWidth)/2-6;
+        document.getElementById("zoomImg").style.top = (document.body.clientHeight-document.getElementById("zoomImg").clientHeight)/2-6;
+    }else{
+        document.getElementById("zoomImg").style.marginLeft = 0;
+    }
 }
 
 function loadAndTileifyFrag(n, storeInStr){
@@ -196,7 +224,11 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
     if(Inventory[index][0][0][1].length < 10){//Adjusts the font-size of the location line based on it's length 
         locInfo.style="font-size: 14px";
     }else if(Inventory[index][0][0][1].length>=10 && Inventory[index][0][0][1].length<=14){
-        locInfo.style="font-size: 12px";
+        if(device == "webpage"){
+            locInfo.style="font-size: 12px";
+        }else{
+            locInfo.style="font-size: 11px";
+        }
     }else if(Inventory[index][0][0][1].length>=15 && Inventory[index][0][0][1].length<=19){
         locInfo.style="font-size: 9px";
     }else if(Inventory[index][0][0][1].length>=20){
@@ -331,10 +363,19 @@ function build_partView(partIndex){
         $("#blockZoomOverlay")[0].style.display = "block";
     }
     if(Inventory[partIndex][0][0][4] == "0"){
-        $("#outofstockOverlayImg")[0].style.display = "block";
-        $("#outofstockOverlayImg")[0].style.width = $("#retrievedImg")[0].clientWidth+8;
-        $("#outofstockOverlayImg")[0].style.height = $("#retrievedImg")[0].clientHeight+8;
-        $("#outofstockOverlayImg")[0].style.marginTop = -($("#retrievedImg")[0].clientHeight+18);
+        if(device == "webpage"){
+            $("#outofstockOverlayImg")[0].style.display = "block";
+            $("#outofstockOverlayImg")[0].style.width = "93%";
+            $("#outofstockOverlayImg")[0].style.height = $("#retrievedImg")[0].clientHeight+8;
+            $("#outofstockOverlayImg")[0].style.marginTop = -($("#retrievedImg")[0].clientHeight+18);
+        }else{
+            $("#outofstockOverlayImg")[0].style.display = "block";
+            $("#outofstockOverlayImg")[0].style.width = $("#retrievedImg")[0].clientWidth+8;
+            $("#outofstockOverlayImg")[0].style.height = $("#retrievedImg")[0].clientHeight+8;
+            $("#outofstockOverlayImg")[0].style.marginTop = -($("#retrievedImg")[0].clientHeight+18);
+        }
+        style="display: block;width: 267px;height: 202px;border-radius: 32px;margin-left: 10px;margin-top: -211px;z-index: 2147483647;opacity: 0.3;"
+
         $("#retrievedImg")[0].style.borderColor = "red";
         $("#zoomImg")[0].style.borderColor = "red";
         $("#hiddenMinusBlocker")[0].style.display = "block";
@@ -355,6 +396,25 @@ function build_partView(partIndex){
         document.getElementById("partView_partName").style="font-size: 20px; margin: 0px";
     }
     document.getElementById("partView_location").innerHTML = Inventory[partIndex][0][0][1];
+
+    if(device == "webpage"){
+
+    }else if(device == "mobileVertical"){
+        $("#partView_location")[0].style.padding = "0px 22px 0px 22px";
+        $("#partView_location")[0].style.fontSize = "21px";
+        if($("#partView_location")[0].clientWidth > 245){
+            $("#partView_location")[0].style.padding = "2px 6px 2px 6px"
+        }
+        var origFontSize = 21;
+        while($("#partView_location")[0].clientWidth > 245){
+            origFontSize--;
+            $("#partView_location")[0].style.fontSize = origFontSize+"px";
+        }
+    }else if(device == "mobileHorizontial"){
+             
+    }
+
+
     if(Inventory[partIndex][0][0][3].length != 0){
         var tags = "";
         for(var i = 0; i<Inventory[partIndex][0][0][3].length-1; i++){
@@ -367,22 +427,40 @@ function build_partView(partIndex){
     }
     var displacementLeft = ((document.getElementById("retrievedImg").width/1.4)+122)+"px";
     if(Inventory[partIndex][0][0][4] != ""){
+        document.getElementById("partView_quantity").style.display = "block";
         document.getElementById("partView_quantity").innerHTML = Inventory[partIndex][0][0][4];
-        document.getElementById("partView_quantity").style = "font-size: 20px";
-        document.getElementById("partView_quantity").style.margin = "-40px 0 15px "+displacementLeft;
-        document.getElementById("controlWrap").style.display = "block";        
+        if(device == "webpage"){
+            document.getElementById("editPartDataButton").style.transform = "translate(0px, 0px)";
+            document.getElementById("partView_quantity").style = "font-size: 20px";
+            document.getElementById("partView_quantity").style.margin = "-40px 0 15px "+displacementLeft;
+            document.getElementById("controlWrap").style.display = "block";
+        }else{
+            document.getElementById("editPartDataButton").style.transform = "translate(0px, -100px)";
+            document.getElementById("partView_quantity").style = "";
+        }
     }else{
-        document.getElementById("partView_quantity").innerHTML = "|";
-        document.getElementById("partView_quantity").style = "font-size: 10px; color: white";
-        document.getElementById("partView_quantity").style.margin = "-40px 0 26px "+displacementLeft;
-        document.getElementById("controlWrap").style.display = "none";
+        if(device == "webpage"){
+            document.getElementById("partView_quantity").innerHTML = "|";
+            document.getElementById("partView_quantity").style = "font-size: 10px; color: white";
+            document.getElementById("partView_quantity").style.margin = "-40px 0 26px "+displacementLeft;
+            document.getElementById("controlWrap").style.display = "none";
+            document.getElementById("partView_quantity").style.display = "none";
+        }else{
+
+        }
     }
     document.getElementById("partView_catagoy").innerHTML = Inventory[partIndex][0][0][2];
 
     if(Inventory[partIndex][0][0].length == 8){
-        document.getElementById("col2").style = "margin-left: -180px";
+        if(device == "webpage"){
+            document.getElementById("col2").style = "margin-left: -180px";
+        }
         document.getElementById("description_text").innerHTML = Inventory[partIndex][0][0][7];
-        document.getElementById("col3").style = "display: block; width: "+(430-document.getElementById("retrievedImg").clientWidth*0.7)+"; margin-left: "+(((document.getElementById("retrievedImg").clientWidth*0.6)+420))+"px";
+        if(device == "webpage"){
+            document.getElementById("col3").style = "display: block; width: "+(430-document.getElementById("retrievedImg").clientWidth*0.7)+"; margin-left: "+(((document.getElementById("retrievedImg").clientWidth*0.6)+420))+"px";
+        }else{
+            document.getElementById("col3").style = "display: block";
+        }
     }else{
         document.getElementById("col2").style = "margin-left: 0px";
         document.getElementById("col3").style.display = "none";
@@ -559,6 +637,7 @@ function add1(){
     document.getElementById("partView_quantity").innerHTML = eval(document.getElementById("partView_quantity").innerHTML)+1;
 }
 function deleteEntry(){
+    alert("Confirm, do you really want to delete this part? (reload the page to escape deletion)");
     //alert("This won't work until file manipulation is figured out");
     var modMessage = Inventory[showingResultIndex][1]+":";
     var i = 0;
@@ -580,11 +659,13 @@ function deleteEntry(){
     document.getElementById("hiddenForm").submit();
 
     Inventory.splice(showingResultIndex, 1);
-    document.getElementById("tilesHolder").children[eval(showingResultIndex)+1].remove();
+    //document.getElementById("tilesHolder").children[eval(showingResultIndex)+1].remove();
 
-    for(var i = eval(showingResultIndex)+1; i < Inventory.length+1; i++){
+    /*for(var i = eval(showingResultIndex)+1; i < Inventory.length+1; i++){
         document.getElementById("tilesHolder").children[i].querySelector("#meta_indexLocation").setAttribute("content", (document.getElementById("tilesHolder").children[i].querySelector("#meta_indexLocation").getAttribute("content"))-1);
-    }
+    }*/
+
+    //exit_partView();
 }
 function initiate_partModSetUp(){
     document.getElementById("command_hiddenInput").value = "setUpMod";
@@ -602,8 +683,12 @@ function zoomImg(){
         document.getElementById("zoomActive_meta").setAttribute('content',"yes");
         document.getElementById("zoomImgCurtain").style.display = "block";
         document.getElementById("zoomImg").style.display = "inline-block";
-        document.getElementById("zoomImg").style.marginLeft = (document.body.clientWidth-document.getElementById("zoomImg").clientWidth)/2-6;
-        document.getElementById("zoomImg").style.top = (document.body.clientHeight-document.getElementById("zoomImg").clientHeight)/2-6;
+        if(device == "webpage"){
+            document.getElementById("zoomImg").style.marginLeft = (document.body.clientWidth-document.getElementById("zoomImg").clientWidth)/2-6;
+            document.getElementById("zoomImg").style.top = (document.body.clientHeight-document.getElementById("zoomImg").clientHeight)/2-6;
+        }else{
+            document.getElementById("zoomImg").style.marginLeft = 0;
+        }
     }
 }
 
@@ -1208,6 +1293,9 @@ document.addEventListener('keydown', (e)=> { //a to go to addAPart, arrow keys t
         scrollRight_superFunc();
         document.getElementById("rightPointer").style.opacity = "1";
     }else if(e.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
+        if(device != "webpage"){
+            unfillSearchbar();
+        }
         fullSearch();
     }else if(showingSearchResults && event.code === 'Space' && document.activeElement.tagName != "INPUT" && document.getElementById("isActive_meta").getAttribute('content')=="no"){
         if(document.getElementById("homeBlocker_meta").getAttribute('content') == "off"){

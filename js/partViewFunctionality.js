@@ -32,7 +32,7 @@ function exit_any(){
     if(document.getElementById("isActive_meta").getAttribute('content')=="yes"){
         exit_partView();
     }else if(document.getElementById("isToolActive_meta").getAttribute('content')=="yes"){
-        exit_ToolPanel();    
+        exit_ToolPanel();
     }
 }    
 
@@ -80,5 +80,4 @@ function scalePartViewToWindow(){
         var scaleFactor = (836/1365)*window.innerWidth;
         console.log("Window too small to hold partView, scalling down by factor: "+scaleFactor);
     }
-
 }

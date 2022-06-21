@@ -88,26 +88,26 @@ function promptAnimation(location, msBetweenFrames, msAtEnd){
         locStrDeck = locStrDeck.substring(locStrDeck.indexOf("]")+1,locStrDeck.length);
         animationInterval = setInterval(()=>{
             console.log("Refreshing Animation Frame, on iteration: "+iteration+" showing location branch: "+eval(foundLocationIndex_LA.substring(0, 9+6*iteration))[0]+", which has index: "+foundLocationIndex_LA.substring(0, 9+6*iteration));
-            
+
             var imageName = eval(curLocStr)[1];
             backgroundImage.src = "LocationMap_Images/"+imageName;
-            
+
             setTimeout(()=>{document.getElementById("locAnimation_LocLine").innerHTML = eval(curLocStr)[0]},50);
-            
+
             curLocStr += locStrDeck.substring(0,locStrDeck.indexOf("]")+1);
             locStrDeck = locStrDeck.substring(locStrDeck.indexOf("]")+1,locStrDeck.length);
-            
+
             curLocStr += locStrDeck.substring(0,locStrDeck.indexOf("]")+1);
             locStrDeck = locStrDeck.substring(locStrDeck.indexOf("]")+1,locStrDeck.length);
             console.log("curLocStr: "+curLocStr);
             console.log("locStrDeck: "+locStrDeck);
-            
+
             var pointer_xpos = eval(curLocStr)[2];   //retrieve the coordinates of the leaf you will point to 
             var pointer_ypos = eval(curLocStr)[3];
-            
+
             setTimeout(()=>{ctx.clearRect(0,0, 300, 200)}, 30);
             markerAnimation(pointer_xpos, pointer_ypos, msBetweenFrames/2);
-            
+
             if(curLocStr == foundLocationIndex_LA){
                 console.log("Animation complete, clearing animationInterval");
                 clearInterval(animationInterval);
@@ -142,7 +142,7 @@ function preloadLocImages(layer){     //When Node stuff is figured out, export t
     console.log("Preloading Image");
     console.log("LayerObject is: "+layer+"["+i+"]");
     console.log(eval(layerObject)[1]);*/
-    
+
     for(var i = 0; i < eval(layer).length; i++){
         var layerObject = layer+"["+i+"]";
         if(eval(layerObject)[1] != ""){
@@ -157,17 +157,18 @@ function preloadLocImages(layer){     //When Node stuff is figured out, export t
     }
 }
 
-document.getElementById("partView_location").onmouseenter =  function(){
+function pullUpLocAni(){
     console.log("Hovering over the loc line, displaying location aninmation!");
     document.getElementById("locationAnimationWrap").style.display = "block";
     var locToAnimate = document.getElementById("partView_location").innerHTML.split(":")[0];
     promptAnimation(locToAnimate, 1150, 500);
-};
-document.getElementById("partView_location").onmouseleave =  function(){
+}
+function closeLocAni(){
     document.getElementById("locationAnimationWrap").style.display = "none";
     document.getElementById("canvasBackground").src = "Images/LocationAniLoadingGIF.gif";
     clearInterval(animationInterval);
     ctx.clearRect(0,0, 300, 200);
     document.getElementById("locAnimation_LocLine").innerHTML = "...";
-};
+}
+
 

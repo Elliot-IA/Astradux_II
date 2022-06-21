@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Astradux</title>
+        <script type="text/javascript" src="js/globals.js"></script>
         <link href="Astradux.css" rel="stylesheet">
         <link href="animations.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="Images/AstraduxLogo.png">
@@ -50,6 +51,7 @@
         <div id="partView_SUPERWRAP">
             <img src="Images/leftPointer.png" id="leftPointer" class="pointer">
             <div id="viewPart">
+                <div id="partViewBackground"></div>
                 <meta id="isActive_meta" name="isActive" content="no">
                 <meta id="homeBlocker_meta" name="homeBlocker" content="off">
                 <meta id="zoomActive_meta" name="zoomActive" content="no">
@@ -61,20 +63,21 @@
                     </div>
                     <div id="controlWrap">    
                         <div id="controlPanel">
-                            <div id="minus1" onclick="minus1()">-</div>
+                            <div id="minus1" onclick="minus1()"><div id="minus1_inside">-</div></div>
                             <div id="hiddenMinusBlocker"></div>
-                            <div id="add1" onclick="add1()">+</div>
+                            <div id="add1" onclick="add1()"><div id="plus1_inside">+</div></div>
                         </div>
                     </div>
                     <div id="delete" onclick="deleteEntry(); exit_any();"><img id="numControl_img" src="Images/TrashBin.png"></div>
                 </div>
+                <div id="scrollBox"></div>
                 <div id="col2">
                     <b><div id="partView_partName"></div></b>
                     <img id="retrievedImg" src="Images/DropImageHere.png"><img id="outofstockOverlayImg" src="Images/OutOfStockBlur.png" class="PV_imgOverlay"><div id="blockZoomOverlay" class="PV_imgOverlay"></div>
                     <div id="partView_quantity"></div>
                     <div id="partView_location"></div>
-                    <div id="partView_tags"></div>
-                    <div id="partView_catagoy"></div>
+                    <div class="mobileWrap"><div id="partView_tags"></div></div>
+                    <div class="mobileWrap"><div id="partView_catagoy"></div></div>
                     <div id="locationAnimationWrap"><img id="canvasBackground" width="300" height="200" src="Images/LocationAniLoadingGIF.gif"><canvas id="animationCanvas" height="200" width="300"></canvas><div id="locAnimation_LocLine">~Location Here~</div></div>
                 </div>
                 <div id="col3">
@@ -92,7 +95,8 @@
             <div id="setScopesButtonWrap"><button id="setScopesButton">Set Scope</button></div>
         </div>
         <button id="hiddenBtn"></button><!--this button is selected when part view is turned on to prevent the page from scrolling down on spacebar press-->
-        <div id="zoomImgCurtain"></div>
+        <div id="zoomImgCurtain" class="subCurtian"></div>
+        <div id="locationAniCurtain" class="subCurtian"></div>
         <img id="zoomImg">
         <div id="toolbox">
             <div id="toolbox_label">Tool Box</div>

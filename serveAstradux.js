@@ -1,5 +1,6 @@
-//jshint esversion:6
-
+console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~serveAstradux.js initiated...~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+             
+//#######     --Import Node Modules--     #######                 #######                 #######                 #######                 #######
 const express = require("express"); 
 const app = express();
 const fs = require("fs");
@@ -8,162 +9,252 @@ const bodyParser = require("body-parser");
 const imageDataURI = require("image-data-uri");
 const https = require('https');
 
-var account = "Ian_Alexander";
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@astradata.3dnfp.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-var astrasystem = ""; 
-client.connect((res,err)=>{
-    console.log("~Database Connection Established~");
-    astrasystem = client.db(account);
-});
-
-/*
-    astrasystem.collection("INVENTORY_Files").find().toArray((error, data)=>{
-        console.log(data);
-    });
-*/
-
-/*
-const astrasystem = client.db("account").collection("garden");
-garden.insertOne({"test":123});
-client.close();
-*/
-
-var fileRegenerationComplete = true;
-
-console.log("Server Initiated! Working Directory (for server js file):"+path.join(__dirname, "."));
-
+//#######     --Setup Express Port--     #######                 #######                 #######                 #######                 #######
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
-
-app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
-    if(!fileRegenerationComplete){
-        res.send("!Please stand by, astrasystem file structure regenerating...");
-    }else{
-        res.sendFile(__dirname+"/Astradux.html");
-        update_FILECOUNTjs();
-
-    }
-});
-/*app.get("/Astradux.html", function(req, res){
-
-    if(!fileRegenerationComplete){
-        res.send("!Please stand by, astrasystem file structure regenerating...");
-    }else{
-        res.sendFile(__dirname+"/Astradux.html");
-        update_FILECOUNTjs();
-    }
-});*/
-
-app.post(["/Astradux.html", "/"], function(req, res){
-    if(req.body.command == "modData"){
-        console.log("ModData from main.js: " + req.body.data);
-        modifyPartData(req.body.data, res);
-        res.status(204).send();
-    }else if(req.body.command == "setUpMod"){
-        console.log("setUpMod Triggered: Part Data from main.js:" + req.body.data);
-        setUpPartMod(req.body.data, eval(req.body.fileN));
-        res.sendFile(__dirname+"/addPart.html");
-    }else if(req.body.command == "resetSEARCHQUERY"){
-        console.log("Emptying SEARCHQUERY.js");
-        update_searchDATA(req.body.data);
-        res.status(204).send();
-    }else if(req.body.command == "transfereLoc"){
-        console.log("Transfering Location...");
-        transfereLocation(req.body.data);
-        res.status(204).send();
-    }else if(req.body.command == "fetchInventoryImgURI"){
-        console.log("Fetching Inventory Image URI from Database...");
-
-        astrasystem.collection("INVENTORY_Images").findOne({"name":req.body.data},(error, imgJSON)=>{
-            console.log(imgJSON.uri);
-            //Somehow send imgJSON.uri to the frontend
-        });
-
-        res.status(204).send();
-    }else{
-        console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
-    }
-});
-
-app.get("/addPart.html", function(req, res){
-    if(!fileRegenerationComplete){
-        res.send("!Please stand by, astrasystem file structure regenerating...");
-    }else{
-        res.sendFile(__dirname+"/addPart.html");
-    }
-});
-app.post("/addPart.html", function(req, res){
-    if(req.body.command == "addCat"){
-        console.log("catData from addPart.js:" + req.body.data);
-        updateCatArray(req.body.data);
-        res.status(204).send();
-    }else if(req.body.command == "addPart"){
-        console.log("partData from addPart.js:" + req.body.data);
-        addPart(req.body.data, true, res);
-    }else if(req.body.command == "addPart_URI"){
-        var filePath = req.body.timestamp;
-        var dataURI = req.body.uri;
-        console.log("Timestamp: "+req.body.timestamp);
-        console.log("URI: "+req.body.uri);
-        storeImage(filePath, dataURI);
-        imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)
-        // RETURNS image path of the created file 'out/path/fileName.png'
-            .then(res => console.log(res));
-        addPart(req.body.data, true, res);
-    }else if(req.body.command == "updateLOCs"){
-        console.log("locData from addPart.js:" + req.body.data);
-        updateLocArray(req.body.data);
-        res.status(204).send();
-    }else if(req.body.command == "ModPartData"){
-        console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
-        modifyPartData(req.body.data, res);
-        res.sendFile(__dirname+"/Astradux.html");
-    }else if(req.body.command == "undoAdd"){
-        console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
-        modifyPartData(req.body.data, res);
-    }else if(req.body.command == "triggerForignSearch"){
-        console.log("Forign search Triggered from addPart");
-        update_searchDATA(req.body.data);
-        res.sendFile(__dirname+"/Astradux.html");
-    }else if(req.body.command == "wipeModData"){
-        console.log("Wiping MODDATA clean...");
-        wipeModData();
-        res.status(204).send();
-    }else if(req.body.command == "sendUserHome"){
-        res.sendFile(__dirname+"/Astradux.html");
-    }else{
-        console.log("(!)A post request was made from addPart.html, but the command was not recognized");
-    }
-});
-
-app.get("/catagoryMap.html", function(req, res){   //(request, response) hey callbacks!
-    if(!fileRegenerationComplete){
-        res.send("!Please stand by, astrasystem file structure regenerating...");
-    }else{
-        res.sendFile(__dirname+"/catagoryMap.html");
-    }
-});
-app.post("/catagoryMap.html", function(req, res){
-    if(req.body.command == "addCat"){
-        console.log("catData from displayCatagories.js:" + req.body.data);
-        updateCatArray(req.body.data)
-        res.status(204).send();
-    }else if(req.body.command == "triggerForignSearch"){
-        console.log("Forign search Triggered from addPart");
-        update_searchDATA(req.body.data);
-        res.sendFile(__dirname+"/Astradux.html");
-    }else{
-        console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized");
-    }
-});
-
 app.listen(3000, function(){
-    console.log("Server started on port 3000");
+    console.log("Server started on port 3000! Working Directory:"+path.join(__dirname, ".")+"\n");
+    /*|>Start::*/  configureStandby();
 });
 
+//#######     --Connect To Databases--     #######                 #######                 #######                 #######                 #######
+const { MongoClient, ServerApiVersion } = require('mongodb');
+var account = "Ian_Alexander";
+
+var totalConnections = 6;
+var connections = 0;
+
+const data_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@astradata.3dnfp.mongodb.net/?retryWrites=true&w=majority";
+var astrasystem = "";
+const astrasystem_client = new MongoClient(data_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const imgs1_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@cluster0.igwg5.mongodb.net/?retryWrites=true&w=majority";
+var imagesCluster1 = "";
+const imagesCluster1_client = new MongoClient(imgs1_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const imgs2_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@cluster0.zchw9.mongodb.net/?retryWrites=true&w=majority";
+var imagesCluster2 = "";
+const imagesCluster2_client = new MongoClient(imgs2_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const imgs3_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@cluster0.aj4lp.mongodb.net/?retryWrites=true&w=majority";
+var imagesCluster3 = "";
+const imagesCluster3_client = new MongoClient(imgs3_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const imgs4_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@cluster0.jlei2.mongodb.net/?retryWrites=true&w=majority";
+var imagesCluster4 = "";
+const imagesCluster4_client = new MongoClient(imgs4_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const imgs5_uri = "mongodb+srv://Napoleon1234:socialEntreprenuer78@cluster0.mludy.mongodb.net/?retryWrites=true&w=majority";
+var imagesCluster5 = "";
+const imagesCluster5_client = new MongoClient(imgs5_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+function connectToDBs(){
+    astrasystem_client.connect((res,err)=>{
+        console.log("~Astrasystem Connection Established~");
+        astrasystem = astrasystem_client.db(account);
+        connections++;
+        connectionTreshold();
+    });
+    imagesCluster1_client.connect((res,err)=>{
+        console.log("~imagesCluster1 Connection Established~");
+        imagesCluster1 = imagesCluster1_client.db("database").collection("collection");
+        connections++;
+        connectionTreshold();
+    });
+    imagesCluster2_client.connect((res,err)=>{
+        console.log("~imagesCluster2 Connection Established~");
+        imagesCluster2 = imagesCluster2_client.db("database").collection("collection");
+        connections++;
+        connectionTreshold();
+    });
+    imagesCluster3_client.connect((res,err)=>{
+        console.log("~imagesCluster3 Connection Established~");
+        imagesCluster3 = imagesCluster3_client.db("database").collection("collection");
+        connections++;
+        connectionTreshold();
+    });
+    imagesCluster4_client.connect((res,err)=>{
+        console.log("~imagesCluster4 Connection Established~");
+        imagesCluster4 = imagesCluster4_client.db("database").collection("collection");
+        connections++;
+        connectionTreshold();
+    });
+    imagesCluster5_client.connect((res,err)=>{
+        console.log("~imagesCluster5 Connection Established~");
+        imagesCluster5 = imagesCluster5_client.db("database").collection("collection");
+        connections++;
+        connectionTreshold();
+    });
+}
+function connectionTreshold(){
+    if(connections == totalConnections){
+        startup();
+    }
+}
+
+//#######     --Regenerate Files--     #######                 #######                 #######                 #######                 #######
+function startup(){
+    console.log("\nInitiating startup procedure...\n");
+    regenerateLocImgs();
+}
+var processedImgs = 0;
+var numImgs = null; 
+function regenerateLocImgs(){
+    astrasystem.collection("LOCATION_Images").find().toArray((error, imagesArray)=>{
+        numImgs = imagesArray.length;
+        console.log("Regenerating Location Images...\t("+numImgs+")");
+        imagesArray.forEach((img)=>{
+            generateImg(img.name, img.uri, "./LocationMap_Images/"+img.name);
+        });
+    });
+}
+async function generateImg(imgName, imgURI, imgPath){
+    await imageDataURI.outputFile(imgURI, imgPath).then(res => {
+        console.log("Location Img: "+imgName+" - done regenerating");
+        processedImgs++;
+        if(numImgs ==  processedImgs){
+            console.log("v/ Location Image Regeneration Complete!\n");
+            regenerateInvFiles();
+        }
+    });
+}
+function regenerateInvFiles(){
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
+        var numFiles = invFiles.length;
+        console.log("Regenerating Inventory Files...\t("+numFiles+")");
+        var processedFiles = 0;
+        invFiles.forEach((file)=>{
+            generateFile(file.name, file.data, "./Inventory_Files/"+file.name);
+            processedFiles++;
+            if(numFiles ==  processedFiles){
+                console.log("v/ Inventory File Regeneration Complete!\n");
+                configureRequests();
+            }
+        });
+    });
+}
+function generateFile(fileName, fileContents, filePath){
+    fs.writeFileSync(filePath, fileContents);
+    console.log("Inv File: "+fileName+" - done regenerating");
+}
+
+//#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
+function configureStandby(){
+    console.log("Configuring GET Requests into standby mode...\n");
+    app.get("*", function(req, res){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    });
+    console.log("Connecting to Datanbases...");
+    connectToDBs();
+}
+
+function configureRequests(){
+    console.log("Configuring GET and POST Requests\n");
+    
+    app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
+        res.sendFile(__dirname+"/Astradux.html");
+        update_FILECOUNTjs();
+    });
+    app.post(["/Astradux.html", "/"], function(req, res){
+        if(req.body.command == "modData"){
+            console.log("ModData from main.js: " + req.body.data);
+            modifyPartData(req.body.data, res);
+            res.status(204).send();
+        }else if(req.body.command == "setUpMod"){
+            console.log("setUpMod Triggered: Part Data from main.js:" + req.body.data);
+            setUpPartMod(req.body.data, eval(req.body.fileN));
+            res.sendFile(__dirname+"/addPart.html");
+        }else if(req.body.command == "resetSEARCHQUERY"){
+            console.log("Emptying SEARCHQUERY.js");
+            update_searchDATA(req.body.data);
+            res.status(204).send();
+        }else if(req.body.command == "transfereLoc"){
+            console.log("Transfering Location...");
+            transfereLocation(req.body.data);
+            res.status(204).send();
+        }else if(req.body.command == "fetchInventoryImgURI"){
+            console.log("Fetching Inventory Image URI from Database...");
+
+            astrasystem.collection("INVENTORY_Images").findOne({"name":req.body.data},(error, imgJSON)=>{
+                console.log(imgJSON.uri);
+                //Somehow send imgJSON.uri to the frontend
+            });
+
+            res.status(204).send();
+        }else{
+            console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
+        }
+    });
+
+    app.get("/addPart.html", function(req, res){
+        res.sendFile(__dirname+"/addPart.html");
+    });
+    app.post("/addPart.html", function(req, res){
+        if(req.body.command == "addCat"){
+            console.log("catData from addPart.js:" + req.body.data);
+            updateCatArray(req.body.data);
+            res.status(204).send();
+        }else if(req.body.command == "addPart"){
+            console.log("partData from addPart.js:" + req.body.data);
+            addPart(req.body.data, true, res);
+        }else if(req.body.command == "addPart_URI"){
+            var filePath = req.body.timestamp;
+            var dataURI = req.body.uri;
+            console.log("Timestamp: "+req.body.timestamp);
+            console.log("URI: "+req.body.uri);
+            storeImage(filePath, dataURI);
+            imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)
+            // RETURNS image path of the created file 'out/path/fileName.png'
+                .then(res => console.log(res));
+            addPart(req.body.data, true, res);
+        }else if(req.body.command == "updateLOCs"){
+            console.log("locData from addPart.js:" + req.body.data);
+            updateLocArray(req.body.data);
+            res.status(204).send();
+        }else if(req.body.command == "ModPartData"){
+            console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
+            modifyPartData(req.body.data, res);
+            res.sendFile(__dirname+"/Astradux.html");
+        }else if(req.body.command == "undoAdd"){
+            console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
+            modifyPartData(req.body.data, res);
+        }else if(req.body.command == "triggerForignSearch"){
+            console.log("Forign search Triggered from addPart");
+            update_searchDATA(req.body.data);
+            res.sendFile(__dirname+"/Astradux.html");
+        }else if(req.body.command == "wipeModData"){
+            console.log("Wiping MODDATA clean...");
+            wipeModData();
+            res.status(204).send();
+        }else if(req.body.command == "sendUserHome"){
+            res.sendFile(__dirname+"/Astradux.html");
+        }else{
+            console.log("(!)A post request was made from addPart.html, but the command was not recognized");
+        }
+    });
+
+    app.get("/catagoryMap.html", function(req, res){   //(request, response) hey callbacks!
+        res.sendFile(__dirname+"/catagoryMap.html");
+    });
+    app.post("/catagoryMap.html", function(req, res){
+        if(req.body.command == "addCat"){
+            console.log("catData from displayCatagories.js:" + req.body.data);
+            updateCatArray(req.body.data)
+            res.status(204).send();
+        }else if(req.body.command == "triggerForignSearch"){
+            console.log("Forign search Triggered from addPart");
+            update_searchDATA(req.body.data);
+            res.sendFile(__dirname+"/Astradux.html");
+        }else{
+            console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized");
+        }
+    });
+    
+    app.get("*", function(req, res){
+        res.send("404!");
+    });
+    
+    console.log("</> CONFIGURATION COMPLETE, ASTRADUX ONLINE </>\n");
+}
+
+
+//#######     --Action Definitions--     #######                 #######                 #######                 #######                 #######
 const getAllDirFiles = function(dirPath, arrayOfFiles){     //This is used to look inside folders at the actual files & file names
     files = fs.readdirSync(dirPath)
     arrayOfFiles = arrayOfFiles || []
@@ -371,7 +462,13 @@ function transfereLocation(locData){
     console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+getAllDirFiles("./Inventory_Files").length+" INVENTORY files detected)");
 }
 function storeImage(name, URI){
-    astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
+    if(URI != ""){
+        astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
+    }
+}
+function closeProgram(){
+    console.log("Program Complete");
+    process.exit(0);
 }
 
 

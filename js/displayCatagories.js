@@ -11,6 +11,7 @@ var catagories = [];
 var catBlocksToDarken = [];
 var catBlocksToDarken_arr = [];
 
+var collapseEvent = "";
 var insertSelectedCatTo_ = "inquiry";     //controls where the value of a catagory when clicked will be inserted 
 
 window.onload = function(){         //Most of the heavy lifting in this file is done by two functions. This triggers the building 
@@ -33,28 +34,46 @@ window.onload = function(){         //Most of the heavy lifting in this file is 
         document.getElementById("addLeafButton").style.color = "blue";
     });
 
-    document.getElementById("backdrop").addEventListener("mousedown", ()=>{
-        console.log("Body of page pressed, deleting a row from the map...");
-        if(previousCollapseDepth != 1 && previousCollapseDepth != null){
-            document.body.style.cursor = "none";
-            catBlocksToDarken = [];
-            catBlocksToDarken_arr = [];
-            $("#catagoriesContianer")[0].removeChild($("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1]);
-            previousCollapseDepth--;
-            catBlocksToDarken = $("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1].children;    //Make an array for each rowBlock in the last row
-            console.log("catBlocksToDarken: "+JSON.stringify(catBlocksToDarken));
-            for(var i = 0; i < catBlocksToDarken.length; i++){
-                catBlocksToDarken_arr.push(catBlocksToDarken[i]);
-            }
-            console.log("catBlocksToDarken_arr: "+JSON.stringify(catBlocksToDarken_arr));
-            catBlocksToDarken_arr.forEach((block, index)=>{ //for(each element in that array){
-                $("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1].children[index].style.opacity = "1";
-            });
-        }
-    });
     document.body.addEventListener("mouseup", ()=>{
         document.body.style.cursor = "default";
     });
+    $("#catMap_buttonBar")[0].style.display = "block";
+    if(device == "webpage"){
+        document.getElementById("backdrop").addEventListener("mousedown", ()=>{
+            console.log("Backdrop pressed, deleting a row from the map...");
+            freeCollapse();
+        });
+        collapseEvent = "mouseover";
+    }else{
+        document.addEventListener("mousedown", (e)=>{
+            //debugger;
+            if(e.path[0].id != 'vertAlign'){
+                console.log("Something other than a vert align was pressed! Deleting a row from the map...");
+                freeCollapse();
+            }
+        });
+        $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
+        collapseEvent = "mouseup";
+    }
+}
+
+function freeCollapse(){
+    if(previousCollapseDepth != 1 && previousCollapseDepth != null){
+        document.body.style.cursor = "none";
+        catBlocksToDarken = [];
+        catBlocksToDarken_arr = [];
+        $("#catagoriesContianer")[0].removeChild($("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1]);
+        previousCollapseDepth--;
+        catBlocksToDarken = $("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1].children;    //Make an array for each rowBlock in the last row
+        console.log("catBlocksToDarken: "+JSON.stringify(catBlocksToDarken));
+        for(var i = 0; i < catBlocksToDarken.length; i++){
+            catBlocksToDarken_arr.push(catBlocksToDarken[i]);
+        }
+        console.log("catBlocksToDarken_arr: "+JSON.stringify(catBlocksToDarken_arr));
+        catBlocksToDarken_arr.forEach((block, index)=>{ //for(each element in that array){
+            $("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1].children[index].style.opacity = "1";
+        });
+    }
 }
 
 var previousCollapseDepth = null;   //Stores the value of collapse length of the previous collapseRow function call
@@ -70,7 +89,7 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
     for(var i = 0; i < loc_shallow.length; i++){    //Builds a catBlock of id cat+depth for each object in that array location
         build_catBlock(loc_shallow[i], rowStyle_shallow, loc_stringForm_shallow+"["+i+"]",depth);
         var isHovered = false;      //This varible is used to prevent "multiple clicks" (in this case multiple hovers)
-        document.body.children[5].children[depth-1].children[i].children[0].onmouseover = function(){   //asisgns an event listener to each new block
+        document.body.children[5].children[depth-1].children[i].children[0].addEventListener("mouseover", function(){   //asisgns an event listener to each new block
             var innerArray = this.parentElement.children[1].getAttribute('content');    //stores the leaves of that array entry we're making a block for  
             if(!isHovered && eval(innerArray) != undefined){                //checks, "are there any leaves?" (also "has this already been hovered?")
                 /*For Debugging:*/console.log("innerArray: "+eval(innerArray));
@@ -87,8 +106,18 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
                         this.parentElement.parentElement.parentElement.children[depth-1].children[el].style.opacity = "1"; //...or restroe its opacity if it is
                     }
                 }
+                if(device!="webpage"){
+                    setTimeout(()=>{
+                        window.scrollBy(0,2000);
+                    }, 500);
+                    if(document.body.clientHeight-400 > $("#catagoriesContianer")[0].clientHeight){
+                        $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
+                    }else{
+                        $("#catMap_buttonBar")[0].style="display: block;";
+                    }
+                }
             }
-        };
+        });
         document.body.children[5].children[depth-1].children[i].children[0].onmouseleave = function(){ //When the mouse leaves the catBlock...
             isHovered = false;  //reset is hovered to false so catBlocks' can react to being hovered over again
         };
@@ -108,25 +137,34 @@ function build_catBlock(loc, rowStyle, loc_stringForm, depth){      //Function b
     arrayLocation.name = "Array_Location";                          //^
     arrayLocation.content = loc_stringForm+"[1]";                   //...of any potential leaves on the array branch
     if(depth == 1){                                                         //if this is the first catRow...
-        catX.style = "width:" + rowStyle[0] +"%; margin:"+rowStyle[1]+"%";  //...style catBlocks so they fill up the screen and have equal widths 
+        if(device == "webpage"){
+            catX.style = "width:" + rowStyle[0] +"%; margin:"+rowStyle[1]+"%";  //...style catBlocks so they fill up the screen and have equal widths 
+        }else{
+
+        }
     }else{                                                                  //...if not...
-        catX.style = "margin:"+rowStyle[1]+"%";                             //...let width by controlled by the length of the string inside
+        if(device == "webpage"){
+            catX.style = "margin:"+rowStyle[1]+"%";                             //...let width by controlled by the length of the string inside
+        }
     }
-    catX.addEventListener("click", ()=>{                                      //triggers search or other input when a catBlock is clicked
+    catX.addEventListener("click", (ele)=>{                                      //triggers search or other input when a catBlock is clicked
         /*//Colapse rows up to this level
         previousCollapseDepth = depth-1;
         collapseRow(loc, rowStyle, loc_stringForm.substring(0,loc_stringForm.length-3), depth); 
         //Reset Row Opactiy to 1*/          //Was trying to make lower rows go away when a catX buttom was pressed but couldn't figure it out yet 
-        if(insertSelectedCatTo_ == "branchInput"){
-            document.getElementById("branchInput").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the branchInput box
-            document.getElementById("addLeafButton").focus();
-            insertSelectedCatTo_ = "inquiry";
-        }else if(insertSelectedCatTo_ == "inquiry"){
-            document.getElementById("inquiry").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the search box 
-            //alert('Temporarily Unavalable, put cat into search box and trigger an enter keypress somehow \n'+"You selected: "+eval(loc_stringForm)[0]);       //<Pre-node
-            document.getElementById("command_hiddenInput").value = "triggerForignSearch";
-            document.getElementById("data_hiddenInput").value = "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]";
-            document.getElementById("hiddenForm").submit();
+        if(device == "webpage"){
+            selectCat(loc_stringForm);
+        }else{
+            if(clickedOnce){
+                selectCat(loc_stringForm);
+            }else{
+                clickedOnce = true;
+                ele.path[1].classList.add("pressedOnce");
+                setTimeout(()=>{
+                    clickedOnce = false;
+                    ele.path[1].classList.remove("pressedOnce");
+                }, 500);
+            }
         }
     });
     if(loc.length == 1){                                            //if this branch has no leaves...
@@ -137,6 +175,20 @@ function build_catBlock(loc, rowStyle, loc_stringForm, depth){      //Function b
     catBlock.appendChild(arrayLocation);                            //^
     document.getElementById("catagoriesContianer").lastElementChild.appendChild(catBlock);  //..and appends it to the last catRow
 }
+function selectCat(loc_stringForm){
+    if(insertSelectedCatTo_ == "branchInput"){
+        document.getElementById("branchInput").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the branchInput box
+        document.getElementById("addLeafButton").focus();
+        insertSelectedCatTo_ = "inquiry";
+    }else if(insertSelectedCatTo_ == "inquiry"){
+        document.getElementById("inquiry").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the search box 
+        //alert('Temporarily Unavalable, put cat into search box and trigger an enter keypress somehow \n'+"You selected: "+eval(loc_stringForm)[0]);       //<Pre-node
+        document.getElementById("command_hiddenInput").value = "triggerForignSearch";
+        document.getElementById("data_hiddenInput").value = "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]";
+        document.getElementById("hiddenForm").submit();
+    }
+}
+var clickedOnce = false;
 
 var breakAllLoopLayers = false;
 function executeAddCat(){

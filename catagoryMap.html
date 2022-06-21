@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Astradux</title>
+        <script type="text/javascript" src="js/globals.js"></script>
         <link href="Astradux.css" rel="stylesheet">
         <link href="animations.css" rel="stylesheet">
         <link rel="icon" type="image/png" href="Images/AstraduxLogo.png">
@@ -12,7 +13,7 @@
     </head>
     <body>
         <div id="topbar">
-        <a href=Astradux.html><img src="Images/AstraduxSignage.png" id="A"></a>
+            <a href=Astradux.html><img src="Images/AstraduxSignage.png" id="A"></a>
             <div id="menuContainerContainer">
                 <div id="menuContainer"><a href="addPart.html">Add Part</a></div>
                 <div id="menuContainer" style="background-color: #e6a91c; cursor: default">Categories</div>
@@ -24,12 +25,20 @@
         <br>
         <br>
         <div id="widener"></div>
-        
+
         <div id="catagoriesContianer"></div>
+        <div id="blurBar"></div>
         <br>
         <br>
         <br>
         <!--CSS can currently support a depth of 4-->
+
+        <div id="catMap_buttonBar">
+            <div id="addCatBtn" class="barButton">Add</div>
+            <div id="moveFolderBtn" class="barButton">Move</div>
+            <div id="editFolderBtn" class="barButton">Edit</div>
+            <div id="DeleteFolderBtn" class="barButton">Delete</div>
+        </div>
 
         <div id="addCat">
             <button id="addLeafButton" onclick="executeAddCat()">Add Leaf</button>
@@ -41,14 +50,14 @@
                 <button name="hiddenSubmit" id="addCat_hiddenSubmitButton" type="submit"></button>
             </form>
         </div>
-        
+
         <div id="keyboardShortcutsWrapper" onclick="collapseKS()">
             <div id="keyboardShortcutsTab">Keyboard Shortcuts</div>
             <div id="keyboardShortcuts">    
                 <div id="keyboardShortcutsList">>Space to home<br>>a to addAPart</div>
             </div>
         </div>
-        
+
         <div id="goHome"><div id="goHomeInnerdiv" onclick="sendUserToAstradux()">&gt; Go Home &#60;</div></div>
         <script>
             function sendUserToAstradux(){
@@ -57,6 +66,7 @@
         </script>        
         <div id="backdrop"></div>
         <script type="text/javascript" src="js/displayCatagories.js"></script>
+        <div id="curtian"></div>
         <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
     </body>
 </html>

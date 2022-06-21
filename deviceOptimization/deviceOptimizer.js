@@ -1,10 +1,14 @@
 console.log("deviceOptimizer.js File Initated");
-window.addEventListener('resize',()=> {
-    //setTimeout(()=>{
-    console.log("");
-    optimizeForDevice();
-    //},100);
-});
+
+if(pageName != "addPart.html"){
+    window.addEventListener('resize',()=> {
+        setTimeout(()=>{
+            console.log("");
+            optimizeForDevice();
+        },10);
+    });
+}
+
 
 optimizeForDevice();
 
@@ -24,6 +28,7 @@ function optimizeForDevice(){
             $("head")[0].appendChild(MOJS);
         }
         if(window.innerHeight > window.innerWidth){     //Vertical Mode
+            device = "mobileVertical";
             console.log("Detected that user is in verticle mode");
             $("#A")[0].src = "Images/AstraduxSignage_Shortened.png";
             $("#searchLabel")[0].innerHTML = "";
@@ -39,6 +44,7 @@ function optimizeForDevice(){
                 $("#MOHCSS")[0].remove();
             }
         }else{                                          //Horizontial Mode
+            device = "mobileHorizontial";
             console.log("Detected that user is in horizontial mode");
             $("#A")[0].src = "Images/AstraduxSignage.png";
             $("#searchLabel")[0].innerHTML = "Search: ";
@@ -56,6 +62,7 @@ function optimizeForDevice(){
         }
     }else{
         console.log("User is on Computer...");
+        device = "webpage";
         if($("#MOJS")[0] != undefined){
             $("#MOCSS")[0].remove();
             $("#MOJS")[0].remove();
