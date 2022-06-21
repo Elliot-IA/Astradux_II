@@ -1,4 +1,4 @@
 node_modules
-Inventory_Images
-Inventory_Files
-LocationMap_Images
+Inventory_Images/*
+Inventory_Files/*
+LocationMap_Images/*
