@@ -1,5 +1,5 @@
 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~serveAstradux.js initiated...~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-             
+
 //#######     --Import Node Modules--     #######                 #######                 #######                 #######                 #######
 const express = require("express"); 
 const app = express();
@@ -45,6 +45,7 @@ var imagesCluster5 = "";
 const imagesCluster5_client = new MongoClient(imgs5_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 function connectToDBs(){
+    console.log("Connecting to Datanbases...");
     astrasystem_client.connect((res,err)=>{
         console.log("~Astrasystem Connection Established~");
         astrasystem = astrasystem_client.db(account);
@@ -135,21 +136,48 @@ function generateFile(fileName, fileContents, filePath){
 }
 
 //#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
+var regenerationInProgress = false;;
+var preRegeneration = true;
 function configureStandby(){
-    console.log("Configuring GET Requests into standby mode...\n");
-    app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
-        res.send("!Please stand by, astrasystem file structure regenerating...");
+    console.log("Configuring GET Requests into pre-Regeneration mode...\nTo regenerate the Astradux's file structure, go to /beginStartup");
+    
+    app.get("/", function(req, res){
+        if(preRegeneration){
+            if(regenerationInProgress){
+                res.send("!Please stand by, astrasystem file structure regenerating...");
+            }else{
+                res.send("To begin regenerating the astrasystem's file structure, please go to /beginStartup");
+            }
+        }else{
+            res.sendFile(__dirname+"/Astradux.html");
+            update_FILECOUNTjs();
+        }
     });
-    /*app.get("/", function(req, res){
-        res.send("!Please stand by, astrasystem file structure regenerating...");
-    });*/
-    console.log("Connecting to Datanbases...");
-    connectToDBs();
+    app.get("*", function(req, res){
+        if(regenerationInProgress){
+            res.send("!Please stand by, astrasystem file structure regenerating...");
+        }else{
+            res.send("404!");
+        }    
+    });
+    app.get("/beginStartup", function(req, res){
+        if(regenerationInProgress){
+            res.send("You've already started regenerated the astrasystem's file structure! - !Please stand by, astrasystem file structure regenerating...");
+        }else{
+            if(preRegeneration){
+                regenerationInProgress = true;
+                res.send("You've requested to regenerate the astrasystem's file structure, getting started...");
+                connectToDBs();
+            }else{
+                res.send("Hmm that's wierd, somehow you came here with both 'regenerationInProgress' and 'preRegeneration' being false, that should not be possible");
+            }
+        }
+    });
 }
 
 function configureRequests(){
     console.log("Configuring GET and POST Requests\n");
-    
+
     app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
         res.sendFile(__dirname+"/Astradux.html");
         update_FILECOUNTjs();
@@ -248,11 +276,9 @@ function configureRequests(){
             console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized");
         }
     });
-    
-    app.get("*", function(req, res){
-        res.send("404!");
-    });
-    
+
+    regenerationInProgress = false;
+    preRegeneration = false;
     console.log("</> CONFIGURATION COMPLETE, ASTRADUX ONLINE </>\n");
 }
 
