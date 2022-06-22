@@ -40,15 +40,23 @@
             <div id="DeleteFolderBtn" class="barButton">Delete</div>
         </div>
 
-        <div id="addCat">
+        <div id="addCat" style="display: none">
             <button id="addLeafButton" onclick="executeAddCat()">Add Leaf</button>
             <input type="text" name="newCat" id="newCatInput"> to Branch 
-            <input type="text" name="branch" value="Focus to select from map" id="branchInput">
-            <form action="/catagoryMap.html" method="post" style="display: none" id="hiddenForm">
-                <input type="text" name="command" value="" id="command_hiddenInput">
-                <input type="text" name="data" value="" id="data_hiddenInput">
-                <button name="hiddenSubmit" id="addCat_hiddenSubmitButton" type="submit"></button>
-            </form>
+            <input type="text" name="branch" class="clickToSelect" value="Focus to select from map" id="branchInput">
+            <div id="ML_cancelButton" class="catagoryBtnCancelBtn">Cancel</div>
+        </div>
+        
+        <div id="catMap_moveLocation" style="display: none">
+            <button id="moveLeafButton" onclick="executeMoveCat()">Move Catagory</button>
+            Move <input id="cat_toMove" class="clickToSelect" autocomplete="off" value="Focus to select from map" style="color: rgb(170, 170, 170);"> to Branch <input value="Focus to select from map" id="cat_moveTo" class="clickToSelect" autocomplete="off" style="color: rgb(170, 170, 170);">
+            <div id="ML_cancelButton" class="catagoryBtnCancelBtn">Cancel</div>
+        </div>
+
+        <div id="catMap_editLocation" style="display: none">
+            <button id="moveLeafButton" onclick="executeMoveCat()">Edit Catagory</button> Change 
+            <input id="cat_toMove" class="clickToSelect" autocomplete="off" value="Focus to select from map" style="color: rgb(170, 170, 170);"> 's name to <input id="cat_newName">
+            <div id="EB_cancelButton" onclick="exitCMeditMode()" class="catagoryBtnCancelBtn">Cancel</div>
         </div>
 
         <div id="keyboardShortcutsWrapper" onclick="collapseKS()">
@@ -59,6 +67,13 @@
         </div>
 
         <div id="goHome"><div id="goHomeInnerdiv" onclick="sendUserToAstradux()">&gt; Go Home &#60;</div></div>
+        
+        <form action="/catagoryMap.html" method="post" style="display: none" id="hiddenForm">
+            <input type="text" name="command" value="" id="command_hiddenInput">
+            <input type="text" name="data" value="" id="data_hiddenInput">
+            <button name="hiddenSubmit" id="addCat_hiddenSubmitButton" type="submit"></button>
+        </form>
+        
         <script>
             function sendUserToAstradux(){
                 window.location.href = "Astradux.html";

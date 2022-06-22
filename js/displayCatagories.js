@@ -33,7 +33,6 @@ window.onload = function(){         //Most of the heavy lifting in this file is 
         document.getElementById("addLeafButton").focus();
         document.getElementById("addLeafButton").style.color = "blue";
     });
-
     document.body.addEventListener("mouseup", ()=>{
         document.body.style.cursor = "default";
     });
@@ -47,13 +46,20 @@ window.onload = function(){         //Most of the heavy lifting in this file is 
     }else{
         document.addEventListener("mousedown", (e)=>{
             //debugger;
-            if(e.path[0].id != 'vertAlign'){
+            if(e.path[0].id != 'vertAlign' && e.path[0].className != 'barButton'){
                 console.log("Something other than a vert align was pressed! Deleting a row from the map...");
                 freeCollapse();
             }
         });
         $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
         collapseEvent = "mouseup";
+    }
+}
+function repositionEditBar(){
+    if(document.body.clientHeight-400 > $("#catagoriesContianer")[0].clientHeight){
+        $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
+    }else{
+        $("#catMap_buttonBar")[0].style="display: block;";
     }
 }
 
@@ -73,6 +79,9 @@ function freeCollapse(){
         catBlocksToDarken_arr.forEach((block, index)=>{ //for(each element in that array){
             $("#catagoriesContianer")[0].children[$("#catagoriesContianer")[0].children.length-1].children[index].style.opacity = "1";
         });
+    }
+    if(device!="webpage"){
+        repositionEditBar();
     }
 }
 
@@ -110,11 +119,7 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
                     setTimeout(()=>{
                         window.scrollBy(0,2000);
                     }, 500);
-                    if(document.body.clientHeight-400 > $("#catagoriesContianer")[0].clientHeight){
-                        $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
-                    }else{
-                        $("#catMap_buttonBar")[0].style="display: block;";
-                    }
+                    repositionEditBar();
                 }
             }
         });

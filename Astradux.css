@@ -10,7 +10,7 @@ button{
 @font-face { font-family: Changa; src: url('fonts/Changa-Regular.ttf'); }
 @font-face { font-family: Jura; src: url('fonts/Jura-Regular.ttf'); }
 @font-face { font-family: Kanit; src: url('fonts/Kanit-MediumItalic.ttf'); }
-                                                                                        /*---- Topbar ----*/
+/*---- Topbar ----*/
 #topbar{
     display: inline;
     position: fixed;
@@ -80,7 +80,7 @@ button{
 #tilesHolder{
     margin-top: -7px;
 }
-                                                                                        /*---- Tiles ----*/
+/*---- Tiles ----*/
 #uniwrap, p{
     display: inline-grid;
     background-color: white;
@@ -171,7 +171,7 @@ button{
     display: none;
 }
 
-                                                                                        /*---- View Part ----*/
+/*---- View Part ----*/
 :root{
     --controlPanel_Background: rgb(100,255,255,0.1);
 }
@@ -357,7 +357,7 @@ button{
     width: 59px;
     margin-top: -20px;
     height: 20px
-    font-size: 10px;
+        font-size: 10px;
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
     font-weight: bold;
@@ -445,7 +445,7 @@ button{
     cursor: pointer;
 }
 #description_header{
-  text-decoration: underline overline;
+    text-decoration: underline overline;
 }
 #description_text{
     font-family: monospace;
@@ -457,7 +457,7 @@ button{
 #scopeContainer{
     border: 4px black solid;
     border-radius: 15px;
-    
+
     box-shadow: 0px 0px 4px 2px #cccccc;
     /* display: none; */
     position: fixed;
@@ -486,8 +486,8 @@ button{
     background-color: white;
 }
 #setScopesButton{
-    
-margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
+
+    margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 #hiddenBtn{
     position: fixed;
     top: 50%;
@@ -495,7 +495,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 }
 
 
-                                                                                        /*---- Add a Part ----*/
+/*---- Add a Part ----*/
 #inputBlock, #inputBlock_tags{
     text-align: center;
     padding: 2px;
@@ -617,16 +617,16 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     margin-right: auto;
 }
 #container {
-	margin: 0px auto;
-	width: 500px;
-	height: 375px;
-	border: 10px #333 solid;
+    margin: 0px auto;
+    width: 500px;
+    height: 375px;
+    border: 10px #333 solid;
     display: none;
 }
 #videoElement {
-	width: 500px;
-	height: 375px;
-	background-color: #666;
+    width: 500px;
+    height: 375px;
+    background-color: #666;
 }
 #catlabel{
     text-decoration: underline overline;
@@ -1107,7 +1107,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 #LocationSliderBtn{
     display: none;
 }
-                                                                                        /*---- Categories ----*/
+/*---- Categories ----*/
 #catagoriesContianer{
     text-align: center;
     z-index: 2;
@@ -1283,15 +1283,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     color: white;
 }
 #addCat{
-    position: fixed;
-    display: none;
-    left: 30px;
-    bottom: 30px;
-    border: 1px grey solid;
-    padding: 2px;
-    border-radius: 2px;
-    z-index: 5;
-    background-color: white;
+
 }
 #branchInput{
     color: #aaaaaa;
@@ -1328,11 +1320,12 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     bottom: 12%;
     position: fixed;
     left: 1%;
+    z-index: 2;
 }
 #addCatBtn{
     /* transform: translate(-52px, 0px); */
 }
-#AL_cancelButton, #ML_cancelButton, #EB_cancelButton{cursor: pointer;font-size: 10px;border: 1px solid #c5c2c2;width: 54px;border-radius: 6px;margin-top: 5px;margin-bottom: -20px;}
+#AL_cancelButton, #ML_cancelButton, #EB_cancelButton{cursor: pointer;font-size: 13px;border: 1px solid #df8686;border-radius: 6px;margin-top: 1px;margin-bottom: -20px;font-weight: bold;}
 #AL_cancelButton:hover, #ML_cancelButton:hover, #EB_cancelButton:hover{
     background-color: #eeeeee;
     transform: scale(1.05);
@@ -1340,7 +1333,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 #AL_cancelButton:active, #ML_cancelButton:active, #EB_cancelButton:active{
     background-color: yellow;
 }
-#EB_cancelButton{margin: auto;margin-top: -26px;margin-bottom: 4px;}
+#EB_cancelButton{margin: auto;margin-left: 8px;}
 #moveFolderBtn{
     /* transform: translate(52px, -20px); */
 }
@@ -1369,8 +1362,72 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 .barButton:active{
     background-color: yellow;
 }
+#catMap_addLocation{
 
-                                                                                        /*---- Searching ----*/
+}
+#newCatNameInput{
+
+}
+#cm_nameInfo{
+
+}
+.cm_infoBox{
+
+}
+#newCatLinkInput{
+
+}
+#cm_linkInfo{
+
+}
+.cm_infoBox{
+
+}
+#branchInput{
+
+}
+.clickToSelect{}
+#cm_rootInfo{}
+.dw_infoBox{}
+#AL_cancelButton{}
+#addLeafButton{}
+#catMap_moveLocation, #catMap_editLocation, #addCat{
+    border: 1px solid grey;
+    display: inline-block;
+    padding: 2px;
+    background-color: white;
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+    border-radius: 2px;
+    z-index: 5;
+    background-color: white;
+}
+#cat_toMove{}
+#cat_moveTo{}
+#ML_cancelButton{
+
+}
+.catagoryBtnCancelBtn{
+    background-color: red;
+    text-align: center;
+    display: inline;
+    position: absolute;
+    padding: 2px;
+    width: fit-content;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 6px;
+    color: white;
+    margin-left: 8px;
+}
+#moveLeafButton{
+}
+#catMap_editLocation{}
+#edit_insWrap{}
+#EB_cancelButton{}
+
+/*---- Searching ----*/
 #resultWrap1, #resultWrap2, #resultWrap3, #resultWrapCatagory, #resultWraplookNext{
     display: block;
     margin-bottom: 10px;
@@ -1469,25 +1526,25 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
 }
 /* Show the tooltip text when you mouse over the tooltip container */
 #search_sideBar_infoIcon1:hover #search_sideBar_infoText1{
-  display: block;
+    display: block;
 }
 #search_sideBar_infoIcon2:hover #search_sideBar_infoText2{
-  display: block;
+    display: block;
 }
 #search_sideBar_infoIcon3:hover #search_sideBar_infoText3{
-  display: block;
+    display: block;
 }
 #search_sideBar_infoIconCatagory:hover #search_sideBar_infoTextCatagory{
-  display: block;
+    display: block;
 }
 #search_sideBar_infoIconlookNext:hover #search_sideBar_infoTextlookNext{
-  display: block;
+    display: block;
 }
 #search_sideBar_infoIconCatagoryLeaves:hover #search_sideBar_infoTextCatagoryLeaves{
-  display: block;
+    display: block;
 }
 .search_sideBar_infoText{
-    
+
 }
 #lookNextCatBlock{
     text-align: center;
@@ -1565,7 +1622,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     margin: 10%;
     display: none;
 }
-                                                                                        /*---- Tools and Tool Box ----*/
+/*---- Tools and Tool Box ----*/
 #toolbox{
     border: 2px solid black;
     background-color: rgb(158, 158, 158, 0.5);
@@ -1625,20 +1682,20 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     width: 320px;
     display: inline-block;
 }
-                                                                                        /*---- Location Animation ----*/
+/*---- Location Animation ----*/
 #locationAnimationWrap{
     position: relative;
     transform: scale(0.8);
     margin-top: -280px;
     text-align: -webkit-center;
-    
+
     display: none;
 }
 #canvasBackground{
     margin-top: 0px;
     margin-left: 0px;
     background-color: white;
-    
+
 }
 #animationCanvas{
     border: 2px solid black;
@@ -1670,7 +1727,7 @@ margin-top: 1%;height: 90%;width: 97%;border-radius: 10px;font-size: 15px;}
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
-                                                                                        /*---- Miscelaneous ----*/
+/*---- Miscelaneous ----*/
 #goHome{
     border: 2px black solid;
     background-color: #ffbc1f;
