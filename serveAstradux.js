@@ -13,7 +13,8 @@ const https = require('https');
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
-app.listen(3000, function(){
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, function(){
     console.log("Server started on port 3000! Working Directory:"+path.join(__dirname, ".")+"\n");
     /*|>Start::*/  configureStandby();
 });
