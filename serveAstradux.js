@@ -153,13 +153,6 @@ function configureStandby(){
             update_FILECOUNTjs();
         }
     });
-    app.get("*", function(req, res){
-        if(regenerationInProgress){
-            res.send("!Please stand by, astrasystem file structure regenerating...");
-        }else{
-            res.send("404!");
-        }    
-    });
     app.get("/beginStartup", function(req, res){
         if(regenerationInProgress){
             res.send("You've already started regenerated the astrasystem's file structure! - !Please stand by, astrasystem file structure regenerating...");
@@ -169,9 +162,18 @@ function configureStandby(){
                 res.send("You've requested to regenerate the astrasystem's file structure, getting started...");
                 connectToDBs();
             }else{
-                res.send("Hmm that's wierd, somehow you came here with both 'regenerationInProgress' and 'preRegeneration' being false, that should not be possible");
+                res.send("The Astradux's File System has already been regenerated and the Astradux is already fully online! </>");
             }
         }
+    });
+    app.get("*", function(req, res){
+        if(regenerationInProgress){
+            res.send("!Please stand by, astrasystem file structure regenerating...");
+        }else if(preRegeneration){
+            res.send("The astradux's file structure has not yet regenerated. To begin regenerating the astrasystem's file structure, please go to /beginStartup");
+        }else{
+            res.send("404!");
+        }    
     });
 }
 
