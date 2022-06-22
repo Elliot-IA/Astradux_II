@@ -2,4 +2,4 @@
 git add .
 git commit -m "autoCommit"
 git push
-# git push heroku main
+git push heroku main
