@@ -137,9 +137,12 @@ function generateFile(fileName, fileContents, filePath){
 //#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
 function configureStandby(){
     console.log("Configuring GET Requests into standby mode...\n");
-    app.get("*", function(req, res){
+    app.get(["/Astradux.html", "/"], function(req, res){   //(request, response) hey callbacks!
         res.send("!Please stand by, astrasystem file structure regenerating...");
     });
+    /*app.get("/", function(req, res){
+        res.send("!Please stand by, astrasystem file structure regenerating...");
+    });*/
     console.log("Connecting to Datanbases...");
     connectToDBs();
 }
