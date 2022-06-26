@@ -322,3 +322,26 @@
 #driveMap_buttonBar{
     zoom: 3
 }
+#search_SideBar,#search_sideBar_lookNext{
+    zoom: 3
+}
+#search_tilesHolderlookNext{
+    zoom:3;
+    margin-left:70px;
+}
+#search_tilesHolderlookNext{
+    border-bottom: 2px solid #cacaca;
+}
+#search_tilesHolder1, #search_tilesHolder2, #search_tilesHolder3, #search_tilesHolderCatagory, #search_tilesHolderCatagoryLeaves{
+    border-bottom: 3px solid #b2b2b2;
+}
+#search_sideBar_infoText1, #search_sideBar_infoText2, #search_sideBar_infoText3, #search_sideBar_infoTextCatagory, #search_sideBar_infoTextlookNext, #search_sideBar_infoTextCatagoryLeaves{
+    left: 50%;
+    transform: translateX(-50%);
+    zoom: 4;
+    margin-top: -105px !important;
+    position: fixed;
+    text-align: center;
+    top: 175px !important;
+    width: 80%;
+}

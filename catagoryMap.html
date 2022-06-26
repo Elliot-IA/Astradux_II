@@ -35,26 +35,26 @@
 
         <div id="catMap_buttonBar">
             <div id="addCatBtn" class="barButton">Add</div>
-            <div id="moveFolderBtn" class="barButton">Move</div>
-            <div id="editFolderBtn" class="barButton">Edit</div>
-            <div id="DeleteFolderBtn" class="barButton">Delete</div>
+            <div id="moveFolderBtn" class="barButton" onclick="alert('Oops, this feature does not actually exist yet, but maybe it will one day!');">Move</div>
+            <div id="editFolderBtn" class="barButton" onclick="alert('Oops, this feature does not actually exist yet, but maybe it will one day!');">Edit</div>
+            <div id="DeleteFolderBtn" class="barButton" onclick="alert('Oops, this feature does not actually exist yet, but maybe it will one day!');">Delete</div>
         </div>
 
         <div id="addCat" style="display: none">
-            <button id="addLeafButton" onclick="executeAddCat()">Add Leaf</button>
+            <button id="addLeafButton" onclick="executeAddCat()" class="catActionBtn">Add Leaf</button>
             <input type="text" name="newCat" id="newCatInput"> to Branch 
             <input type="text" name="branch" class="clickToSelect" value="Focus to select from map" id="branchInput">
             <div id="ML_cancelButton" class="catagoryBtnCancelBtn">Cancel</div>
         </div>
         
         <div id="catMap_moveLocation" style="display: none">
-            <button id="moveLeafButton" onclick="executeMoveCat()">Move Catagory</button>
+            <button id="moveLeafButton" onclick="executeMoveCat()" class="catActionBtn">Move Catagory</button>
             Move <input id="cat_toMove" class="clickToSelect" autocomplete="off" value="Focus to select from map" style="color: rgb(170, 170, 170);"> to Branch <input value="Focus to select from map" id="cat_moveTo" class="clickToSelect" autocomplete="off" style="color: rgb(170, 170, 170);">
             <div id="ML_cancelButton" class="catagoryBtnCancelBtn">Cancel</div>
         </div>
 
         <div id="catMap_editLocation" style="display: none">
-            <button id="moveLeafButton" onclick="executeMoveCat()">Edit Catagory</button> Change 
+            <button id="moveLeafButton" onclick="executeMoveCat()" class="catActionBtn">Edit Catagory</button> Change 
             <input id="cat_toMove" class="clickToSelect" autocomplete="off" value="Focus to select from map" style="color: rgb(170, 170, 170);"> 's name to <input id="cat_newName">
             <div id="EB_cancelButton" onclick="exitCMeditMode()" class="catagoryBtnCancelBtn">Cancel</div>
         </div>

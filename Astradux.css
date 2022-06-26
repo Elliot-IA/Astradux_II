@@ -1323,7 +1323,7 @@ button{
     z-index: 2;
 }
 #addCatBtn{
-    /* transform: translate(-52px, 0px); */
+    opacity: 1;
 }
 #AL_cancelButton, #ML_cancelButton, #EB_cancelButton{cursor: pointer;font-size: 13px;border: 1px solid #df8686;border-radius: 6px;margin-top: 1px;margin-bottom: -20px;font-weight: bold;}
 #AL_cancelButton:hover, #ML_cancelButton:hover, #EB_cancelButton:hover{
@@ -1355,6 +1355,7 @@ button{
     cursor: pointer;
     display: inline-block;
     text-align: center;
+    opacity: 0.3;
 }
 .barButton:hover{
     background-color: slategrey;

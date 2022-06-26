@@ -8,12 +8,13 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const imageDataURI = require("image-data-uri");
 const https = require('https');
+const url = require('url');
 
 //#######     --Setup Express Port--     #######                 #######                 #######                 #######                 #######
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, function(){
     console.log("Server started on port 3000! Working Directory:"+path.join(__dirname, ".")+"\n");
     /*|>Start::*/  configureStandby();
@@ -84,9 +85,11 @@ function connectToDBs(){
         connectionTreshold();
     });
 }
+var collectionConnections = [];
 function connectionTreshold(){
     if(connections == totalConnections){
         startup();
+        collectionConnections = [astrasystem, imagesCluster1, imagesCluster2, imagesCluster3, imagesCluster4, imagesCluster5]; 
     }
 }
 
@@ -141,7 +144,7 @@ var regenerationInProgress = false;;
 var preRegeneration = true;
 function configureStandby(){
     console.log("Configuring GET Requests into pre-Regeneration mode...\nTo regenerate the Astradux's file structure, go to /beginStartup");
-    
+
     app.get("/", function(req, res){
         if(preRegeneration){
             if(regenerationInProgress){
@@ -154,18 +157,34 @@ function configureStandby(){
             update_FILECOUNTjs();
         }
     });
-    app.get("/beginStartup", function(req, res){
+    /*app.get("/beginStartup", function(req, res){
         if(regenerationInProgress){
             res.send("You've already started regenerated the astrasystem's file structure! - !Please stand by, astrasystem file structure regenerating...");
         }else{
             if(preRegeneration){
                 regenerationInProgress = true;
                 res.send("You've requested to regenerate the astrasystem's file structure, getting started...");
-                connectToDBs();
+                */connectToDBs();/*
             }else{
                 res.send("The Astradux's File System has already been regenerated and the Astradux is already fully online! </>");
             }
         }
+    });*/
+
+    app.get("/getImg", function(req, res){
+        var queryObject = url.parse(req.url,true).query;
+        console.log("query object: "+JSON.stringify(queryObject)+"--- file name:"+queryObject.name+"    origin: "+queryObject.origin);
+        var clusterIndex = parseInt((queryObject.origin/5)+1);
+        console.log("Retrieving image "+queryObject.name+"'s data uri from from datacluster "+clusterIndex+"...");
+        collectionConnections[clusterIndex].findOne({name:queryObject.name},(error, data)=>{
+            console.log("Image Found!");
+            //console.log(data);
+            //res.json(testObj);
+            
+            res.json(buildResponse(data.uri));
+        });/*.catch(()=>{
+            console.log("!!Something went wrong retrieving image "+queryObject.name+"'s uri from datacluster "+clusterIndex);
+        });*/
     });
     app.get("*", function(req, res){
         if(regenerationInProgress){
@@ -176,6 +195,14 @@ function configureStandby(){
             res.send("404!");
         }    
     });
+}
+const testObj = {
+    "test1": {
+        "1": "Hello there"
+    }
+}
+function buildResponse(uri){
+    return {"uri": uri}
 }
 
 function configureRequests(){

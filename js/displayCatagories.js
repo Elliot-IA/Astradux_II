@@ -54,6 +54,23 @@ window.onload = function(){         //Most of the heavy lifting in this file is 
         $("#catMap_buttonBar")[0].style="display: block;position: fixed; transform: translateX(-50%);left: 50%;bottom: 0px";
         collapseEvent = "mouseup";
     }
+    document.getElementById("addCatBtn").addEventListener('click', function(){
+        document.getElementById("addCat").style.display = "block";
+        document.getElementById("catMap_buttonBar").style.display = "none";
+    });
+    
+    [...$(".catagoryBtnCancelBtn")].forEach((el)=>{
+        el.addEventListener('click', function(){
+            document.getElementById("addCat").style.display = "none";
+            document.getElementById("catMap_buttonBar").style.display = "block";
+        });
+    });
+    [...$(".catActionBtn")].forEach((el)=>{
+        el.addEventListener('click', function(){
+            document.getElementById("addCat").style.display = "none";
+            document.getElementById("catMap_buttonBar").style.display = "block";
+        });
+    });
 }
 function repositionEditBar(){
     if(document.body.clientHeight-400 > $("#catagoriesContianer")[0].clientHeight){

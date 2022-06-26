@@ -56,10 +56,10 @@ window.onload = function(){
     document.getElementById("retrievedImg").addEventListener('click', ()=>{zoomImg()});
     document.getElementById("outofstockOverlayImg").addEventListener('click', ()=>{zoomImg()});
     document.getElementById("leftPointer").addEventListener("mousedown", function(){
-        scrollLeft_superFunc()
+        scrollLeft_superFunc();
     });
     document.getElementById("rightPointer").addEventListener("mousedown", function(){
-        scrollRight_superFunc()
+        scrollRight_superFunc();
     });
     document.getElementById("leftPointer").addEventListener("mouseup", function(){
         document.getElementById("leftPointer").src = "Images/leftPointer.png";
@@ -162,9 +162,10 @@ function loadAndTileifyFrag(n, storeInStr){
         });
         console.log("INVENTORY"+n+" done loading into "+storeInStr);
         INVENTORYFiles_CyclesRun++;
-        for(tilesLoaded; tilesLoaded < Inventory.length; tilesLoaded++){    //This for loop creates an HTML scale for every index of Inventor[]
+        for(tilesLoaded; tilesLoaded < Inventory.length; tilesLoaded++){    //This for loop creates an HTML scale for every index of Inventory[]
             createTile(tilesLoaded, document.getElementById("tilesHolder"));
         }
+        fetchQueuedImages();
         $("#loadingInventoryFileMessage")[0].style.display = "none";
         console.log("\'tilesLoaded\' holds: "+tilesLoaded); 
         document.getElementById("invisableSpacer").style.height = "0px";
@@ -188,7 +189,6 @@ function createAndShuffle_CycleOrder(){     //This function creates the "INVENTO
         INVENTORYFiles_CycleOrder[j] = temp;
     }
 }
-
 function createTile(index, appendTo){ //This function creates a tile for the Inventory entry "index"
     var para = document.createElement("p");
     var locInfo = document.createElement("div");
@@ -216,6 +216,9 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
     var DOM_img = document.createElement("img");
     if(Inventory[index][0][0][5] != ""){
         DOM_img.src = "Images/subtleLoading.gif";   //"Inventory_Images/"+Inventory[index][0][0][5];
+        DOM_img.id = "ti_"+index;
+        img_fetchQueue.push([Inventory[index][0][0][5],Inventory[index][1].substring(9),"#"+DOM_img.id]);
+
         DOM_img.style = "width: 96px; ; display: block; margin-left: auto; margin-right: auto; margin: 1px; border: black 1px solid; border-radius: 2px;";
     }else{      //If there's no image included for this part, us the "noImg" image
         DOM_img.src = "Images/noImg.png";
@@ -278,6 +281,13 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
         return para;
     }   
     console.log("Tile Added");
+}
+var img_fetchQueue = [];
+function fetchQueuedImages(){
+    for(var i = 0; i < img_fetchQueue.length; i++){
+        fetchImg(img_fetchQueue[i][0],img_fetchQueue[i][1],img_fetchQueue[i][2]);
+    }
+    img_fetchQueue = [];
 }
 function redundantTilePressStuff(){
     document.getElementById("isActive_meta").setAttribute('content', 'yes');
@@ -411,7 +421,7 @@ function build_partView(partIndex){
             $("#partView_location")[0].style.fontSize = origFontSize+"px";
         }
     }else if(device == "mobileHorizontial"){
-             
+
     }
 
 
@@ -792,7 +802,29 @@ function prepareScreenForResults(level){
         document.getElementById("search_sideBar_infoText"+level).style.display = "block";
         document.getElementById("search_sideBar_infoText"+level).style.top = event.clientY+5;
     }, false);
-    document.getElementById("search_sideBar_infoIcon"+level).addEventListener("mouseleave", ()=>{document.getElementById("search_sideBar_infoText"+level).style.display = "none"}, false);
+    document.getElementById("search_sideBar_infoIcon"+level).addEventListener("mouseleave", ()=>{
+        document.getElementById("search_sideBar_infoText"+level).style.display = "none"
+    }, false);
+    if(device != "webpage"){
+        document.onscroll = ()=>{
+            [...$(".search_sideBar_infoText")].forEach((e)=>{
+                e.style.visability = "hidden";
+            });
+        }
+        document.onmousedown = ()=>{
+            [...$(".search_sideBar_infoText")].forEach((e)=>{
+                e.style.visability = "visable";
+            });
+        }
+        $("#spaceToGoHomeMessage")[0].onclick = ()=>{
+            $("#spaceToGoHomeMessage")[0].style = "color: black;background-color: yellow;border: 2px black solid; display: block; opacity: 1";
+            setTimeout(()=>{
+                $("#spaceToGoHomeMessage")[0].style = "display:none";
+            },100);
+            window.location.href = "Astradux.html";
+        }
+        $("#spaceToGoHomeMessage")[0].innerHTML="Click to go Home";
+    }
 }
 function createSearchingTile(appendTo,level){   //Create the searching placeholder tile
     var seaching_StyleTile_wrap = document.createElement("div");
