@@ -47,7 +47,7 @@ var imagesCluster5 = "";
 const imagesCluster5_client = new MongoClient(imgs5_uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 function connectToDBs(){
-    console.log("Connecting to Datanbases...");
+    console.log("Connecting to Databases...");
     astrasystem_client.connect((res,err)=>{
         console.log("~Astrasystem Connection Established~");
         astrasystem = astrasystem_client.db(account);

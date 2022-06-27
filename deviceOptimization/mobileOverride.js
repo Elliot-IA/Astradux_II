@@ -4,10 +4,39 @@ if(pageName == "addPart.html"){
     console.log("monbileOverride has sensed that you are on addPart, optimizing...");
     addEl("div", "backPad", "movePad", "body");
     addEl("div", "nextPad", "movePad", "body");
-    
+
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
 }else{
+    if(device == "mobileHorizontial"){
+        setTimeout(()=>{
+            $("#toolbox")[0].style.bottom = "";            
+            $("#toolbox")[0].style.transform = 'translate(121px)';
+        },100);
+        $("#toolbox_label")[0].onclick = ()=>{
+
+        }
+    }else if(device == "mobileVertical"){
+        setTimeout(()=>{
+            $("#toolbox")[0].style.bottom = "-130px";
+            $("#toolbox")[0].style.transform = '';
+        },100);
+    }
+    $("#toolbox_label")[0].addEventListener("click",()=>{
+        if(device == "mobileHorizontial"){
+            if($("#toolbox")[0].style.transform == 'translate(121px)'){
+                $("#toolbox")[0].style.transform = '';
+            }else{
+                $("#toolbox")[0].style.transform = 'translate(121px)';
+            }
+        }else if(device == "mobileVertical"){
+            if($("#toolbox")[0].style.bottom == "15px"){
+                $("#toolbox")[0].style.bottom = "-130px";
+            }else{
+                $("#toolbox")[0].style.bottom = "15px";
+            }
+        }
+    });
     setTimeout(()=>{
         $("#loadingInventoryFileMessage")[0].style.marginTop = "-10px";
     },1000);
@@ -15,7 +44,7 @@ if(pageName == "addPart.html"){
     var col1 = $("#col1")[0];
     col1.remove();
     $("#viewPart")[0].appendChild(col1);
-    
+
     var col2 = $("#col2")[0];
     col2.remove();
     var col3 = $("#col3")[0];

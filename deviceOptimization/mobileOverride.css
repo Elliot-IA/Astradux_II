@@ -20,6 +20,7 @@ p{
 }
 #toolbox{
     zoom: 2.4;
+    display: none;
 }
 #loadPartsButton{
     zoom: 2.2;
