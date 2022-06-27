@@ -239,19 +239,10 @@ function configureRequests(){
         }else if(req.body.command == "resetSEARCHQUERY"){
             console.log("Emptying SEARCHQUERY.js");
             update_searchDATA(req.body.data);
-            res.status(204).send();
+            //res.status(204).send();
         }else if(req.body.command == "transfereLoc"){
             console.log("Transfering Location...");
             transfereLocation(req.body.data);
-            res.status(204).send();
-        }else if(req.body.command == "fetchInventoryImgURI"){
-            console.log("Fetching Inventory Image URI from Database...");
-
-            astrasystem.collection("INVENTORY_Images").findOne({"name":req.body.data},(error, imgJSON)=>{
-                console.log(imgJSON.uri);
-                //Somehow send imgJSON.uri to the frontend
-            });
-
             res.status(204).send();
         }else{
             console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
