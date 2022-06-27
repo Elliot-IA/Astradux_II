@@ -129,6 +129,21 @@ function regenerateInvFiles(){
             processedFiles++;
             if(numFiles ==  processedFiles){
                 console.log("v/ Inventory File Regeneration Complete!\n");
+                regenerateDataFiles();
+            }
+        });
+    });
+}
+function regenerateDataFiles(){
+    astrasystem.collection("DATA_Files").find().toArray((error, dataFiles)=>{
+        var numFiles = dataFiles.length;
+        console.log("Regenerating Data Files...\t("+numFiles+")");
+        var processedFiles = 0;
+        dataFiles.forEach((file)=>{
+            generateFile(file.name, file.data, "./Data_Files/"+file.name);
+            processedFiles++;
+            if(numFiles ==  processedFiles){
+                console.log("v/ Data File Regeneration Complete!\n");
                 configureRequests();
             }
         });
@@ -412,21 +427,21 @@ function addPart(partData, firstTime, res){
 var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";
 
 function updateCatArray(newCatArray){
-    var CAT_content = fs.readFileSync("./js/CATAGORIES.js").toString();
+    var CAT_content = fs.readFileSync("./Data_Files/CATAGORIES.js").toString();
     var CAT_array = CAT_content.split("\n");
     CAT_array.splice(0, 1, "var catagories = "+ newCatArray +";");
     CAT_content = CAT_array.join("\n");
-    fs.writeFileSync("./js/CATAGORIES.js", CAT_content);
+    fs.writeFileSync("./Data_Files/CATAGORIES.js", CAT_content);
     astrasystem.collection("DATA_Files").updateOne({name: "CATAGORIES.js"}, {$set: {data: CAT_content}});    //DB
     console.log("Cat Array Updated");
 }
 
 function updateLocArray(newLocArray){
-    var LOC_content = fs.readFileSync("./js/LOCATIONS.js").toString();
+    var LOC_content = fs.readFileSync("./Data_Files/LOCATIONS.js").toString();
     var LOC_array = LOC_content.split("\n");
     LOC_array.splice(0, 1, "var locations = "+ newLocArray +";");
     LOC_content = LOC_array.join("\n");
-    fs.writeFileSync("./js/LOCATIONS.js", LOC_content);
+    fs.writeFileSync("./Data_Files/LOCATIONS.js", LOC_content);
     astrasystem.collection("DATA_Files").updateOne({name: "LOCATIONS.js"}, {$set: {data: LOC_content}});     //DB
     console.log("Loc Array Updated");
 }
