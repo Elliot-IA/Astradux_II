@@ -293,7 +293,7 @@ function configureRequests(){
         }else if(req.body.command == "triggerForignSearch"){
             console.log("Forign search Triggered from addPart");
             update_searchDATA(req.body.data);
-            res.sendFile(__dirname+"/Astradux.html");
+            res.sendFile("."+"/Astradux.html");
         }else if(req.body.command == "wipeModData"){
             console.log("Wiping MODDATA clean...");
             wipeModData();
