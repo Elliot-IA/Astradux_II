@@ -284,10 +284,16 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
 }
 var img_fetchQueue = [];
 function fetchQueuedImages(){
-    for(var i = 0; i < img_fetchQueue.length; i++){
-        fetchImg(img_fetchQueue[i][0],img_fetchQueue[i][1],img_fetchQueue[i][2]);
+    if($("#loadingImg")[0].complete && $("#loadingImg")[0].naturalHeight !== 0){        //If the loading dot dot dot img is rendered
+        for(var i = 0; i < img_fetchQueue.length; i++){
+            fetchImg(img_fetchQueue[i][0],img_fetchQueue[i][1],img_fetchQueue[i][2]);
+        }
+        img_fetchQueue = [];
+    }else{
+        setTimeout(()=>{
+            fetchQueuedImages();
+        },100);
     }
-    img_fetchQueue = [];
 }
 function redundantTilePressStuff(){
     document.getElementById("isActive_meta").setAttribute('content', 'yes');
@@ -362,8 +368,10 @@ function build_partView(partIndex){
 
     /*#Col2*/
     if(Inventory[partIndex][0][0][5] != ""){
-        document.getElementById("retrievedImg").src = "Inventory_Images/"+Inventory[partIndex][0][0][5];
-        document.getElementById("zoomImg").src = "Inventory_Images/"+Inventory[partIndex][0][0][5];
+        //document.getElementById("retrievedImg").src = "Inventory_Images/"+Inventory[partIndex][0][0][5];
+        document.getElementById("retrievedImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
+        
+        document.getElementById("zoomImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
         $("#blockZoomOverlay")[0].style.display = "none";
     }else{
         document.getElementById("retrievedImg").src = "Images/DropImageHere.png";

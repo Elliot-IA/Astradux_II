@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const imageDataURI = require("image-data-uri");
 const https = require('https');
 const url = require('url');
+const imageToUri = require('image-to-uri');
 
 //#######     --Setup Express Port--     #######                 #######                 #######                 #######                 #######
 app.use(express.static(path.join(__dirname, ".")));
@@ -192,14 +193,18 @@ function configureStandby(){
         var clusterIndex = parseInt((queryObject.origin/5)+1);
         console.log("Retrieving image "+queryObject.name+"'s data uri from from datacluster "+clusterIndex+"...");
         collectionConnections[clusterIndex].findOne({name:queryObject.name},(error, data)=>{
-            console.log("Image Found!");
-            //console.log(data);
-            //res.json(testObj);
-            
-            res.json(buildResponse(data.uri));
-        });/*.catch(()=>{
-            console.log("!!Something went wrong retrieving image "+queryObject.name+"'s uri from datacluster "+clusterIndex);
-        });*/
+            if(data == null){
+                console.log("(!) Image "+queryObject.name+" does not exist in datacluster "+clusterIndex);
+                var questionMarkURI = imageToUri("./Images/missingImg.png");
+                res.json(buildResponse(questionMarkURI));
+            }else{
+                console.log("Image Found!");
+                //console.log(data);
+                //res.json(testObj);
+
+                res.json(buildResponse(data.uri));
+            }
+        });
     });
     app.get("*", function(req, res){
         if(regenerationInProgress){

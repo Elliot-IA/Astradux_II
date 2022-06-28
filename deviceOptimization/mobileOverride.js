@@ -8,6 +8,10 @@ if(pageName == "addPart.html"){
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
 }else{
+    document.addEventListener("scroll",()=>{
+        console.log("hey!");
+        [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});
+    });
     if(device == "mobileHorizontial"){
         setTimeout(()=>{
             $("#toolbox")[0].style.bottom = "";            
