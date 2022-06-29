@@ -369,9 +369,13 @@ function build_partView(partIndex){
     /*#Col2*/
     if(Inventory[partIndex][0][0][5] != ""){
         //document.getElementById("retrievedImg").src = "Inventory_Images/"+Inventory[partIndex][0][0][5];
-        document.getElementById("retrievedImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
-        
-        document.getElementById("zoomImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
+        if(!showingSearchResults){
+            document.getElementById("retrievedImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
+            document.getElementById("zoomImg").src = $("#tilesHolder")[0].children[eval(partIndex)+1].children[0].src;
+        }else{
+            document.getElementById("retrievedImg").src = $("#ti_"+partIndex)[0].src;
+            document.getElementById("zoomImg").src = $("#ti_"+partIndex)[0].src;
+        }
         $("#blockZoomOverlay")[0].style.display = "none";
     }else{
         document.getElementById("retrievedImg").src = "Images/DropImageHere.png";
@@ -1288,6 +1292,7 @@ function search_recursiveDriver(typeOfSearch){   //The recursive function that h
             $("#noResultsBanner")[0].style.display = "block";
             $("#noResultsBanner")[0].style.fontSize = document.body.clientWidth/20;
         }
+        fetchQueuedImages();
     }else{
         var INVENTORY_script = document.createElement('script');
         INVENTORY_script.onload = function(){   //do stuff with the script after it's done putting data into the InventoryDATA meta
