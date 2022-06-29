@@ -237,3 +237,7 @@ float: left;margin-left: 77px;
 #menuContainer{
     margin-right: 4px
 }
+#outofstockOverlayImg{
+    margin-left: 75px;
+    position: absolute;
+}
