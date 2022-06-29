@@ -343,6 +343,7 @@ function determineCarousel(){
 }
 
 function build_partView(partIndex){
+    document.getElementById("retrievedImg").src = "Images/subtleLoading.gif";
     console.log(partIndex);
     showingResultIndex = partIndex;
     /*#Col1*/
@@ -364,12 +365,16 @@ function build_partView(partIndex){
     }else{
         $("#PV_tileWrap")[0].style = "";
     }
-    $("#fooTile")[0].children[0].children[0].src = $("#ti_"+partIndex)[0].src;
+    setTimeout(()=>{
+        $("#fooTile")[0].children[0].children[0].src = $("#ti_"+partIndex)[0].src;
+    },0);
 
     /*#Col2*/
     if(Inventory[partIndex][0][0][5] != ""){
-        document.getElementById("retrievedImg").src = $("#ti_"+partIndex)[0].src;
-        document.getElementById("zoomImg").src = $("#ti_"+partIndex)[0].src;
+        setTimeout(()=>{
+            document.getElementById("retrievedImg").src = $("#ti_"+partIndex)[0].src;
+            document.getElementById("zoomImg").src = $("#ti_"+partIndex)[0].src;
+        },0);
         $("#blockZoomOverlay")[0].style.display = "none";
     }else{
         document.getElementById("retrievedImg").src = "Images/DropImageHere.png";

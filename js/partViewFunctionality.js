@@ -65,6 +65,8 @@ function exit_partView(){
     fooTile.removeChild(fooTile.childNodes[0]);
     document.getElementById("isActive_meta").setAttribute('content', 'no');
     document.getElementById("homeBlocker_meta").setAttribute('content', 'on');
+    
+    document.getElementById("retrievedImg").src = "Images/subtleLoading.gif";
 }
 
 function exit_zoomImg(){

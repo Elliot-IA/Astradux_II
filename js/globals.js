@@ -11,10 +11,12 @@ function addEl(type, id, className, appendSelector){
     el.className = className;
     $(appendSelector)[0].appendChild(el);
 }
-function submitPost(paramObj){
+
+var POST_paramObj = {};
+function submitPost(){
     if(device == "webpage"){
         
     }else{
-
+        $.post(pageName, POST_paramObj /*{ command: "resetSEARCHQUERY", data: "[\"\",\"\"]" }*/ );
     }
 }
