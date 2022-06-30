@@ -81,6 +81,7 @@ p{
 }
 #goHome{
     zoom: 2.5;
+    display: none;
 }
 #CatagorySliderBtn{
     display: block;

@@ -4,7 +4,13 @@ if(pageName == "addPart.html"){
     console.log("monbileOverride has sensed that you are on addPart, optimizing...");
     addEl("div", "backPad", "movePad", "body");
     addEl("div", "nextPad", "movePad", "body");
-
+    if(device == "mobileHorizontial"){
+        addEl("div","horiBlock","","body");
+        $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
+        $("#horiBlock")[0].style = "position: fixed; width: 90%; height: 100%; background-color: white; margin-top: -50; padding: 150px; font-size: 70px; text-align: center; left: 50%; transform: translate(-50%); font-family: monospace; color: grey"
+    }else if(device == "mobileVertical"){
+        $("#horiBlock")[0].remove();
+    }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
 }else{
