@@ -70,15 +70,10 @@ p{
 }
 #locationMultitool, #selectCatContainer{
     border: 1px solid black;
-    zoom: 3;
     padding: 5px 9px 5px 5px;
 }
-#locationMultitool{
-    left: -100%; 
-}
-#selectCatContainer{
-    right: -50%;
-}
+#locationMultitool{background-color: white;left: 50%;transform: translateX(-50%);position: relative;}
+#selectCatContainer{background-color: white;width: 80%;left: 50%;transform: translateX(-50%);position: relative;}
 #goHome{
     zoom: 2.5;
     display: none;

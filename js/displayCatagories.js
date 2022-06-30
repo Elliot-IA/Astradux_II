@@ -133,9 +133,6 @@ function collapseRow(loc_shallow, rowStyle_shallow, loc_stringForm_shallow, dept
                     }
                 }
                 if(device!="webpage"){
-                    setTimeout(()=>{
-                        window.scrollBy(0,2000);
-                    }, 500);
                     repositionEditBar();
                 }
             }

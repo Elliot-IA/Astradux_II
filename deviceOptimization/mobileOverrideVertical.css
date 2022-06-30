@@ -269,7 +269,6 @@
     margin-left: 10px;
 }
 #picContainer{
-    zoom: 1.4;
 }
 #inputBlock, #inputBlock_tags{
     zoom: 2;
@@ -277,13 +276,18 @@
 }
 #imagePlaceholder{
     margin-top: 25px;
-    
+    background-color: white;
+    border: 10px dashed black;
+    height: 350px;
+    margin-left: 109px;
+    border-radius: 65px;
 }
 #cameraIconWrap{
-    margin-left:50%;
+    margin-left: 29%;
     transform: translateX(-50%);
     margin-top: 10px;
     zoom: 2;
+    position: relative;
 }
 #resetBtn{
     right:0px;

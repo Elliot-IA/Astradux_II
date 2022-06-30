@@ -244,7 +244,7 @@ function configureRequests(){
         }else if(req.body.command == "resetSEARCHQUERY"){
             console.log("Emptying SEARCHQUERY.js");
             update_searchDATA(req.body.data);
-            res.status(200).send();
+            res.status(204).send();
         }else if(req.body.command == "transfereLoc"){
             console.log("Transfering Location...");
             transfereLocation(req.body.data);

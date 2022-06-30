@@ -1255,7 +1255,7 @@ function catSearch(){
     }
 }
 
-var searchCycleInterum = 200;
+var searchCycleInterum = 20;
 function search_recursiveDriver(typeOfSearch){   //The recursive function that handles pulling data from the inventory files
     if(INVENTORYFiles_CyclesRun == INVENTORYFiles_Count){   //If all Inventory Files have been searched through
         console.log(">Total Search Results: "+Inventory.length);
