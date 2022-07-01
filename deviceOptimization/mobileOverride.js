@@ -2,15 +2,27 @@ console.log("mobileOverride.js Initiated!");
 
 if(pageName == "addPart.html"){
     console.log("monbileOverride has sensed that you are on addPart, optimizing...");
-    addEl("div", "backPad", "movePad", "body");
-    addEl("div", "nextPad", "movePad", "body");
-    addEl("div","bottomButtonBar","","body");
     if(device == "mobileHorizontial"){
         addEl("div","horiBlock","","body");
         $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
         $("#horiBlock")[0].style = "position: fixed; width: 90%; height: 100%; background-color: white; margin-top: -50; padding: 150px; font-size: 70px; text-align: center; left: 50%; transform: translate(-50%); font-family: monospace; color: grey"
     }else if(device == "mobileVertical"){
-        $("#horiBlock")[0].remove();
+        try{
+            $("#horiBlock")[0].remove();
+        }catch{}
+        $("#inputBlock")[0].nextSibling.nextSibling.after($("#locationMultitool")[0]);
+        $("#descriptionWrap")[0].before($("#selectCatContainer")[0]);
+        addEl("div", "backPad", "movePad", "body");
+        addEl("div", "nextPad", "movePad", "body");
+        addEl("div","bottomButtonBar","","body");
+        addEl("div","topGap","","body");
+        $("#picContainer")[0].before($("#topGap")[0]);
+        $("#autoCapsBar")[0].previousSibling.previousSibling.nodeValue="Part Name";
+        $("#location")[0].previousSibling.nodeValue="Location";
+        $("#type_dataLock")[0].style = "height: 75px; width: 75px; transform: translateY(-100px)";
+        $("#bottomButtonBar")[0].appendChild($("#addButton")[0]);
+        $("#bottomButtonBar")[0].appendChild($("#resetBtn")[0]);
+        $("i")[1].remove();
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
@@ -141,7 +153,6 @@ $("body")[0].appendChild(searchCurtain);
 $("#searchCurtain")[0].onclick = () => {
     unfillSearchbar();
 }
-
 $("#searchBarCover")[0].onclick = ()=>{
     if(device == "mobileHorizontial"){
         $("#inquiry")[0].style = "margin-right: 0px;border-radius: 6px;text-align: center;font-size: 26px; width: 100%; transform: translateY(-18px)";

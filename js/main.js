@@ -16,7 +16,6 @@ var INVENTORYFiles_CyclesRun = 0;
 var cycleComplete = false;
 var tilesLoaded = 0;
 var inventoryLoc = 0;
-var showingSearchResults = false;
 var showingResultIndex = 0;
 var loadDelay = 500;
 var forignSearchDelay = 500;

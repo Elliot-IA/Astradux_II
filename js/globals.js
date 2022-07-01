@@ -1,3 +1,4 @@
+var showingSearchResults = false;
 var device = "webpage";
 
 function addEl(type, id, className, appendSelector){
