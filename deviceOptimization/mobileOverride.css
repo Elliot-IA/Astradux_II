@@ -451,7 +451,7 @@ p{
     height: 50px;
     width: 90%;
     background-color: red;
-    position: absolute;
-    float: bottom;
+    position: fixed;
     border-radius: 25px;
+    bottom: 5px;
 }
