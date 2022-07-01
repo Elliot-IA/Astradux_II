@@ -447,3 +447,11 @@ p{
 #outofstockOverlayImg{
     display: none;
 }
+#bottomButtonBar{
+    height: 50px;
+    width: 90%;
+    background-color: red;
+    position: absolute;
+    float: bottom;
+    border-radius: 25px;
+}

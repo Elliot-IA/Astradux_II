@@ -4,6 +4,7 @@ if(pageName == "addPart.html"){
     console.log("monbileOverride has sensed that you are on addPart, optimizing...");
     addEl("div", "backPad", "movePad", "body");
     addEl("div", "nextPad", "movePad", "body");
+    addEl("div","bottomButtonBar","","body");
     if(device == "mobileHorizontial"){
         addEl("div","horiBlock","","body");
         $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
