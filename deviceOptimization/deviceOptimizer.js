@@ -1,3 +1,5 @@
+
+
 console.log("deviceOptimizer.js File Initated");
 
 if(pageName != "addPart.html"){
@@ -43,6 +45,9 @@ function optimizeForDevice(){
             if($("#MOHCSS")[0] != undefined){
                 $("#MOHCSS")[0].remove();
             }
+            if(showingSearchResults){
+                $("#widener")[0].style = "";
+            }
         }else{                                          //Horizontial Mode
             device = "mobileHorizontial";
             console.log("Detected that user is in horizontial mode");
@@ -58,6 +63,9 @@ function optimizeForDevice(){
             }
             if($("#MOVCSS")[0] != undefined){
                 $("#MOVCSS")[0].remove();
+            }
+            if(showingSearchResults){
+                $("#widener")[0].style = "height: 30px";
             }
         }
     }else{

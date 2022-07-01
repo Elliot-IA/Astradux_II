@@ -237,7 +237,12 @@ float: left;margin-left: 77px;
 #menuContainer{
     margin-right: 4px
 }
-#outofstockOverlayImg{
-    margin-left: 75px;
-    position: absolute;
+#lookNextCatBlock,#lookNextCatBlock_end{
+    font-size: 32px;
+}
+#spaceToGoHomeMessage{
+    font-size: 23px;
+    width: 500px;
+    margin-top: 20px;
+    margin-bottom: 60px;
 }

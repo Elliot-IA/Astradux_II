@@ -366,14 +366,14 @@ function build_partView(partIndex){
         $("#PV_tileWrap")[0].style = "";
     }
     //setTimeout(()=>{
-        $("#fooTile")[0].children[0].children[0].src = $("#ti_"+partIndex)[0].src;
+    $("#fooTile")[0].children[0].children[0].src = $("#ti_"+partIndex)[0].src;
     //},0);
 
     /*#Col2*/
     if(Inventory[partIndex][0][0][5] != ""){
         //setTimeout(()=>{
-            document.getElementById("retrievedImg").src = $("#ti_"+partIndex)[0].src;
-            document.getElementById("zoomImg").src = $("#ti_"+partIndex)[0].src;
+        document.getElementById("retrievedImg").src = $("#ti_"+partIndex)[0].src;
+        document.getElementById("zoomImg").src = $("#ti_"+partIndex)[0].src;
         //},0);
         $("#blockZoomOverlay")[0].style.display = "none";
     }else{
@@ -1171,6 +1171,7 @@ function generalSearchProcedures(){
         document.getElementById("allInventoryLoadedMessage").style.display = "none";
         document.getElementById("toolbox").remove();
         document.getElementById("toolControlPanel").remove();
+        $("#loadingInventoryFileMessage")[0].style.display = "none";
     }
     Inventory = [];
     match_Indexes = [];
@@ -1181,6 +1182,9 @@ function generalSearchProcedures(){
     INVENTORYFiles_CyclesRun = 0;
     createAndShuffle_CycleOrder();
     document.getElementById("homeBlocker_meta").setAttribute('content', 'off');
+    if(device == "mobileHorizontial"){
+        $("#widener")[0].style = "height: 30px";
+    }
 }
 function fullSearch_cycle(ST){
     conduct_L1search(ST);
@@ -1348,9 +1352,7 @@ document.addEventListener('keydown', (e)=> { //a to go to addAPart, arrow keys t
     }else if(showingSearchResults && event.code === 'Space' && document.activeElement.tagName != "INPUT" && document.getElementById("isActive_meta").getAttribute('content')=="no"){
         if(document.getElementById("homeBlocker_meta").getAttribute('content') == "off"){
             window.location = "Astradux.html";
-        }/*else{
-            document.getElementById("homeBlocker_meta").setAttribute('content', 'off');
-        }*/
+        }
     }
 });
 

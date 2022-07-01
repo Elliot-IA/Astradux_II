@@ -15,7 +15,6 @@ if(pageName == "addPart.html"){
     $("#goHome")[0].style = "display: none";
 }else{
     document.addEventListener("scroll",()=>{
-        console.log("hey!");
         [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});
     });
     if(device == "mobileHorizontial"){
