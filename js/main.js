@@ -678,9 +678,13 @@ function deleteEntry(){
 
     console.log("modMessage: "+modMessage);
 
-    document.getElementById("command_hiddenInput").value = "modData";
-    document.getElementById("data_hiddenInput").value = modMessage;
-    document.getElementById("hiddenForm").submit();
+    if(device == "webpage"){
+        document.getElementById("command_hiddenInput").value = "modData";
+        document.getElementById("data_hiddenInput").value = modMessage;
+        document.getElementById("hiddenForm").submit();
+    }else{
+        $.post("/", {data: modMessage});
+    }
 
     Inventory.splice(showingResultIndex, 1);
     //document.getElementById("tilesHolder").children[eval(showingResultIndex)+1].remove();
