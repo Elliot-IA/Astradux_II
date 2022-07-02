@@ -29,13 +29,13 @@ window.onload = function(){
             $("#quantity")[0].value = "";
         }
     });
-    
-    
+
+
     if(document.querySelector("meta[name=ModDATA]").getAttribute("content") != "~PART_MOD~"){
         console.log("Part modification requested, adjusting page layout accordingly...");
         partModProtocol();
     }
-    
+
     $("#backdrop")[0].addEventListener("mousedown", ()=>{
         console.log("Body of page pressed, deleting a row from the web...");
         if(previousCollapseDepth != 1 && previousCollapseDepth != null){
@@ -80,7 +80,7 @@ function refreshImage(){
 function resetPartInput(){
     document.getElementById("name").value = "";
     if(!locationLocked){
-       document.getElementById("location").value = "";
+        document.getElementById("location").value = "";
     }
     document.getElementById("tags").value = "";
     document.getElementById("quantity").value = "";
@@ -90,7 +90,7 @@ function resetPartInput(){
     picURL = "";
     document.getElementById("picInput").value = "";
     document.getElementById("description").value = "";
-    
+
     if(descriptionActive){
         Description_ONOFF();
     }
@@ -105,7 +105,9 @@ function resetPartInput(){
     document.getElementById("name").focus();
     if(!typeLocked){
         $("#isBin")[0].checked = false;
-        $("#quantWrap")[0].style.display = "inline-block";
+        if(device == "webpage"){
+            $("#quantWrap")[0].style.display = "inline-block";
+        }
     }
     if(!document.getElementById("isBin").checked){
         $("#quantity")[0].value = 1;
@@ -114,7 +116,7 @@ function resetPartInput(){
     $("#redArrowWrap")[0].style.display = "none";
     $("#locInexistentMessage")[0].style.display = "none";
     //URIActive = false;
-    
+
     if(speedMode){
         activateCamera();
     }
@@ -129,20 +131,20 @@ function addtoInventory(){
     var partCatagory = document.getElementById("catagory").value;
     var description = fixQuoteMarks(document.getElementById("description").value);
     var isBin = document.getElementById("isBin").checked.toString();
-    
+
     //if(URIActive){
-        picURL = timestamp_picName;
-        document.getElementById("command_hiddenInput").value = "addPart_URI";
+    picURL = timestamp_picName;
+    document.getElementById("command_hiddenInput").value = "addPart_URI";
     //}else{
-        //document.getElementById("command_hiddenInput").value = "addPart";
+    //document.getElementById("command_hiddenInput").value = "addPart";
     //}
-    
+
     if(description == ""){
         partInfo = "[\""+partName+"\", \""+partLocation+"\", \""+partCatagory+"\", ["+tags+"], \""+partQuantity+"\", \""+picURL+"\", "+ isBin +"]";
     }else{
         partInfo = "[\""+partName+"\", \""+partLocation+"\", \""+partCatagory+"\", ["+tags+"], \""+partQuantity+"\", \""+picURL+"\", "+ isBin +", \"" +description+"\"]";
     }
-    
+
     console.log("Part Data"+partInfo);
 
     if(partName == "" && picURL == ""){
@@ -154,14 +156,14 @@ function addtoInventory(){
         }, 2000);
         return;
     }
-    
+
     lastDataAdded = partInfo;
-    
+
     document.getElementById("data_hiddenInput").value = JSON.stringify(partInfo);
     document.getElementById("hiddenForm").submit();
-    
+
     resetPartInput();
-    
+
     tweekConfirmationBlock_Default()
     confirmationAnimation();
     showThenRemoveUndoBtn();
@@ -181,7 +183,7 @@ function fixQuoteMarks(rawString){      //Replace " with \"
         var partDataPostQuote = fixedStr.substring(el,fixedStr.length);
         fixedStr = partDataPreQuote+"\\"+partDataPostQuote;
     });
-    
+
     return fixedStr;
 }
 
@@ -292,9 +294,9 @@ function addTag(tagRaw){
     minusIcon.src = "Images/minusIcon.png";
     minusIcon.className = "minusImg";
     tagWrap.appendChild(minusIcon);
-    
+
     document.getElementById('inputBlock_tags').appendChild(tagWrap).appendChild(tag);
-    
+
     tagWrap.style.width = tag.clientWidth+40+40;
     tagWrap.addEventListener("mouseenter", ()=>{
         console.log("Hoving over hotLink Wrapper");
@@ -318,7 +320,11 @@ function Description_ONOFF(){
         document.getElementById("description_inputBlock").style.display = "none";
     }else{
         document.getElementById("addDescription").innerHTML = "-Details";
-        document.getElementById("description_inputBlock").style.display = "flex";
+        if(device == "webpage"){
+            document.getElementById("description_inputBlock").style.display = "flex";
+        }else{
+            document.getElementById("description_inputBlock").style.display = "block";
+        }
         document.getElementById("description").focus();
     }
     descriptionActive = !descriptionActive;
@@ -439,13 +445,13 @@ function partModProtocol(){
         document.getElementById("abortBtnWrap").style.display = "block";
         document.getElementById("partModBannerWrap").style.display = "block";
         fillInPartData(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0]);
-        
+
         console.log(">>>Mod Mode active<<<");
-        
+
         document.getElementById("command_hiddenInput").value = "wipeModData";
         document.getElementById("data_hiddenInput").value = "";
         document.getElementById("hiddenForm").submit();
-        
+
         //v     Collapse CatMap      v
         breakAllLoopLayers = false;
         searchLayer("catagories","Box");
@@ -454,7 +460,7 @@ function partModProtocol(){
 function submitPartMod(){
     document.getElementById("undoBtnWrap").style.display = "none";
     var modMessage = "INVENTORY"+document.querySelector("meta[name=FILETOMOD]").content+":";
-    
+
     var partName = document.getElementById("name").value;
     var partLocation = document.getElementById("location").value;
     var partTags = document.getElementById("tags").value;
@@ -465,7 +471,7 @@ function submitPartMod(){
 
     var dataToMod = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0];
     dataToMod.splice(4,1, dataToMod[4].toString());
-    
+
     //Add a space between each entry...
     modMessage += "[\""+dataToMod[0]+"\", \""+dataToMod[1]+"\", \""+dataToMod[2]+"\", ";
     if(dataToMod[3].length != 0){
@@ -483,7 +489,7 @@ function submitPartMod(){
     }else{
         modMessage += "[\""+partName+"\", \""+partLocation+"\", \""+partCatagory+"\", ["+tags+"], \""+partQuantity+"\", \""+picURL+"\", "+ isBin +", \"" +description+"\"]";
     }
-    
+
     console.log("modMessage: "+modMessage);
 
     document.getElementById("command_hiddenInput").value = "ModPartData";
@@ -516,9 +522,9 @@ document.getElementById("undoBtn").addEventListener("click", ()=>{
     document.getElementById("command_hiddenInput").value = "undoAdd";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();
-    
+
     confirmationAnimation();
-    
+
     fillInPartData(eval(lastDataAdded));
 });
 
@@ -533,8 +539,8 @@ imageElement.addEventListener("drop", (e)=>{
     console.log("Drop Heard! Here's what I captured: "+droppedFiles);
     //Future: droppedFiles can hold multiple files! Good jumping off point for assigning multiple images to the same part
     if(droppedFiles.length == 1){
-        
-        
+
+
         var imgName = droppedFiles[0].name;
         console.log("The file you dropped is called\""+imgName+"\"");
         //document.getElementById("imagePlaceholder").src = "Inventory_Images/"+imgName;
@@ -544,10 +550,10 @@ imageElement.addEventListener("drop", (e)=>{
         var droppedFiles = e.dataTransfer.files;
         console.log("Drop Heard! Here's what I captured:");
         console.log(droppedFiles);
-        
+
         convertToURI(droppedFiles[0]);
         storeURIData();
-        
+
     }else{
         alert("It looks like you tried to drop multiple files into the drop zone. We're not quite ready for that yet, please try again!");
         imageElement.src = "Images/DropImageHere.png";
@@ -559,7 +565,7 @@ imageElement.addEventListener("drop", (e)=>{
         imageElement.style.border = "dashed 3px black";
     }, 200);
 });
-                              
+
 imageElement.addEventListener("dragenter", (e)=>{
     console.log("Dragged over");
     borderAnimation();
@@ -649,7 +655,7 @@ imageElement.addEventListener("mouseleave", ()=>{
 
 
 
-    
+
 /*-----------------------------From displayCatagories (replace with node.js functionality when figured out)----------------------------*/
 var catagories = eval(document.querySelector("meta[name=CaragoryDATA]").getAttribute("content"))
 
@@ -671,7 +677,7 @@ function catagoryOnloadProcedure(){         //Most of the heavy lifting in this 
         document.getElementById("addLeafButton").focus();
         document.getElementById("addLeafButton").style.color = "blue";
     });
-    
+
 }
 
 var previousCollapseDepth = null;   //Stores the value of collapse length of the previous collapseRow function call
@@ -753,11 +759,11 @@ function executeAddCat(){
     console.log("Cat to find: " + catToFind);   
     var currentCatLocation = "catagories";
     searchLayer("catagories", catToFind);       //Unnessarily hard way
-    
+
     document.getElementById("command_hiddenInput").value = "addCat";
     document.getElementById("data_hiddenInput").value = JSON.stringify(catagories);
     document.getElementById("hiddenForm").submit();
-    
+
     document.getElementById("branchInput").value = "Focus to select from map";
     document.getElementById("branchInput").style.color = "#aaaaaa";
     document.getElementById("newCatInput").value = "";
@@ -815,7 +821,7 @@ setTimeout(()=>{
     document.querySelector('#downloadLink').href = pictureURI;
 
     webcam.stop();
-    
+
     $("#command_hiddenInput")[0].setAttribute("value","saveImg3");
     $("#data_hiddenInput")[0].setAttribute("value",pictureURI);
     $("#hiddenForm").submit();

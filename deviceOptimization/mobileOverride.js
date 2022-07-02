@@ -15,14 +15,25 @@ if(pageName == "addPart.html"){
         addEl("div", "backPad", "movePad", "body");
         addEl("div", "nextPad", "movePad", "body");
         addEl("div","bottomButtonBar","","body");
-        addEl("div","topGap","","body");
-        $("#picContainer")[0].before($("#topGap")[0]);
-        $("#autoCapsBar")[0].previousSibling.previousSibling.nodeValue="Part Name";
-        $("#location")[0].previousSibling.nodeValue="Location";
+        $("#autoCapsBar")[0].previousSibling.previousSibling.nodeValue="Part Name:";
+        $("#location")[0].previousSibling.nodeValue="Location:";
         $("#type_dataLock")[0].style = "height: 75px; width: 75px; transform: translateY(-100px)";
+        $("body")[0].style = "font-size: 86px";
         $("#bottomButtonBar")[0].appendChild($("#addButton")[0]);
         $("#bottomButtonBar")[0].appendChild($("#resetBtn")[0]);
         $("i")[1].remove();
+        addEl("div","topGap","","#inputContainer");
+        $("#picContainer")[0].before($("#topGap")[0]);
+        $("#inputContainer")[0].appendChild($("#descriptionWrap")[0]);
+        $("#inputContainer")[0].appendChild($("#addDescription")[0]);
+        $("#bottomButtonBar")[0].appendChild($("#undoBtnWrap")[0]);
+        $("#bottomButtonBar")[0].appendChild($("#abortBtnWrap")[0]);
+        $("#bottomButtonBar")[0].appendChild($("#SuperFastModeBar")[0]);
+        $("#discription_Marker")[0].innerHTML = "Details:";
+        addEl("div","topGap","","#inputContainer");
+        addEl("div","topGap","","#inputContainer");
+        addEl("div","topGap","","#inputContainer");
+        addEl("div","topGap","","#inputContainer");
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";

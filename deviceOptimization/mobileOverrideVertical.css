@@ -294,23 +294,32 @@
     height: 149px;
     text-align: center;
     margin-top: 60px;
-    border: solid #a8a8a8;
+    border: solid #bababa;
     border-width: 0px 0px 15px 15px;
 }
 #resetBtn{
-    width: 50px;
-    height: 20px;
-    border-radius: 40px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 20px;
     position: relative;
-    top: 60px;
+    margin-top: -489px;
+    padding: 4px;
+    width: 110px;
+    margin-left: 454px;
+    border: 1px solid black;
+    border-width: 1px 2px 4px 2px;
 }
 #SuperFastModeBar{
-    width: 42px;
+    width: fit-content;
     line-height: 13px;
+    height: 30px;
+    padding: 20px 30px 5px 30px;
     border-radius: 11px;
-    left: 70.7%;
-    px;
-    bottom: -291px;
+    position: relative;
+    font-size: 44px;
+    margin-top: 28px;
+    font-family: sans-serif;
+    font-style: oblique;
 }
 #inputContainer{
 }
@@ -380,6 +389,14 @@
 }
 #locationCanvas{
     margin-top: -600px;
+    width: 900px;
+    height: 600px;
+    border: 0px solid black;
+    border-radius: 6px;
+}
+#canvasBackground{
+    width: 900px;
+    height: 600px;    
 }
 #selectCatContainer{margin-top: -53px;}
 #mainCatCont{
@@ -387,7 +404,7 @@
 }
 #AAPcatBlock{
 }
-#AAPcat{height: 90px;width: fit-content;font-size: 70px;border-radius: 16px;}
+#AAPcat,#AAPcat_end{height: 90px;width: fit-content;font-size: 70px;border-radius: 16px;}
 #AAPcat:hover{
 
 }
@@ -408,17 +425,61 @@
     position: relative;
     transform: translate(62px, 111px);
 }
+#dataLockWrap:hover{
+    transform: translate(62px, 111px);
+}
 #locMapHome{
-    
+    border: 3px solid black;
+    margin-top: -614px;
 }
-#locMapBack{
-    
-}
+#locMapBack{border: 3px solid black;margin-top: -115px;}
 #locMapEdit{
     margin-top: -621px;
     margin-left: 836px;
-    border-radius: 5px 5px 5px 65px;
+    border-radius: 0px 0px 0px 8px;
+    display: none;
 }
 #locMapEditImg{
     height: 65px;
+}
+#catRow{
+    margin-bottom: 50px;
+}
+#createPathwayButton{
+    font-size: 40px;
+    padding: 5px 25px 5px 25px;
+    border-radius: 15px;
+    border: 4px solid black;
+}
+#locCreationWrap{
+    
+}
+#locCreationWrap_text{
+    font-size: 45px;
+}
+#locCreateInput{
+    font-size: 54px;
+    text-align: center;
+}
+#description{
+    height: 500px;
+    width: 95vw !important;
+    border: 1px black solid;
+    display: block;
+    font-size: 30px;
+    margin-left: -96px;
+}
+#discription_Marker{
+    font-size: 92px;
+    display: block;
+    font-family: sans-serif;
+    font-style: oblique;
+}
+#innerDescriptionWrap{
+    margin-top: 105px;
+    display: block;
+}
+#description_inputBlock{
+    transform: translate(75px,0px);
+    position: relative;
 }
