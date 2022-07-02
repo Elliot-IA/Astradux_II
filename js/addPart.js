@@ -276,11 +276,11 @@ document.addEventListener('keydown', event => {
             addtoInventory();
         }
     }else if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
-        //$.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
+        $.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
         
-        document.getElementById("command_hiddenInput").value = "triggerForignSearch";
+        /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+document.getElementById("inquiry").value+"\",\"\"]";
-        document.getElementById("hiddenForm").submit();
+        document.getElementById("hiddenForm").submit();*/
     }
 })
 
