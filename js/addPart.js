@@ -278,7 +278,9 @@ document.addEventListener('keydown', event => {
     }else if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
         $.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
         
-        window.location.href = "Astradux.html";
+        setTimeout(()=>{
+            window.location.href = "Astradux.html";
+        },100);
         
         /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+document.getElementById("inquiry").value+"\",\"\"]";
