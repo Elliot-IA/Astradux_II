@@ -337,88 +337,93 @@ const getAllDirFiles = function(dirPath, arrayOfFiles){     //This is used to lo
     })
     return arrayOfFiles
 }
-update_FILECOUNTjs();
+//update_FILECOUNTjs();
 
 var dataSafeBox = "";
 function addPart(partData, firstTime, res){
-    var n = getAllDirFiles("./Inventory_Files").length;
-    var partDataAddedTo_fileNum = n;
-    //console.log("Number of Inventory Files: " + n);
-    var nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
-    //console.log("nthFile_content: "+ nthFile_content);
-    var nthFile_contentArray = nthFile_content.split("\n");
-    //console.log("nthFile_contentArray: "+ nthFile_contentArray);
-    var partsIn_nthFile = nthFile_contentArray.length-4;
-    //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
-    var newFile = false;
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
+        n = invFiles.length;
+        console.log("reading number of files: "+n);
+        var partDataAddedTo_fileNum = n;
+        //console.log("Number of Inventory Files: " + n);
+        var nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
+        //console.log("nthFile_content: "+ nthFile_content);
+        var nthFile_contentArray = nthFile_content.split("\n");
+        //console.log("nthFile_contentArray: "+ nthFile_contentArray);
+        var partsIn_nthFile = nthFile_contentArray.length-4;
+        //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
+        var newFile = false;
 
-    if(partsIn_nthFile >= 100){
-        findSpace:{
-            for(var i = n; i > 0; i--){
-                var ithFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString();
-                if(firstTime) dataSafeBox = ithFile_content;
-                var ithFile_contentArray = ithFile_content.split("\n");
-                var partsIn_ithFile = ithFile_content.length-4;
-                if(partsIn_ithFile < 100){
-                    ithFile_contentArray[ithFile_contentArray.length-4] += ",";
-                    ithFile_contentArray.splice(ithFile_contentArray.length-3, 0, "\t"+eval(partData));
-                    ithFile_content = ithFile_contentArray.join("\n");
-                    fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", ithFile_content);
-                    astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, { $set: {data: ithFile_content}} );          //DB
-                    partDataAddedTo_fileNum = i;
-                    break findSpace;
+        if(partsIn_nthFile >= 100){
+            findSpace:{
+                for(var i = n; i > 0; i--){
+                    var ithFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString();
+                    if(firstTime) dataSafeBox = ithFile_content;
+                    var ithFile_contentArray = ithFile_content.split("\n");
+                    var partsIn_ithFile = ithFile_content.length-4;
+                    if(partsIn_ithFile < 100){
+                        ithFile_contentArray[ithFile_contentArray.length-4] += ",";
+                        ithFile_contentArray.splice(ithFile_contentArray.length-3, 0, "\t"+eval(partData));
+                        ithFile_content = ithFile_contentArray.join("\n");
+                        fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", ithFile_content);
+                        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, { $set: {data: ithFile_content}} );          //DB
+                        partDataAddedTo_fileNum = i;
+                        break findSpace;
+                    }
+                }
+                var xthFile_contentArray = newINVENTORY_File_structure.split("\n");
+                var xthFile_content = xthFile_contentArray.join("\n");
+                fs.writeFileSync("./Inventory_Files/INVENTORY"+(n+1)+".js", xthFile_content);
+                astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+(n+1)+".js"}, {$set: {data: xthFile_content}});    //DB
+                partDataAddedTo_fileNum = n+1;
+                update_FILECOUNTjs();
+                setUpPartMod("", n+1);
+            }
+            newFile = true;
+        }
+        astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
+            n = invFiles.length;
+            partDataAddedTo_fileNum = n;
+            //console.log("Number of Inventory Files: " + n);
+            nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
+            if(firstTime) dataSafeBox = nthFile_content;
+            //console.log("nthFile_content: "+ nthFile_content);
+            nthFile_contentArray = nthFile_content.split("\n");
+            //console.log("nthFile_contentArray: "+ nthFile_contentArray);
+            partsIn_nthFile = nthFile_contentArray.length-4;
+            //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
+
+            if(!newFile) nthFile_contentArray[nthFile_contentArray.length-4] += ",";
+            nthFile_contentArray.splice(nthFile_contentArray.length-3, 0, "\t"+eval(partData));
+            //console.log("Revised nthFile_contentArray: "+nthFile_contentArray);
+            nthFile_content = nthFile_contentArray.join("\n");
+            //console.log("File data being loaded into INVENTORY"+n+".js:\n "+nthFile_content);
+            fs.writeFileSync("./Inventory_Files/INVENTORY"+n+".js", nthFile_content);
+            astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+n+".js"}, {$set: {data: nthFile_content}});    //DB
+            setUpPartMod("", n);
+
+            try{
+                var rerunCheckArray = fs.readFileSync("./Inventory_Files/INVENTORY"+partDataAddedTo_fileNum+".js").toString().split("\n");
+                rerunCheckArray[rerunCheckArray.length-1] = "";
+                eval(rerunCheckArray.join("\n"));
+                console.log("INVENTORY_File"+partDataAddedTo_fileNum+" confirmed to still be valid and uncorrupted");
+                res.status(204).send();
+            }catch{
+                if(firstTime){
+                    console.log("(!)Uh oh, data corruption or invalid characters detected in INVENTORY_File"+partDataAddedTo_fileNum+", attempting to repair...");
+
+                    setTimeout(()=>{
+                        addPart(partData, false, res);
+                    },100);
+                }else{
+                    res.status(500).send();
+                    throw "Data in INVENTORY_File"+partDataAddedTo_fileNum+" was corruption or had invalid characters and an attempted repair was unsuccessful. Here is data salvaged from that Inventory File before it was re-written:\n\n"+dataSafeBox;
                 }
             }
-            var xthFile_contentArray = newINVENTORY_File_structure.split("\n");
-            var xthFile_content = xthFile_contentArray.join("\n");
-            fs.writeFileSync("./Inventory_Files/INVENTORY"+(n+1)+".js", xthFile_content);
-            astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+(n+1)+".js"}, {$set: {data: xthFile_content}});    //DB
-            partDataAddedTo_fileNum = n+1;
-            update_FILECOUNTjs();
-            setUpPartMod("", n+1);
-        }
-        newFile = true;
-    }
-    n = getAllDirFiles("./Inventory_Files").length;
-    partDataAddedTo_fileNum = n;
-    //console.log("Number of Inventory Files: " + n);
-    nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
-    if(firstTime) dataSafeBox = nthFile_content;
-    //console.log("nthFile_content: "+ nthFile_content);
-    nthFile_contentArray = nthFile_content.split("\n");
-    //console.log("nthFile_contentArray: "+ nthFile_contentArray);
-    partsIn_nthFile = nthFile_contentArray.length-4;
-    //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
 
-    if(!newFile) nthFile_contentArray[nthFile_contentArray.length-4] += ",";
-    nthFile_contentArray.splice(nthFile_contentArray.length-3, 0, "\t"+eval(partData));
-    //console.log("Revised nthFile_contentArray: "+nthFile_contentArray);
-    nthFile_content = nthFile_contentArray.join("\n");
-    //console.log("File data being loaded into INVENTORY"+n+".js:\n "+nthFile_content);
-    fs.writeFileSync("./Inventory_Files/INVENTORY"+n+".js", nthFile_content);
-    astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+n+".js"}, {$set: {data: nthFile_content}});    //DB
-    setUpPartMod("", n);
-
-    try{
-        var rerunCheckArray = fs.readFileSync("./Inventory_Files/INVENTORY"+partDataAddedTo_fileNum+".js").toString().split("\n");
-        rerunCheckArray[rerunCheckArray.length-1] = "";
-        eval(rerunCheckArray.join("\n"));
-        console.log("INVENTORY_File"+partDataAddedTo_fileNum+" confirmed to still be valid and uncorrupted");
-        res.status(204).send();
-    }catch{
-        if(firstTime){
-            console.log("(!)Uh oh, data corruption or invalid characters detected in INVENTORY_File"+partDataAddedTo_fileNum+", attempting to repair...");
-
-            setTimeout(()=>{
-                addPart(partData, false, res);
-            },100);
-        }else{
-            res.status(500).send();
-            throw "Data in INVENTORY_File"+partDataAddedTo_fileNum+" was corruption or had invalid characters and an attempted repair was unsuccessful. Here is data salvaged from that Inventory File before it was re-written:\n\n"+dataSafeBox;
-        }
-    }
-
-    console.log("Part data added to file:  INVENTORY"+partDataAddedTo_fileNum+".js");
+            console.log("Part data added to file:  INVENTORY"+partDataAddedTo_fileNum+".js");
+        });
+    });
 }
 var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";
 
@@ -508,13 +513,16 @@ function update_searchDATA(newData){
     fs.writeFileSync("./js/SEARCHQUERY.js", searchDataContents);
     console.log("SEARCHQUERY.js Modified");
 }
+var n = null;
 function update_FILECOUNTjs(){
-    var n = getAllDirFiles("./Inventory_Files").length;
-    var FILECOUNT_content = fs.readFileSync("./js/FILECOUNT.js").toString();
-    var FILECOUNT_contentArray = FILECOUNT_content.split("\n"); 
-    FILECOUNT_contentArray.splice(0, 1, "var inventoryFiles_Count = "+n+";");
-    FILECOUNT_content = FILECOUNT_contentArray.join("\n");
-    fs.writeFileSync("./js/FILECOUNT.js", FILECOUNT_content);
+    astrasystem.collection("DATA_Files").find().toArray((error, dataFiles)=>{
+        n = dataFiles.length;
+        var FILECOUNT_content = fs.readFileSync("./js/FILECOUNT.js").toString();
+        var FILECOUNT_contentArray = FILECOUNT_content.split("\n"); 
+        FILECOUNT_contentArray.splice(0, 1, "var inventoryFiles_Count = "+n+";");
+        FILECOUNT_content = FILECOUNT_contentArray.join("\n");
+        fs.writeFileSync("./js/FILECOUNT.js", FILECOUNT_content);
+    });
 }
 function transfereLocation(locData){
     var split = locData.indexOf(">=-:-=>");

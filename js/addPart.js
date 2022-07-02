@@ -159,8 +159,11 @@ function addtoInventory(){
 
     lastDataAdded = partInfo;
 
-    $.post("/addPart.html", {command: "addPart_URI", data: JSON.stringify(partInfo)});
-
+    if(jQuery($("#uri_hiddenInput")[0]).attr("value") != ""){
+        $.post("/addPart.html", {command: "addPart_URI", data: JSON.stringify(partInfo), uri: jQuery($("#uri_hiddenInput")[0]).attr("value"), timestamp: jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value")});
+    }else{
+        $.post("/addPart.html", {command: "addPart", data: JSON.stringify(partInfo)});
+    }
 /*    document.getElementById("data_hiddenInput").value = JSON.stringify(partInfo);
     document.getElementById("hiddenForm").submit();*/
 
