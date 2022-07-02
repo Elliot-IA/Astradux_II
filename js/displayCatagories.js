@@ -217,9 +217,11 @@ function executeAddCat(){
     var currentCatLocation = "catagories";
     searchLayer(currentCatLocation, catToFind);       //Unnessarily hard way
 
-    document.getElementById("command_hiddenInput").value = "addCat";
+    $.post("/catagories.html", {command: "addCat", data: JSON.stringify(catagories)});
+    
+    /*document.getElementById("command_hiddenInput").value = "addCat";
     document.getElementById("data_hiddenInput").value = JSON.stringify(catagories);
-    document.getElementById("hiddenForm").submit();
+    document.getElementById("hiddenForm").submit();*/
 
     //prompt("Copy to clipboard: Ctrl+C, Enter", JSON.stringify(catagories));
     document.getElementById("branchInput").value = "Focus to select from map";

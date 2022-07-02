@@ -375,9 +375,11 @@ document.addEventListener('keydown', event => {
                 });
                 initialte_or_cancel_CreateLoc();
                 
-                document.getElementById("command_hiddenInput").value = "updateLOCs";
+                $.post("/addPart.html", {command: "updateLOCs", data: JSON.stringify(locations)});
+                
+                /*document.getElementById("command_hiddenInput").value = "updateLOCs";
                 document.getElementById("data_hiddenInput").value = JSON.stringify(locations);
-                document.getElementById("hiddenForm").submit();
+                document.getElementById("hiddenForm").submit();*/
                 
                 displayLocation(foundLocIndex);     // <this will change the marker from red to Astradux color
                 locAddedAnimation();     //cool confirmation animation that makes the border turn green and fade back to black

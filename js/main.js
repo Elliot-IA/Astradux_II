@@ -39,9 +39,12 @@ window.onload = function(){
             alert("main.js found non-null queryDATA with an unrecognized search type");
         }
         console.log("Reseting SEARCHQUERY.js...");
-        document.getElementById("command_hiddenInput").value = "resetSEARCHQUERY";
+
+        $.post("/", {command: "resetSEARCHQUERY", data: "[\"\",\"\"]"});
+
+        /*document.getElementById("command_hiddenInput").value = "resetSEARCHQUERY";
         document.getElementById("data_hiddenInput").value = "[\"\",\"\"]";
-        document.getElementById("hiddenForm").submit();
+        document.getElementById("hiddenForm").submit();*/
     }else{
         $("#loadingInventoryFileMessage")[0].style.display = "block";
         loadAndTileifyFrag(INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun], "Inventory");
@@ -92,9 +95,12 @@ window.onload = function(){
     });
 
     $("#submitLocTransfereButton")[0].addEventListener("click",()=>{
-        document.getElementById("command_hiddenInput").value = "transfereLoc";
+        $.post("/", {command: "transfereLoc", data: $("#transBox_loc1")[0].value+">=-:-=>"+$("#transBox_loc2")[0].value});
+        
+        /*document.getElementById("command_hiddenInput").value = "transfereLoc";
         document.getElementById("data_hiddenInput").value = $("#transBox_loc1")[0].value+">=-:-=>"+$("#transBox_loc2")[0].value;
-        document.getElementById("hiddenForm").submit();
+        document.getElementById("hiddenForm").submit();*/
+        
         document.getElementById("transBox_loc1").value = "";
         document.getElementById("transBox_loc2").value = "";
         document.getElementById("curtian").style.display = "none";
@@ -622,10 +628,12 @@ function minus1(){
     modMessage += "]";
 
     console.log("modMessage: "+modMessage);
+    
+    $.post("/", {command: "modData", data: modMessage});
 
-    document.getElementById("command_hiddenInput").value = "modData";
+    /*document.getElementById("command_hiddenInput").value = "modData";
     document.getElementById("data_hiddenInput").value = modMessage;
-    document.getElementById("hiddenForm").submit();
+    document.getElementById("hiddenForm").submit();*/
 
     document.getElementById("partView_quantity").innerHTML = document.getElementById("partView_quantity").innerHTML-1;
 }
@@ -654,9 +662,11 @@ function add1(){
 
     console.log("modMessage: "+modMessage);
 
-    document.getElementById("command_hiddenInput").value = "modData";
+    $.post("/", {command: "modData", data: modMessage});
+    
+    /*document.getElementById("command_hiddenInput").value = "modData";
     document.getElementById("data_hiddenInput").value = modMessage;
-    document.getElementById("hiddenForm").submit();
+    document.getElementById("hiddenForm").submit();*/
 
     document.getElementById("partView_quantity").innerHTML = eval(document.getElementById("partView_quantity").innerHTML)+1;
 }
@@ -701,6 +711,8 @@ function initiate_partModSetUp(){
     document.getElementById("data_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\"");
     document.getElementById("fileN_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex][1].substring(9));
     document.getElementById("hiddenForm").submit();
+    
+    //$.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))});
 }
 function zoomImg(){
     document.getElementById("hiddenBtn").focus();
