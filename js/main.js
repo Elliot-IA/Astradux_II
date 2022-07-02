@@ -661,7 +661,7 @@ function add1(){
     document.getElementById("partView_quantity").innerHTML = eval(document.getElementById("partView_quantity").innerHTML)+1;
 }
 function deleteEntry(){
-    alert("Confirm, do you really want to delete this part? (reload the page to escape deletion)");
+    //alert("Confirm, do you really want to delete this part? (reload the page to escape deletion)");
     //alert("This won't work until file manipulation is figured out");
     var modMessage = Inventory[showingResultIndex][1]+":";
     var i = 0;
