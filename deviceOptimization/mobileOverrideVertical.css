@@ -395,10 +395,6 @@
     border: 0px solid black;
     border-radius: 6px;
 }
-#canvasBackground{
-    width: 900px;
-    height: 600px;    
-}
 #selectCatContainer{margin-top: -53px;}
 #mainCatCont{
 

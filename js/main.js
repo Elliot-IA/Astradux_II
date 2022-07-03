@@ -96,11 +96,11 @@ window.onload = function(){
 
     $("#submitLocTransfereButton")[0].addEventListener("click",()=>{
         $.post("/", {command: "transfereLoc", data: $("#transBox_loc1")[0].value+">=-:-=>"+$("#transBox_loc2")[0].value});
-        
+
         /*document.getElementById("command_hiddenInput").value = "transfereLoc";
         document.getElementById("data_hiddenInput").value = $("#transBox_loc1")[0].value+">=-:-=>"+$("#transBox_loc2")[0].value;
         document.getElementById("hiddenForm").submit();*/
-        
+
         document.getElementById("transBox_loc1").value = "";
         document.getElementById("transBox_loc2").value = "";
         document.getElementById("curtian").style.display = "none";
@@ -388,6 +388,13 @@ function build_partView(partIndex){
         $("#blockZoomOverlay")[0].style.marginTop = -($("#retrievedImg")[0].clientHeight+18);
         $("#blockZoomOverlay")[0].style.display = "block";
     }
+    if(device == "webpage"){
+        if(Inventory[partIndex][0][0][4] == ""){
+            $("#partView_quantity")[0].style = "display: none";
+        }else{
+            $("#partView_quantity")[0].style = "display: block";
+        }
+    }
     if(Inventory[partIndex][0][0][4] == "0"){
         if(device == "webpage"){
             $("#outofstockOverlayImg")[0].style.display = "block";
@@ -425,7 +432,9 @@ function build_partView(partIndex){
     }else{
         document.getElementById("partView_partName").style="font-size: 20px; margin: 0px";
     }
-    document.getElementById("partView_location").innerHTML = Inventory[partIndex][0][0][1];
+    if(Inventory[partIndex][0][0][1] != ""){
+        document.getElementById("partView_location").innerHTML = Inventory[partIndex][0][0][1];
+    }
 
     if(device == "webpage"){
 
@@ -628,7 +637,7 @@ function minus1(){
     modMessage += "]";
 
     console.log("modMessage: "+modMessage);
-    
+
     $.post("/", {command: "modData", data: modMessage});
 
     /*document.getElementById("command_hiddenInput").value = "modData";
@@ -663,7 +672,7 @@ function add1(){
     console.log("modMessage: "+modMessage);
 
     $.post("/", {command: "modData", data: modMessage});
-    
+
     /*document.getElementById("command_hiddenInput").value = "modData";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();*/
@@ -711,7 +720,7 @@ function initiate_partModSetUp(){
     document.getElementById("data_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\"");
     document.getElementById("fileN_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex][1].substring(9));
     document.getElementById("hiddenForm").submit();
-    
+
     //$.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))});
 }
 function zoomImg(){
