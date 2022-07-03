@@ -17,7 +17,7 @@ if(pageName == "addPart.html"){
         addEl("div","bottomButtonBar","","body");
         $("#autoCapsBar")[0].previousSibling.previousSibling.nodeValue="Part Name:";
         $("#location")[0].previousSibling.nodeValue="Location:";
-        $("#type_dataLock")[0].style = "height: 75px; width: 75px; transform: translateY(-100px)";
+        $("#type_dataLock")[0].style = "height: 100px;width: 100px;transform: translateY(-90px);";
         $("body")[0].style = "font-size: 86px";
         $("#bottomButtonBar")[0].appendChild($("#addButton")[0]);
         $("#bottomButtonBar")[0].appendChild($("#resetBtn")[0]);
