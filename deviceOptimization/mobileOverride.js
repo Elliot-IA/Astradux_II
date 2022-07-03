@@ -170,10 +170,10 @@ $("#searchCurtain")[0].onclick = () => {
 }
 $("#searchBarCover")[0].onclick = ()=>{
     if(device == "mobileHorizontial"){
-        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 6px;text-align: center;font-size: 26px; width: 100%; transform: translateY(-18px)";
+        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 6px;text-align: center;font-size: 26px; width: 100%; transform: translateY(-18px);width:100%;";
         $("#search")[0].style = "float: right;height: 0px;width: 100%;height: 100%;position: absolute;top: 0px;margin-top:0px;margin-right:0px";
     }else if(device == "mobileVertical"){
-        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 11px;text-align: center;font-size: 26px;";
+        $("#inquiry")[0].style = "margin-right: 0px;border-radius: 11px;text-align: center;font-size: 26px;width:100%;";
         $("#search")[0].style = "float: right; width: 100%; height: 100%; position: absolute; top: 0px; margin-top: 0px; margin-right: 0px;";
     }
     $("#searchCurtain")[0].style.display = "block";
