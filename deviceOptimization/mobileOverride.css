@@ -481,6 +481,9 @@ p{
 #topGap{
     height: 80px;
 }
+#bottomGap{
+    height: 800px;
+}
 #addDescription{
     width: 240px;
     height: 77px;

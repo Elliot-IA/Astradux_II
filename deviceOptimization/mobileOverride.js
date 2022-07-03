@@ -32,10 +32,7 @@ if(pageName == "addPart.html"){
         $("#bottomButtonBar")[0].appendChild($("#abortBtnWrap")[0]);
         $("#bottomButtonBar")[0].appendChild($("#SuperFastModeBar")[0]);
         $("#discription_Marker")[0].innerHTML = "Details:";
-        addEl("div","topGap","","#inputContainer");
-        addEl("div","topGap","","#inputContainer");
-        addEl("div","topGap","","#inputContainer");
-        addEl("div","topGap","","#inputContainer");
+        addEl("div","bottomGap","","#inputContainer");
         $("#picInput")[0].accept = "image/*";
         $("#picInput")[0].style = "display: block";
         
