@@ -363,7 +363,9 @@ p{
 
 }
 #branchInput{
-
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin-bottom: 6px;
 }
 .clickToSelect{}
 #cm_rootInfo{}
@@ -499,4 +501,8 @@ p{
 #homeBtnImg{height: 100px;width: 100px;}
 body{
     height: 100vh;
+}
+#newCatInput{
+    border: 1px solid grey;
+    border-radius: 5px;
 }
