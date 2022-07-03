@@ -35,6 +35,7 @@ if(pageName == "addPart.html"){
         addEl("div","bottomGap","","#inputContainer");
         $("#picInput")[0].accept = "image/*";
         $("#picInput")[0].style = "display: block";
+        $("#canvasBackground")[0].style = "width: 900px;height: 600px;";
         
         //"<input type=\"file\" accept=\"image/*\">"
     }
