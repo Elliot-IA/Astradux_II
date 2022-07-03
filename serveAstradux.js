@@ -515,7 +515,7 @@ function update_searchDATA(newData){
 }
 var n = null;
 function update_FILECOUNTjs(){
-    astrasystem.collection("DATA_Files").find().toArray((error, dataFiles)=>{
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, dataFiles)=>{
         n = dataFiles.length;
         var FILECOUNT_content = fs.readFileSync("./js/FILECOUNT.js").toString();
         var FILECOUNT_contentArray = FILECOUNT_content.split("\n"); 
