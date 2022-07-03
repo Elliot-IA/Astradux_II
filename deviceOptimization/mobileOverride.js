@@ -18,6 +18,8 @@ if(pageName == "addPart.html"){
         $("#autoCapsBar")[0].previousSibling.previousSibling.nodeValue="Part Name:";
         $("#location")[0].previousSibling.nodeValue="Location:";
         $("#type_dataLock")[0].style = "height: 100px;width: 100px;transform: translateY(-90px);";
+        $("#loc_dataLock")[0].style = "transform: translateY(-120px)";
+        $("#cat_dataLock")[0].style = "transform: translateY(-120px)";
         $("body")[0].style = "font-size: 86px";
         $("#bottomButtonBar")[0].appendChild($("#addButton")[0]);
         $("#bottomButtonBar")[0].appendChild($("#resetBtn")[0]);

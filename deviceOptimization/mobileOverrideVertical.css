@@ -271,7 +271,7 @@
 #picContainer{}
 #inputBlock, #inputBlock_tags{
     max-width: 100%;
-    margin-top: 20vw;
+    margin-top: 10vw;
     text-align: -webkit-center;
     font-style: oblique;
     font-family: sans-serif;
@@ -296,6 +296,7 @@
     margin-top: 60px;
     border: solid #bababa;
     border-width: 0px 0px 15px 15px;
+    display: none;
 }
 #resetBtn{
     width: fit-content;
@@ -450,6 +451,7 @@
     padding: 5px 25px 5px 25px;
     border-radius: 15px;
     border: 4px solid black;
+    color: black;
 }
 #locCreationWrap{
     
@@ -482,4 +484,8 @@
 #description_inputBlock{
     transform: translate(75px,0px);
     position: relative;
+}
+#picInput{
+    margin-bottom: -50px;
+    visibility:hidden;
 }
