@@ -260,6 +260,7 @@ p{
 #search{
     float: right;
     height: 22px;
+    margin-right: 50px;
 }
 #inquiry{
     height: 100%;
