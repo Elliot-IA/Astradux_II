@@ -115,7 +115,7 @@ p{
     margin-top: -348px;
     overflow: auto;
     left: 0px;
-    height: 94vh;
+    height: 144vh;
 }
 #cameraIconWrap{
     margin-left: 677px;
@@ -482,7 +482,7 @@ p{
     height: 80px;
 }
 #bottomGap{
-    height: 800px;
+    height: 1300px;
 }
 #addDescription{
     width: 240px;
@@ -496,3 +496,6 @@ p{
 }
 #backBtnImg{height: 100px;width: 100px;}
 #homeBtnImg{height: 100px;width: 100px;}
+body{
+    height: 100vh;
+}
