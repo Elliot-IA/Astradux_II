@@ -180,7 +180,7 @@ $("#searchBarCover")[0].onclick = ()=>{
     $("#searchCurtain")[0].style.display = "block";
     setTimeout(()=>{
         document.getElementById("inquiry").focus();
-    },10);
+    },100);
 }
 function unfillSearchbar(){
     $("#inquiry")[0].style = "";
