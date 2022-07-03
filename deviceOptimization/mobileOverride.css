@@ -33,6 +33,7 @@ p{
     zoom: 2.2;
     margin-top: 10px;
     margin-bottom: 70px;
+    color: black;
 }
 #tilesHolder{
     text-align: center;
@@ -512,3 +513,9 @@ body{
     border: 1px solid grey;
     border-radius: 5px;
 }
+.toolBtn{
+    color: black;
+    border-radius: 2px;
+}
+
+

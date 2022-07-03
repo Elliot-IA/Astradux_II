@@ -35,19 +35,19 @@
         </div>
         <div id="blurBar"></div>
         <div id="widener"></div>
-        
+
         <br>
         <br>
         <br>
-        
+
         <div id="tilesHolder"><div id="locationLine"></div></div>
-        
+
         <script type="text/javascript" src="js/main.js"></script>
-        
+
         <div id="marker"></div>
         <div id="noResultsBanner" class="inpageMessages">Your Search had no Results</div>
         <div id="spaceToGoHomeMessage" class="inpageMessages">Press space to return to the Homescreen</div>
-        
+
         <div id="curtian" onclick=exit_any()></div>
         <div id="partView_SUPERWRAP">
             <img src="Images/leftPointer.png" id="leftPointer" class="pointer">
@@ -92,7 +92,7 @@
         <div id="scopeWrap">Keep Blue Background
             <div id="scopeContainer">
             </div>
-            
+
             <div id="setScopesButtonWrap"><button id="setScopesButton">Set Scope</button></div>
         </div>
         <button id="hiddenBtn"></button><!--this button is selected when part view is turned on to prevent the page from scrolling down on spacebar press-->
@@ -101,10 +101,10 @@
         <img id="zoomImg">
         <div id="toolbox">
             <div id="toolbox_label">Tool Box</div>
-            <button onclick="showTransfereBox()">Transfere a Location</button>
-            <button onclick="loadUpLastInventoryFile()">Load-up Last File</button>
+            <button onclick="showTransfereBox()" class="toolBtn">Transfere a Location</button>
+            <button onclick="loadUpLastInventoryFile()" class="toolBtn">Load-up Last File</button>
         </div>
-        
+
         <div id="toolControlPanel">
             <meta id="isToolActive_meta" name="isToolActive" content="no">
             <div id="toolTitle">Transfere Tool</div>
@@ -122,24 +122,24 @@
                 <div id="redArrowWrap"><img src="Images/redArrow.svg" id="redArrowImg"></div><div id="locInexistentMessage">It looks like the location you entered doesn't exist in the locations array. Please add this new location to the map</div>
             </div>
         </div>
-        
-        
+
+
         <div id="keyboardShortcutsWrapper" onclick="collapseKS()">
             <div id="keyboardShortcutsTab">Keyboard Shortcuts</div>
             <div id="keyboardShortcuts">
                 <div id="keyboardShortcutsList">>a to addAPart<br>>c to categoryMap<br>>Arrow-keys to scroll</div>
             </div>
         </div>
-        
+
         <div id="scopeButton">Scopes</div>
-        
+
         <div id="confirmationBlock"><img src="Images/checkmark.png" height="40px" id="CB_img"><div id="CB_text"></div></div>
-        
+
         <div id="invisableSpacer"></div>
         <button id="loadPartsButton">Load Next Inventory File</button>
         <div id="loadingInventoryFileMessage" class="inpageMessages">Loading next Inventory File...</div>
         <div id="allInventoryLoadedMessage" class="inpageMessages">You've reached the end of the Inventory! All part data in the Inventory_Files has been loaded</div>
-        
+
         <script type="text/javascript" src="js/locationAnimations.js"></script>
 
         <form action="/Astradux.html" method="post" style="display: none" id="hiddenForm">
@@ -149,7 +149,7 @@
         </form>
         <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
         <img src="Images/subtleLoading.gif" style="visibility: hidden;height: 1px;" id="loadingImg">
-        
+
     </body>
 </html>
 
