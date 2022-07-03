@@ -41,6 +41,7 @@ if(pageName == "addPart.html"){
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
+    $("#ML_cancelButton")[0].before($("#addLeafButton")[0]);
 }else{
     document.addEventListener("scroll",()=>{
         [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});

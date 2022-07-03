@@ -371,7 +371,10 @@ p{
 #cm_rootInfo{}
 .dw_infoBox{}
 #AL_cancelButton{}
-#addLeafButton{}
+#addLeafButton{
+    border: 1px solid black;
+    border-radius: 5px;
+}
 #catMap_moveLocation, #catMap_editLocation, #addCat{
     border: 1px solid grey;
     display: inline-block;
