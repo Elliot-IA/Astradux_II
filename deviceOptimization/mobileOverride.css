@@ -111,10 +111,11 @@ p{
 #inputContainer{
     position: fixed;
     width: 100%;
-    height: 87%;
+    /* height: 87%; */
     margin-top: -348px;
     overflow: auto;
     left: 0px;
+    height: 94vh;
 }
 #cameraIconWrap{
     margin-left: 677px;
