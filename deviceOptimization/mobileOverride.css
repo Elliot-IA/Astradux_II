@@ -260,10 +260,11 @@ p{
 #search{
     float: right;
     height: 22px;
+    margin-right: 50px;
 }
 #inquiry{
     height: 100%;
-    width: 100%;
+    width: 130%;
 }
 #locationAnimationWrap{
     position: fixed;
