@@ -434,6 +434,13 @@ function build_partView(partIndex){
     }
     if(Inventory[partIndex][0][0][1] != ""){
         document.getElementById("partView_location").innerHTML = Inventory[partIndex][0][0][1];
+        if(device == "webpage"){
+            document.getElementById("partView_location").style.display = "inline"; 
+        }else{
+            document.getElementById("partView_location").style.display = "block"; 
+        }
+    }else{
+        document.getElementById("partView_location").style.display = "none"; 
     }
 
     if(device == "webpage"){
