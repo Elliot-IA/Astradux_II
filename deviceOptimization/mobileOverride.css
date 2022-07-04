@@ -517,5 +517,7 @@ body{
     color: black;
     border-radius: 2px;
 }
-
+#loadingInventoryFileMessage{
+    margin-bottom: 200px;
+}
 

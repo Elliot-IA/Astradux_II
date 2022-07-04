@@ -388,7 +388,7 @@ function build_partView(partIndex){
         $("#blockZoomOverlay")[0].style.marginTop = -($("#retrievedImg")[0].clientHeight+18);
         $("#blockZoomOverlay")[0].style.display = "block";
     }
-    if(device == "webpage"){
+    if(device != "webpage"){
         if(Inventory[partIndex][0][0][4] == ""){
             $("#partView_quantity")[0].style = "display: none";
         }else{

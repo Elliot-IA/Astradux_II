@@ -98,6 +98,7 @@ function connectionTreshold(){
 function startup(){
     console.log("\nInitiating startup procedure...\n");
     regenerateLocImgs();
+    update_FILECOUNTjs();
 }
 var processedImgs = 0;
 var numImgs = null; 
@@ -199,9 +200,6 @@ function configureStandby(){
                 res.json(buildResponse(questionMarkURI));
             }else{
                 console.log("Image Found!");
-                //console.log(data);
-                //res.json(testObj);
-
                 res.json(buildResponse(data.uri));
             }
         });
@@ -263,18 +261,22 @@ function configureRequests(){
             updateCatArray(req.body.data);
             res.status(204).send();
         }else if(req.body.command == "addPart"){
+            console.log("Processing addPart requset (no URI)...");
             console.log("partData from addPart.js:" + req.body.data);
             addPart(req.body.data, true, res);
+            console.log("v/ addPart requset (no URI) processed!");
         }else if(req.body.command == "addPart_URI"){
+            console.log("Processing addPart_URI requset...");
             var filePath = req.body.timestamp;
             var dataURI = req.body.uri;
             console.log("Timestamp: "+req.body.timestamp);
-            console.log("URI: "+req.body.uri);
+            console.log(("URI: "+req.body.uri).substring(0,30));
             storeImage(filePath, dataURI);
-            imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)
+            /*imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)      //Old save to local storage code
             // RETURNS image path of the created file 'out/path/fileName.png'
-                .then(res => console.log(res));
+                .then(res => console.log(res));*/
             addPart(req.body.data, true, res);
+            console.log("v/ addPart_URI requset processed!");
         }else if(req.body.command == "updateLOCs"){
             console.log("locData from addPart.js:" + req.body.data);
             updateLocArray(req.body.data);
@@ -515,6 +517,7 @@ function update_searchDATA(newData){
 }
 var n = null;
 function update_FILECOUNTjs(){
+    console.log("Updating File count...");
     astrasystem.collection("INVENTORY_Files").find().toArray((error, dataFiles)=>{
         n = dataFiles.length;
         var FILECOUNT_content = fs.readFileSync("./js/FILECOUNT.js").toString();
@@ -522,6 +525,7 @@ function update_FILECOUNTjs(){
         FILECOUNT_contentArray.splice(0, 1, "var inventoryFiles_Count = "+n+";");
         FILECOUNT_content = FILECOUNT_contentArray.join("\n");
         fs.writeFileSync("./js/FILECOUNT.js", FILECOUNT_content);
+        console.log("v/ File count updated");
     });
 }
 function transfereLocation(locData){
@@ -540,6 +544,21 @@ function transfereLocation(locData){
     console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+getAllDirFiles("./Inventory_Files").length+" INVENTORY files detected)");
 }
 function storeImage(name, URI){
+    var clusterIndex = parseInt((n/5)+1);
+    console.log("Saving image "+name+"'s data uri ("+URI.substring(0,30)+") to datacluster "+clusterIndex+"...");
+    collectionConnections[clusterIndex].insertOne({
+        name:name,
+        uri: URI
+    },(error, data)=>{
+        if(data == null){
+            console.log("(!) Unable to add image to data cluster: "+clusterIndex);
+        }else{
+            console.log("Image added to data cluster: "+clusterIndex);
+        }
+    });
+
+
+
     if(URI != ""){
         astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
     }

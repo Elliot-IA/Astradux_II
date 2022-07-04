@@ -36,8 +36,6 @@ if(pageName == "addPart.html"){
         $("#picInput")[0].accept = "image/*";
         $("#picInput")[0].style = "display: block";
         $("#canvasBackground")[0].style = "width: 900px;height: 600px;";
-        
-        //"<input type=\"file\" accept=\"image/*\">"
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
