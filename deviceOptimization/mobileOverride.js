@@ -5,7 +5,7 @@ if(pageName == "addPart.html"){
     if(device == "mobileHorizontial"){
         addEl("div","horiBlock","","body");
         $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
-        $("#horiBlock")[0].style = "position: fixed; width: 90%; height: 100%; background-color: white; margin-top: -50; padding: 150px; font-size: 70px; text-align: center; left: 50%; transform: translate(-50%); font-family: monospace; color: grey"
+        $("#horiBlock")[0].style = "position: fixed;width: 90%;height: 100%;background-color: white;padding: 190px;font-size: 70px;text-align: center;left: 50%;transform: translate(-50%);font-family: monospace;color: #b2b2b2;top: 0px;font-style: oblique;"
     }else if(device == "mobileVertical"){
         try{
             $("#horiBlock")[0].remove();
