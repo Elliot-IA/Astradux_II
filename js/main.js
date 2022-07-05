@@ -301,11 +301,13 @@ function fetchQueuedImages(){
 }
 var pressedTileEl = null;
 function redundantTilePressStuff(ev){
-    /*if(ev.path[1].nodeName == "P"){
-        pressedTileEl = ev.path[1];
-    }else{
-        pressedTileEl = ev.path[0];
-    }*/
+    if(device == "webpage"){
+        if(ev.path[1].nodeName == "P"){
+            pressedTileEl = ev.path[1];
+        }else{
+            pressedTileEl = ev.path[0];
+        }
+    }
     document.getElementById("isActive_meta").setAttribute('content', 'yes');
     document.getElementById("viewPart").style.display = "block";
     document.getElementById("curtian").style.display = "block";
