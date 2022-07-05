@@ -22,3 +22,7 @@ function a(id){
 function b(cl){
     return [...$("."+cl)];
 }
+
+function c(id, ev, func){
+    $("#"+id)[0].addEventListener(ev,func);
+}

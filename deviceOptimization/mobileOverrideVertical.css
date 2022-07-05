@@ -535,7 +535,14 @@
     border-radius: 23px;
     color: white;
 }
-
-
+#partAddedConfirmationBlock, #confirmationBlock{
+    z-index: 10000;
+    font-size: 15px;
+    zoom: 4;
+}
+#confirmationText{
+    text-align: center;
+    
+}
 
 

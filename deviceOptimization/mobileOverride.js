@@ -37,6 +37,29 @@ if(pageName == "addPart.html"){
         $("#picInput")[0].style = "display: block";
         $("#canvasBackground")[0].style = "width: 900px;height: 600px;";
         $("#undoBtn")[0].innerHTML = "undo";
+        c("resetBtn", "mouseup", ()=>{
+            $("#resetBtn")[0].style.backgroundColor = "yellow";
+            setTimeout(()=>{
+                $("#resetBtn")[0].style.backgroundColor = "crimson";
+            },100);
+        });
+        c("addDescription", "mouseup", ()=>{
+            $("#addDescription")[0].style.backgroundColor = "yellow";
+            setTimeout(()=>{
+                $("#addDescription")[0].style.backgroundColor = "black";
+                $("#addDescription")[0].style.opacity = 1;
+            },100);
+        });
+        c("addButton", "mouseup", ()=>{
+            $("#addButton")[0].style.backgroundColor = "yellow";
+            $("#addButton")[0].style.color = "white";
+            setTimeout(()=>{
+                $("#addButton")[0].style.backgroundColor = "#f3f3f3";
+                $("#addButton")[0].style.color = "black";
+            },100);
+        });
+        
+        
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
