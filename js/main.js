@@ -352,24 +352,28 @@ function build_partView(partIndex){
     console.log(partIndex);
     showingResultIndex = partIndex;
     /*#Col1*/
-    document.getElementById("fooTile").appendChild(createTile(partIndex, null)); 
-    var fooTileHeight = document.getElementById("fooTile").children[0].clientHeight;
-    document.getElementById("fooTile_overlay").style = "height: "+(fooTileHeight+15)+"; margin-top: -"+(fooTileHeight+25);
-    try{
-        inventoryLoc = document.getElementById("fooTile").children[0].children[2].getAttribute("content");
-    }catch{}
-    try{
-        inventoryLoc = document.getElementById("fooTile").children[0].children[0].children[2].getAttribute("content");
-    }catch{}
-    if(fooTileHeight > 160 && Inventory[partIndex][0][0][4] != ""){
-        $("#PV_tileWrap")[0].style = "transform: scale(0.8); margin-top: -22px; margin-bottom: -24px; margin-left: -19px";
-    }else if(fooTileHeight > 140 && fooTileHeight < 160 && Inventory[partIndex][0][0][4] != ""){
-        $("#PV_tileWrap")[0].style = "transform: scale(0.85); margin-top: -16px; margin-bottom: -18px; margin-left: -15px;";
-    }else if(fooTileHeight > 125 && fooTileHeight < 140 && Inventory[partIndex][0][0][4] != ""){
-        $("#PV_tileWrap")[0].style = "transform: scale(0.9); margin-top: -7px; margin-bottom: -8px; margin-left: -8px;";
-    }else{
-        $("#PV_tileWrap")[0].style = "";
-    }
+    document.getElementById("fooTile").appendChild(createTile(partIndex, null));
+
+    setTimeout(()=>{
+        var fooTileHeight = document.getElementById("fooTile").children[0].clientHeight;
+        document.getElementById("fooTile_overlay").style = "height: "+(fooTileHeight+15)+"; margin-top: -"+(fooTileHeight+25);
+        try{
+            inventoryLoc = document.getElementById("fooTile").children[0].children[2].getAttribute("content");
+        }catch{}
+        try{
+            inventoryLoc = document.getElementById("fooTile").children[0].children[0].children[2].getAttribute("content");
+        }catch{}
+        if(fooTileHeight > 160 && Inventory[partIndex][0][0][4] != ""){
+            $("#PV_tileWrap")[0].style = "transform: scale(0.8); margin-top: -22px; margin-bottom: -24px; margin-left: -19px";
+        }else if(fooTileHeight > 140 && fooTileHeight < 160 && Inventory[partIndex][0][0][4] != ""){
+            $("#PV_tileWrap")[0].style = "transform: scale(0.85); margin-top: -16px; margin-bottom: -18px; margin-left: -15px;";
+        }else if(fooTileHeight > 125 && fooTileHeight < 140 && Inventory[partIndex][0][0][4] != ""){
+            $("#PV_tileWrap")[0].style = "transform: scale(0.9); margin-top: -7px; margin-bottom: -8px; margin-left: -8px;";
+        }else{
+            $("#PV_tileWrap")[0].style = "";
+        }
+    },10);
+
     //setTimeout(()=>{
     $("#fooTile")[0].children[0].children[0].src = $("#ti_"+partIndex)[0].src;
     //},0);
@@ -427,11 +431,17 @@ function build_partView(partIndex){
     }else{
         document.getElementById("partView_partName").innerHTML = Inventory[partIndex][0][0][0];
     }
-    if(Inventory[partIndex][0][0][0].length >= 26){     //Adjusts the font-size of the partName if it's super long 
-        document.getElementById("partView_partName").style="font-size: 15px; margin: 3px";
+
+    if(device != "mobileHorizontial"){
+        if(Inventory[partIndex][0][0][0].length >= 26){     //Adjusts the font-size of the partName if it's super long 
+            document.getElementById("partView_partName").style="font-size: 15px; margin: 3px";
+        }else{
+            document.getElementById("partView_partName").style="font-size: 20px; margin: 0px";
+        }
     }else{
-        document.getElementById("partView_partName").style="font-size: 20px; margin: 0px";
+            document.getElementById("partView_partName").style="";
     }
+
     if(Inventory[partIndex][0][0][1] != ""){
         document.getElementById("partView_location").innerHTML = Inventory[partIndex][0][0][1];
         if(device == "webpage"){

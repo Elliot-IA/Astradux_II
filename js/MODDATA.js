@@ -1,5 +1,5 @@
 var partData = "";
-var INVENTORY_FileToMod = 18;
+var INVENTORY_FileToMod = 0;
 
 if(partData != ""){
     document.querySelector("meta[name=ModDATA]").setAttribute("content", JSON.stringify(partData));
