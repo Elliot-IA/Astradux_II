@@ -164,7 +164,7 @@ function addtoInventory(){
     }else{
         $.post("/addPart.html", {command: "addPart", data: JSON.stringify(partInfo)});
     }
-/*    document.getElementById("data_hiddenInput").value = JSON.stringify(partInfo);
+    /*    document.getElementById("data_hiddenInput").value = JSON.stringify(partInfo);
     document.getElementById("hiddenForm").submit();*/
 
     resetPartInput();
@@ -280,11 +280,11 @@ document.addEventListener('keydown', event => {
         }
     }else if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
         $.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
-        
+
         setTimeout(()=>{
             window.location.href = "Astradux.html";
         },100);
-        
+
         /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+document.getElementById("inquiry").value+"\",\"\"]";
         document.getElementById("hiddenForm").submit();*/
@@ -460,7 +460,7 @@ function partModProtocol(){
         console.log(">>>Mod Mode active<<<");
 
         $.post("/addPart.html", {command: "wipeModData", data: ""});
-        
+
         /*document.getElementById("command_hiddenInput").value = "wipeModData";
         document.getElementById("data_hiddenInput").value = "";
         document.getElementById("hiddenForm").submit();*/
@@ -525,7 +525,7 @@ function showThenRemoveUndoBtn(){
 
 document.getElementById("abortBtn").addEventListener("click", ()=>{
     $.post("/addPart.html", {command: "wipeModData"});
-    
+
     /*document.getElementById("command_hiddenInput").value = "wipeModData";
     document.getElementById("hiddenForm").submit();*/
     window.location.href = "Astradux.html";
@@ -536,9 +536,9 @@ document.getElementById("undoBtn").addEventListener("click", ()=>{
     var modMessage = "INVENTORY"+document.querySelector("meta[name=FILETOMOD]").content+":";
     modMessage += lastDataAdded+">=-:-=>"+"[]";
     console.log("modMessage: "+modMessage);
-    
+
     $.post("/addPart.html", {command: "undoAdd", data: modMessage});
-    
+
     /*document.getElementById("command_hiddenInput").value = "undoAdd";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();*/
@@ -781,7 +781,7 @@ function executeAddCat(){
     searchLayer("catagories", catToFind);       //Unnessarily hard way
 
     $.post("/addPart.html", {command: "addCat", data: JSON.stringify(catagories)});
-    
+
     /*document.getElementById("command_hiddenInput").value = "addCat";
     document.getElementById("data_hiddenInput").value = JSON.stringify(catagories);
     document.getElementById("hiddenForm").submit();*/
@@ -824,9 +824,25 @@ var speedMode = false;
 function toggleSpeedMode(){
     speedMode = !speedMode;
     if(speedMode){
-        $("#SuperFastModeBar")[0].innerHTML = "Exit Speed Mode";
+        if(device == "webpage"){
+            $("#SuperFastModeBar")[0].innerHTML = "Exit Speed Mode";
+        }else{
+            $("#SuperFastModeBar")[0].innerHTML = "deactivate speed mode";
+        }
     }else{
-        $("#SuperFastModeBar")[0].innerHTML = "Enter Speed Mode";
+        if(device == "webpage"){
+            $("#SuperFastModeBar")[0].innerHTML = "Enter Speed Mode";
+        }else{
+            $("#SuperFastModeBar")[0].innerHTML = "activate speed mode";
+        }
+    }
+    if(device != "webpage"){
+        $("#SuperFastModeBar")[0].style.backgroundColor = "yellow";
+        $("#SuperFastModeBar")[0].style.color = "white";
+        setTimeout(()=>{
+            $("#SuperFastModeBar")[0].style.backgroundColor = "white";
+            $("#SuperFastModeBar")[0].style.color = "black";
+        },100);
     }
 }
 
