@@ -308,3 +308,6 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
 #newCatInput{
     margin-top: 8px;
 }
+#addLeafButton{
+    font-size: 33px;
+}

@@ -57,6 +57,7 @@ window.onload = function(){         //Most of the heavy lifting in this file is 
     document.getElementById("addCatBtn").addEventListener('click', function(){
         document.getElementById("addCat").style.display = "block";
         document.getElementById("catMap_buttonBar").style.display = "none";
+        setTimeout(()=>{a("newCatInput").focus()},10);
     });
     
     [...$(".catagoryBtnCancelBtn")].forEach((el)=>{
