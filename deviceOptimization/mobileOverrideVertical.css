@@ -467,24 +467,30 @@
 #description{
     height: 500px;
     width: 95vw !important;
-    border: 1px black solid;
+    border: 2px black solid;
     display: block;
     font-size: 80px;
-    margin-left: -96px;
+    margin-left: 52.5%;
+    margin-bottom: -85px;
+    transform: translate(-50%, 0px);
+    border-radius: 24px;
+    border-width: 1px 3px 8px 3px;
 }
 #discription_Marker{
     font-size: 92px;
     display: block;
     font-family: sans-serif;
     font-style: oblique;
+    width: 95%;
+    float: right;
 }
 #innerDescriptionWrap{
     margin-top: 105px;
     display: block;
 }
 #description_inputBlock{
-    transform: translate(75px,0px);
     position: relative;
+    width: 98%;
 }
 #picInput{
     margin-bottom: -50px;
