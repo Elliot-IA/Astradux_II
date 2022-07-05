@@ -355,11 +355,7 @@ p{
 .cm_infoBox{
 
 }
-#branchInput{
-    border: 1px solid grey;
-    border-radius: 5px;
-    margin-bottom: 6px;
-}
+
 .clickToSelect{}
 #cm_rootInfo{}
 .dw_infoBox{}
@@ -408,17 +404,7 @@ p{
 #edit_insWrap{}
 #EB_cancelButton{
 }
-#catMap_moveLocation, #catMap_editLocation, #addCat{
-    zoom: 3.3;
-    left:50%;
-    transform: translateX(-50%);
-    width: 94%;
-    padding:4px;
-    bottom: 9px;
-    text-align: center;
-    border-radius: 6px 6px 6px 6px;
-    bottom: 5px;
-}
+
 #cat_newName{
     margin-bottom: 2px
 }
@@ -513,4 +499,6 @@ body{
 #loadingInventoryFileMessage{
     margin-bottom: 200px;
 }
-
+#addLeafButton{
+    font-size: 33px;
+}
