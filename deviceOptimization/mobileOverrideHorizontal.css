@@ -312,4 +312,15 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
 #addLeafButton{
     font-size: 33px;
 }
-#collapseBtn{}
+#collapseBtn{
+    height: 107px;
+    width: 110px;
+    text-align: center;
+    border-radius: 15px;
+    right: 10px;
+    bottom: 10px;
+}
+#collapseArr{
+    height: 100px;
+    width: 100px;
+}

@@ -64,6 +64,8 @@ if(pageName == "addPart.html"){
     a("collapseBtn").addEventListener("click",()=>{
         freeCollapse();
     });
+    addEl("img", "collapseArr", "","#collapseBtn");
+    a("collapseArr").src = "Images/collapseArrow.png";
 }else{
     document.addEventListener("scroll",()=>{
         [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});

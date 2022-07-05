@@ -504,4 +504,16 @@ body{
 #addLeafButton{
     font-size: 13px;
 }
-#collapseBtn{}
+#collapseBtn{
+    height: 260px;
+    width: 260px;
+    z-index: 50000;
+    border: 1px solid black;
+    border-radius: 40px;
+    background-color: #0000000a;
+    position: fixed;
+}
+#collapseArr{
+    height: 250px;
+    width: 250px;
+}
