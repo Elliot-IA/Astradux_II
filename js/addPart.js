@@ -125,7 +125,7 @@ function resetPartInput(){
 function addtoInventory(){
     var partInfo = "";
     var partName = fixQuoteMarks(document.getElementById("name").value);
-    var partLocation = document.getElementById("location").value;
+    var partLocation = document.getElementById("location").value.replace(/>/g, "").replace(/</g, "");
     var partTags = fixQuoteMarks(document.getElementById("tags").value);
     var partQuantity = document.getElementById("quantity").value;
     var partCatagory = document.getElementById("catagory").value;

@@ -59,7 +59,7 @@ if(pageName == "addPart.html"){
             },100);
         });
         a("cat_dataLock").style.position = "absolute";
-        a("cat_dataLock").style.marginTop = "45px";
+        a("cat_dataLock").style.marginTop = "65px";
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
