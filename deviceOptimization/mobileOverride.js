@@ -2,11 +2,7 @@ console.log("mobileOverride.js Initiated!");
 
 if(pageName == "addPart.html"){
     console.log("monbileOverride has sensed that you are on addPart, optimizing...");
-    if(device == "mobileHorizontial"){
-        addEl("div","horiBlock","","body");
-        $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
-        $("#horiBlock")[0].style = "position: fixed;width: 90%;height: 100%;background-color: white;padding: 190px;font-size: 70px;text-align: center;left: 50%;transform: translate(-50%);font-family: monospace;color: rgb(178, 178, 178);top: 0px;font-style: oblique;z-index: 1;"
-    }else if(device == "mobileVertical"){
+    if(device == "mobileVertical"){
         try{
             $("#horiBlock")[0].remove();
         }catch{}
@@ -64,6 +60,10 @@ if(pageName == "addPart.html"){
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";
     $("#ML_cancelButton")[0].before($("#addLeafButton")[0]);
+    addEl("div", "collapseBtn", "","body");
+    a("collapseBtn").addEventListener("click",()=>{
+        freeCollapse();
+    });
 }else{
     document.addEventListener("scroll",()=>{
         [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});

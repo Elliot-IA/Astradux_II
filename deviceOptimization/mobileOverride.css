@@ -1,3 +1,5 @@
+
+
 *{
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -502,3 +504,4 @@ body{
 #addLeafButton{
     font-size: 13px;
 }
+#collapseBtn{}

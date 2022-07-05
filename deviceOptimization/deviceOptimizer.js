@@ -3,12 +3,12 @@
 console.log("deviceOptimizer.js File Initated");
 
 //if(pageName != "addPart.html"){
-    window.addEventListener('resize',()=> {
-        setTimeout(()=>{
-            console.log("");
-            optimizeForDevice();
-        },10);
-    });
+window.addEventListener('resize',()=> {
+    setTimeout(()=>{
+        console.log("");
+        optimizeForDevice();
+    },10);
+});
 //}
 
 
@@ -18,6 +18,8 @@ function optimizeForDevice(){
     console.log("Checking device...");
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         console.log("User is on mobile, overriding stylization...");
+
+        /*
         if($("#MOJS")[0] != undefined){
             $("#MOJS")[0].remove();
         }else{
@@ -31,7 +33,19 @@ function optimizeForDevice(){
         MOJS.src = "./deviceOptimization/mobileOverride.js";
         MOJS.id = "MOJS";
         $("head")[0].appendChild(MOJS);
+        */
 
+        if($("#MOJS")[0] == undefined){
+            var MOCSS = document.createElement("link");
+            var MOJS = document.createElement('script'); 
+            MOCSS.href = "deviceOptimization/mobileOverride.css";
+            MOCSS.rel = "stylesheet";
+            MOCSS.id = "MOCSS";
+            MOJS.src = "./deviceOptimization/mobileOverride.js";
+            MOJS.id = "MOJS";
+            $("head")[0].appendChild(MOCSS);
+            $("head")[0].appendChild(MOJS);
+        }
         if(window.innerHeight > window.innerWidth){     //Vertical Mode
             device = "mobileVertical";
             console.log("Detected that user is in verticle mode");
@@ -71,6 +85,19 @@ function optimizeForDevice(){
                 $("#widener")[0].style = "height: 30px";
             }
         }
+        
+        if(pageName == "addPart.html"){
+            if(device == "mobileHorizontial"){
+                addEl("div","horiBlock","","body");
+                $("#horiBlock")[0].innerHTML = "Horizontial Add Part is not yet supported";
+                $("#horiBlock")[0].style = "position: fixed;width: 90%;height: 100%;background-color: white;padding: 190px;font-size: 70px;text-align: center;left: 50%;transform: translate(-50%);font-family: monospace;color: rgb(178, 178, 178);top: 0px;font-style: oblique;z-index: 1;"
+            }else{
+                try{
+                    $("#horiBlock")[0].remove();
+                }catch{}
+            }
+        }
+        
     }else{
         console.log("User is on Computer...");
         device = "webpage";
