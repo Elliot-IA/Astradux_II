@@ -81,7 +81,7 @@ p{
 #locationMultitool, #selectCatContainer{
     padding: 5px 9px 5px 5px;
 }
-#locationMultitool{background-color: white;left: 50%;transform: translateX(-50%);position: relative;width: 900px;}
+#locationMultitool{background-color: white;left: 50%;transform: translateX(-50%);position: relative;width: 900px;display: none;}
 #selectCatContainer{background-color: white;width: 85%;left: 50%;transform: translateX(-50%);position: relative;}
 #goHome{
     zoom: 2.5;
