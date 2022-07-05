@@ -265,18 +265,18 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
         blueBorder.appendChild(locInfo);
         blueBorder.appendChild(indexLocation);
         DOM_img.style.width = "94px";
-        para.onmousedown = function(){ //This handles what happens when you press a tile 
+        para.onmousedown = function(e){ //This handles what happens when you press a tile 
             inventoryLoc = this.children[0].children[2].getAttribute('content');
-            redundantTilePressStuff();
+            redundantTilePressStuff(e);
         }
     }else{
         para.appendChild(node);
         para.appendChild(DOM_img);
         para.appendChild(locInfo);
         para.appendChild(indexLocation);
-        para.onmousedown = function(){ //This handles what happens when you press a tile 
+        para.onmousedown = function(e){ //This handles what happens when you press a tile 
             inventoryLoc = this.children[2].getAttribute('content');
-            redundantTilePressStuff();
+            redundantTilePressStuff(e);
         }
     }
     if(appendTo != null){
@@ -299,7 +299,13 @@ function fetchQueuedImages(){
         },100);
     }
 }
-function redundantTilePressStuff(){
+var pressedTileEl = null;
+function redundantTilePressStuff(ev){
+    if(ev.path[1].nodeName == "P"){
+        pressedTileEl = ev.path[1];
+    }else{
+        pressedTileEl = ev.path[0];
+    }
     document.getElementById("isActive_meta").setAttribute('content', 'yes');
     document.getElementById("viewPart").style.display = "block";
     document.getElementById("curtian").style.display = "block";
@@ -439,7 +445,7 @@ function build_partView(partIndex){
             document.getElementById("partView_partName").style="font-size: 20px; margin: 0px";
         }
     }else{
-            document.getElementById("partView_partName").style="";
+        document.getElementById("partView_partName").style="";
     }
 
     if(Inventory[partIndex][0][0][1] != ""){
@@ -725,6 +731,7 @@ function deleteEntry(){
 
     Inventory.splice(showingResultIndex, 1);
     //document.getElementById("tilesHolder").children[eval(showingResultIndex)+1].remove();
+    pressedTileEl.remove();
 
     /*for(var i = eval(showingResultIndex)+1; i < Inventory.length+1; i++){
         document.getElementById("tilesHolder").children[i].querySelector("#meta_indexLocation").setAttribute("content", (document.getElementById("tilesHolder").children[i].querySelector("#meta_indexLocation").getAttribute("content"))-1);

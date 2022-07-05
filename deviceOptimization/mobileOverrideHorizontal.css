@@ -244,10 +244,11 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
 }
 #toolbox_label{
     transform: rotate(-90deg);
-    margin-left:-65px;
+    margin-left: -66px;
     margin-top: 40px;
     margin-bottom: -63px;
     width: 100px;
+    border-width: 2px;
 }
 #menuContainer{
     margin-right: 4px

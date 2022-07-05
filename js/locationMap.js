@@ -144,7 +144,7 @@ canvas.addEventListener("mousedown", function( event ) {
                         newLocation = currentArrayLocation+"[4]["+i+"]";
                         changelocations = true;
                         setTimeout(function(){
-                            if(wind){
+                            //if(wind){
                                 if(clickTarget == ""){
                                     try{document.getElementById("tags").focus();}catch{}
                                 }else if(clickTarget == "loc1"){
@@ -152,7 +152,7 @@ canvas.addEventListener("mousedown", function( event ) {
                                 }else if(clickTarget == "loc2"){
                                     document.getElementById("submitLocTransfereButton").focus();
                                 }
-                            }
+                            //}
                         });
                         break detectLoop;
                     }else{
