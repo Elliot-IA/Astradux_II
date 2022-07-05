@@ -182,7 +182,8 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
     width: 103.5%;
 }
 #col2{
-    margin-left: 0px;width: 100%;
+    margin-left: 0px;
+    width: 100%;
 }
 #retrievedImg{
   float: left;
@@ -255,7 +256,7 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
     font-size: 32px;
 }
 #spaceToGoHomeMessage{
-    font-size: 23px;
+    font-size: 33px;
     width: 500px;
     margin-top: 20px;
     margin-bottom: 60px;
@@ -264,4 +265,5 @@ font-size: 20px; margin: -40px 0px 15px 312.714px; bottom: 22px; left: 20px;
     bottom: 114px;
     position: absolute;
     width: 100%;
-}  
+} 
+.colBack{height: 100%;width: 100%;top: 0px;left: 0px;position: absolute;z-index: -2;}

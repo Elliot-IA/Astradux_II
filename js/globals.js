@@ -16,3 +16,9 @@ function submitPost(){
         $.post(pageName, POST_paramObj /*{ command: "resetSEARCHQUERY", data: "[\"\",\"\"]" }*/ );
     }
 }
+function a(id){
+    return $("#"+id)[0];
+}
+function b(cl){
+    return [...$("."+cl)];
+}

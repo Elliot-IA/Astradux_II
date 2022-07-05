@@ -52,6 +52,13 @@ if(pageName == "addPart.html"){
         $("#toolbox_label")[0].onclick = ()=>{
 
         }
+        addEl("div","background1","colBack","#col2");
+        addEl("div","background2","colBack","#col1");
+        b("colBack").forEach((el)=>{
+            el.addEventListener("click",()=>{
+                exit_partView();
+            });
+        });
     }else if(device == "mobileVertical"){
         setTimeout(()=>{
             $("#toolbox")[0].style.bottom = "-130px";
