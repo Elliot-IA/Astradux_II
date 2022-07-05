@@ -301,15 +301,10 @@ p{
     
 }
 #cat1, #cat2, #cat2_end, #cat3, #cat3_end, #cat4, #cat4_end{
-    font-size: 74px;
     font-family: sans-serif;
-    padding: 20px;
-    border-radius: 20px;
-    margin: 6px;
     font-style: italic;
 }
 .catRow{
-    margin-bottom: 64px;
     z-index: 1;
     position: relative;
 }
@@ -317,7 +312,6 @@ p{
     text-align: center
 }
 #catMap_buttonBar{
-    zoom:3;
     width: 90%;
     margin-left: auto;
     bottom: -8px;
@@ -325,9 +319,7 @@ p{
     padding: 5px;
     padding-top: 4px;
     text-align: center;
-    height: 22px;
     transform: translate(0px);
-    margin-bottom: 10px;
     position: sticky;
     z-index: 5;
     box-shadow: 0px 0px 7px 1px white;
@@ -375,6 +367,7 @@ p{
 #addLeafButton{
     border: 1px solid black;
     border-radius: 5px;
+    color: black;
 }
 #catMap_moveLocation, #catMap_editLocation, #addCat{
     border: 1px solid grey;
