@@ -431,7 +431,9 @@ function fillInPartData(dataArr){
         document.getElementById("description").value = dataArr[7];
     }
     if(dataArr[5] != ""){
-        document.getElementById("imagePlaceholder").src = "Inventory_Images/"+dataArr[5];
+        //document.getElementById("imagePlaceholder").src = "Inventory_Images/"+dataArr[5];
+        
+        fetchImg(dataArr[5], modData_fileOrigin, "#imagePlaceholder");
     }
     picURL = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0][5];
     document.getElementById("addButton").innerHTML = "Save Changes";
@@ -450,13 +452,19 @@ function fillInPartData(dataArr){
     //collapseRow(catagories, margin1, "catagories", 1);    Maybe add a parameter "returnPath" to searchLayer() to get each collapse that has to happen
 }
 
-var partModData;
+var modData_fileOrigin = null;
 function partModProtocol(){
     if(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content"))) != undefined){
         document.getElementById("abortBtnWrap").style.display = "block";
         document.getElementById("partModBannerWrap").style.display = "block";
-        fillInPartData(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0]);
 
+        //debugger;
+        var inventoryFileOrStr = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[1];
+        //debugger;
+        modData_fileOrigin = inventoryFileOrStr.substring(inventoryFileOrStr.indexOf("Y")+1, inventoryFileOrStr.length);
+        
+        fillInPartData(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0]);
+        
         console.log(">>>Mod Mode active<<<");
 
         $.post("/addPart.html", {command: "wipeModData", data: ""});

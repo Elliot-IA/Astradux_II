@@ -99,7 +99,7 @@
 
         <input id="file-input_forNewLoc" type="file" accept="application/jpg, application/png, application/svg, application/gif, application/jpeg" name="name" style="display: none;"/>
 
-        <form action="/addPart.html" method="post" style="display: none" id="hiddenForm">
+        <form action="/addPart.html" method="post" style="display: none" id="hiddenForm" enctype="multipart/form-data">
             <input type="text" name="command" value="" id="command_hiddenInput">
             <input type="text" name="data" value="" id="data_hiddenInput">
             <input type="text" name="uri" value="" id="uri_hiddenInput">
