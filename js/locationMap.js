@@ -9,7 +9,7 @@ var locations = eval(document.querySelector("meta[name=LocationDATA]").getAttrib
 
 window.addEventListener('load', function(){
     console.log("Locations Array: ");
-	console.log(locations);
+    console.log(locations);
     displayLocation("locations[4][1][4][0]"); //This draws the markers on the basement image when the page loads
 })
 
@@ -28,8 +28,8 @@ function drawMarker(x, y, r, color){
 function getMousePos(evnt) {
     var rect = canvas.getBoundingClientRect();
     return {
-      x: evnt.clientX - rect.left,
-      y: evnt.clientY - rect.top
+        x: evnt.clientX - rect.left,
+        y: evnt.clientY - rect.top
     };
 }
 
@@ -45,13 +45,19 @@ function moveMarker(evt){
     })
 }
 
+var freshImg = false;
 var currentArrayLocation = "";
 var currentMarkers = [];
 function displayLocation(arraylocation){
     ctx.clearRect(0,0, 300, 200);    //clear canvas
     currentArrayLocation = arraylocation;
     console.log("displayLocation() is creating the map at: " + currentArrayLocation);
-    document.getElementById("canvasBackground").src = "LocationMap_Images/"+eval(arraylocation+"[1]");
+    if(freshImg){
+        document.getElementById("canvasBackground").src = eval(picURI);
+        freshImg = false;
+    }else{
+        document.getElementById("canvasBackground").src = "LocationMap_Images/"+eval(arraylocation+"[1]");
+    }
     ctx.fillStyle = "blue";
     document.getElementById("drawingMarkersMessage").style.visibility = "visible";
     currentMarkers = [];
@@ -126,11 +132,11 @@ canvas.addEventListener("mousedown", function( event ) {
                     setTimeout(function(){  //for some reason the .focus() doesn't work without this
                         document.getElementById("locCreateInput").focus();
                     });
-                        if(currentMarkers[i][3]){   //if contains an image and pathway...
-                            newLocation = currentArrayLocation+"[4]["+i+"]";
-                            changelocations = true;
-                        }
-                        break detectLoop;
+                    if(currentMarkers[i][3]){   //if contains an image and pathway...
+                        newLocation = currentArrayLocation+"[4]["+i+"]";
+                        changelocations = true;
+                    }
+                    break detectLoop;
                 }else{
                     if(clickTarget == ""){
                         document.getElementById("location").value = currentMarkers[i][0];
@@ -145,13 +151,13 @@ canvas.addEventListener("mousedown", function( event ) {
                         changelocations = true;
                         setTimeout(function(){
                             //if(wind){
-                                if(clickTarget == ""){
-                                    try{document.getElementById("tags").focus();}catch{}
-                                }else if(clickTarget == "loc1"){
-                                    document.getElementById("transBox_loc2").focus();
-                                }else if(clickTarget == "loc2"){
-                                    document.getElementById("submitLocTransfereButton").focus();
-                                }
+                            if(clickTarget == ""){
+                                try{document.getElementById("tags").focus();}catch{}
+                            }else if(clickTarget == "loc1"){
+                                document.getElementById("transBox_loc2").focus();
+                            }else if(clickTarget == "loc2"){
+                                document.getElementById("submitLocTransfereButton").focus();
+                            }
                             //}
                         });
                         break detectLoop;
@@ -205,7 +211,7 @@ canvas.addEventListener("mouseleave", function( event ) {   //This just restores
             document.body.style.cursor = "default";
         }
     }else{
-    
+
     }
 }, false);
 
@@ -216,7 +222,7 @@ function checkLocExistence(){
     locationExists = false;
     var locationToFind = document.getElementById("location").value.split(":")[0];
     if(document.getElementById("location").value == "" || document.getElementById("location").value == "Full House"){//The search doesn't include the outer-most location entry (full house), and want to deactivate if the location line is empty.  
-       locationExists = true;
+        locationExists = true;
     }else{
         searchLocLayer("locations[4]", locationToFind);//comb through locations array
     }
@@ -333,7 +339,7 @@ document.addEventListener('keydown', event => {
                 newLoc_branch = document.getElementById("locCreateInput").value;
                 locationExists = false;
                 if(newLoc_branch == "Full House"){ //The search doesn't include the outer-most location entry (full house)  
-                   locationExists = true;
+                    locationExists = true;
                 }else{
                     searchLayerII("locations[4]", newLoc_branch);   //find branch in locations array and record its index
                 }
@@ -374,13 +380,13 @@ document.addEventListener('keydown', event => {
                     document.getElementById("name").focus();
                 });
                 initialte_or_cancel_CreateLoc();
-                
+
                 $.post("/addPart.html", {command: "updateLOCs", data: JSON.stringify(locations)});
-                
+
                 /*document.getElementById("command_hiddenInput").value = "updateLOCs";
                 document.getElementById("data_hiddenInput").value = JSON.stringify(locations);
                 document.getElementById("hiddenForm").submit();*/
-                
+
                 displayLocation(foundLocIndex);     // <this will change the marker from red to Astradux color
                 locAddedAnimation();     //cool confirmation animation that makes the border turn green and fade back to black
                 break changeStep;
@@ -389,11 +395,11 @@ document.addEventListener('keydown', event => {
     }
 })
 
+var slashIndex = null; //This will store where we have to start our substring
+var newBracnchImageSrc = null;
 document.getElementById('file-input_forNewLoc').addEventListener("change",()=>{
-    var newBracnchImageSrc = document.getElementById('file-input_forNewLoc').value;
-    console.log("You selected the image with SRC: "+newBracnchImageSrc);
-    //-------------------When Node.js is figured out here change the image location to the Location_Images folder-------
-    var slashIndex = 0; //This will store where we have to start our substring
+    newBracnchImageSrc = document.getElementById('file-input_forNewLoc').value;
+
     SearchforSlash:{    //Now we have to isolate the last part of the file path that contians the file name...
         for(var i = newBracnchImageSrc.length-1; i >= 0; i--){
             if(newBracnchImageSrc.charAt(i) == "\\"){   //is the character a backslash? (in js two \\ in a string = one \)
@@ -402,10 +408,14 @@ document.getElementById('file-input_forNewLoc').addEventListener("change",()=>{
             }
         }
     }
-    eval(foundLocIndex)[1] = newBracnchImageSrc.substring(slashIndex+1, newBracnchImageSrc.length);     //add the image src to the respective location in the array
-    console.log("You added the image src: "+newBracnchImageSrc.substring(slashIndex+1, newBracnchImageSrc.length)+" to the locations array"); 
-    eval(foundLocIndex).push([]);     //add a [] to the fifth index of the branch
-    displayLocation(foundLocIndex);
+
+    freshImg = true;
+    convertToURI(document.getElementById('file-input_forNewLoc').files[0]);
+
+    console.log("You selected the image with SRC: "+newBracnchImageSrc);
+
+    //The stuff that used to be here was moved into convertToURI() in addPart.js
+
     document.getElementById("locCreateInput").value = "";
     newLocCreationStep = "newLoc_location";
     document.getElementById("locCreationWrap_text").innerHTML = "Place marker on map...";
@@ -437,7 +447,7 @@ function locAddedAnimation(){
     var decreaseColor = setInterval(frame, 50);
     console.log("beggining locAddedAnmination");
     borderColor = "2px solid rgb(0,"+greenVal+",0)";
-    
+
     function frame() {
         if(greenVal <= 0){            
             clearInterval(decreaseColor);
@@ -457,15 +467,14 @@ if(activePage == "Astradux.html" || activePage == ""){
         displayLocation("locations[4][1][4][0]");
     }, 1);
     try{
-    $("#transBox_loc1")[0].onclick = ()=>{clickTarget = "loc1";}
-    $("#transBox_loc2")[0].onclick = ()=>{clickTarget = "loc2";}
-    $("#transBox_loc1")[0].onfocus = ()=>{clickTarget = "loc1";}
-    $("#transBox_loc2")[0].onfocus = ()=>{clickTarget = "loc2";}
-    $("#transBox_loc1")[0].onfocusout = ()=>{setTimeout(()=>{clickTarget = "";},100);}
-    $("#transBox_loc2")[0].onfocusout = ()=>{setTimeout(()=>{clickTarget = "";},100);}
+        $("#transBox_loc1")[0].onclick = ()=>{clickTarget = "loc1";}
+        $("#transBox_loc2")[0].onclick = ()=>{clickTarget = "loc2";}
+        $("#transBox_loc1")[0].onfocus = ()=>{clickTarget = "loc1";}
+        $("#transBox_loc2")[0].onfocus = ()=>{clickTarget = "loc2";}
+        $("#transBox_loc1")[0].onfocusout = ()=>{setTimeout(()=>{clickTarget = "";},100);}
+        $("#transBox_loc2")[0].onfocusout = ()=>{setTimeout(()=>{clickTarget = "";},100);}
     }catch{}
 }
 
-      
-      
-      
+
+

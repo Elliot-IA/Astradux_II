@@ -271,7 +271,7 @@ function configureRequests(){
             var dataURI = req.body.uri;
             console.log("Timestamp: "+req.body.timestamp);
             console.log(("URI: "+req.body.uri).substring(0,30));
-            storeImage(filePath, dataURI);
+            storeImage(filePath, dataURI, "invImg");
             /*imageDataURI.outputFile(dataURI, "./Inventory_Images/"+filePath)      //Old save to local storage code
             // RETURNS image path of the created file 'out/path/fileName.png'
                 .then(res => console.log(res));*/
@@ -298,6 +298,17 @@ function configureRequests(){
             res.status(204).send();
         }else if(req.body.command == "sendUserHome"){
             res.sendFile(__dirname+"/Astradux.html");
+        }else if(req.body.command == "saveLocImg"){
+            console.log("Processing requset to store a new Location_Image...");
+            var filePath = req.body.timestamp;
+            var dataURI = req.body.uri;
+            console.log("Loc Img src: "+req.body.timestamp);
+            console.log(("URI: "+req.body.uri).substring(0,30));
+            storeImage(filePath, dataURI, "locImg");
+            imageDataURI.outputFile(dataURI, "./LocationMap_Images/"+filePath).then(res => {
+                console.log("Location Img: "+filePath+" - done generating");
+            });
+            res.status(204).send();
         }else{
             console.log("(!)A post request was made from addPart.html, but the command was not recognized");
         }
@@ -543,20 +554,32 @@ function transfereLocation(locData){
     }
     console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+getAllDirFiles("./Inventory_Files").length+" INVENTORY files detected)");
 }
-function storeImage(name, URI){
-    var clusterIndex = parseInt((n/5)+1);
-    console.log("Saving image "+name+"'s data uri ("+URI.substring(0,30)+") to datacluster "+clusterIndex+"...");
-    collectionConnections[clusterIndex].insertOne({
-        name:name,
-        uri: URI
-    },(error, data)=>{
-        if(data == null){
-            console.log("(!) Unable to add image to data cluster: "+clusterIndex);
-        }else{
-            console.log("Image added to data cluster: "+clusterIndex);
-        }
-    });
-
+function storeImage(name, URI, type){
+    if(type == "invImg"){
+        var clusterIndex = parseInt((n/5)+1);
+        console.log("Saving image "+name+"'s data uri ("+URI.substring(0,30)+") to datacluster "+clusterIndex+"...");
+        collectionConnections[clusterIndex].insertOne({
+            name:name,
+            uri: URI
+        },(error, data)=>{
+            if(data == null){
+                console.log("(!) Unable to add inv image to data cluster: "+clusterIndex);
+            }else{
+                console.log("Image added to data cluster: "+clusterIndex);
+            }
+        });
+    }else if(type == "locImg"){
+        astrasystem.collection("LOCATION_Images").insertOne({
+            name:name,
+            uri: URI
+        },(error, data)=>{
+            if(data == null){
+                console.log("(!) Unable to add loc image to data cluster: "+clusterIndex);
+            }else{
+                console.log("Location_Image "+name+" added to database!");
+            }
+        });
+    }
 
 
     if(URI != ""){

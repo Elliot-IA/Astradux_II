@@ -620,16 +620,32 @@ function storeURIData(){
     console.log("Stroing image uri data and timestamp...");
     timestamp_picName = createTimestamp();
     jQuery($("#uri_hiddenInput")[0]).attr("value",picURI);
-    jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
-    console.log("~storage compete~");
+    if(freshImg){      //This tells us if img is for a location or not
+        jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",newLocSRC);
+        displayLocation(foundLocIndex);
+        $.post("/addPart.html", {command: "saveLocImg", uri: eval(jQuery($("#uri_hiddenInput")[0]).attr("value")), timestamp: jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value")});
+        console.log("~storage compete, asking backend to save location img!~");
+    }else{
+        jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+        console.log("~storage compete~");
+    }
 }
 
+var newLocSRC = null;
 function convertToURI(imgToConvert){
     const reader = new FileReader();
     reader.addEventListener("load", ()=>{
         picURI = reader.result;
         console.log("~URI TRANSLATION COMPLETE!...");
-        imageElement.src = picURI;
+        if(!freshImg){      //This tells us if img is for a location or not
+            imageElement.src = picURI;           
+        }else{
+            newLocSRC = newBracnchImageSrc.substring(slashIndex+1, newBracnchImageSrc.length);
+            eval(foundLocIndex)[1] = newLocSRC;      //add the image src to the respective location in the array
+            console.log("You added the image src: "+newLocSRC+" to the locations array"); 
+            eval(foundLocIndex).push([]);     //add a [] to the fifth index of the branch
+
+        }
         picURI = "\'"+picURI+"\'";
         console.log(picURI);
         storeURIData();
