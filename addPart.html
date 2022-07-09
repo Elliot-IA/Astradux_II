@@ -108,9 +108,17 @@
 
         <script type="text/javascript" src="js/addPart.js"></script>
         <script type="text/javascript" src="./js/locationMap.js"></script>
-         
+
         <img src="Images/subtleLoading.gif" style="visibility: hidden;height: 1px;">
-        
+
         <script type="text/javascript" src="deviceOptimization/deviceOptimizer.js"></script>
+
+        <div style="z-index: 4010;position: relative;width: 100%;bottom: 0;">
+            <input id="imageFile" name="imageFile" type="file" class="imageFile"  accept="image/*"   /> 
+            <input type="button" value="Resize Image"  onclick="ResizeImage()"/> 
+            <br/>
+            <img src="" id="preview">
+            <img src="" id="output">
+        </div>
     </body>
 </html>

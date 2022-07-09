@@ -249,6 +249,7 @@ function configureRequests(){
             res.status(204).send();
         }else{
             console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
+            res.send("(!)A post request was made from Astradux.html, but the command was not recognized");
         }
     });
 
@@ -311,6 +312,7 @@ function configureRequests(){
             res.status(204).send();
         }else{
             console.log("(!)A post request was made from addPart.html, but the command was not recognized");
+            res.send("(!)A post request was made from addPart.html, but the command was not recognized");
         }
     });
 
@@ -328,6 +330,7 @@ function configureRequests(){
             res.sendFile(__dirname+"/Astradux.html");
         }else{
             console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized");
+            res.send("(!)A post request was made from catagoryMap.html, but the command was not recognized");
         }
     });
 

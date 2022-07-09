@@ -530,7 +530,10 @@ button{
     height: 150px;
     padding: 2px;
     border: dashed 3px black;
-    border-radius: 25px;
+    border-radius: 27px;
+    max-width: 210px;
+    width: 214px;
+    height: 162px;
 }
 #imagePlaceholder:hover{
     opacity: 0.5;
@@ -538,6 +541,10 @@ button{
 }
 #imagePlaceholder:active{
     opacity: 0.25;
+}
+.naturalSizedImg{
+    width: auto !important;
+    height: auto !important;
 }
 #cameraIconWrap{
     background: #eeeeee;

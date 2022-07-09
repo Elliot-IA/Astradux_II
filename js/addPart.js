@@ -432,7 +432,7 @@ function fillInPartData(dataArr){
     }
     if(dataArr[5] != ""){
         //document.getElementById("imagePlaceholder").src = "Inventory_Images/"+dataArr[5];
-        
+
         fetchImg(dataArr[5], modData_fileOrigin, "#imagePlaceholder");
     }
     picURL = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0][5];
@@ -462,9 +462,9 @@ function partModProtocol(){
         var inventoryFileOrStr = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[1];
         //debugger;
         modData_fileOrigin = inventoryFileOrStr.substring(inventoryFileOrStr.indexOf("Y")+1, inventoryFileOrStr.length);
-        
+
         fillInPartData(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0]);
-        
+
         console.log(">>>Mod Mode active<<<");
 
         $.post("/addPart.html", {command: "wipeModData", data: ""});
@@ -586,12 +586,13 @@ imageElement.addEventListener("drop", (e)=>{
         alert("It looks like you tried to drop multiple files into the drop zone. We're not quite ready for that yet, please try again!");
         imageElement.src = "Images/DropImageHere.png";
     }
-    document.getElementById('imagePlaceholder').style.opacity = 1;
+    document.getElementById('imagePlaceholder').style.opacity += 1;
     stop_borderAnimation();
     imageElement.style.border = "dashed 3px black";
     setTimeout(()=>{
         imageElement.style.border = "dashed 3px black";
     }, 200);
+    $("#imagePlaceholder")[0].classList.add("naturalSizedImg");
 });
 
 imageElement.addEventListener("dragenter", (e)=>{
@@ -655,8 +656,20 @@ function convertToURI(imgToConvert){
 
         }
         picURI = "\'"+picURI+"\'";
-        console.log(picURI);
-        storeURIData();
+
+        console.log(picURI.substring(0,30)+"...");
+
+        if(device != "webpage"){
+            var image = new Image();
+            image.src = reader.result;
+            image.onload = () =>{
+                console.log("width : "+ image.width +"px, height: " + image.height +"px");
+                ResizeImage();
+                storeURIData();
+            }
+        }else{
+            storeURIData();
+        }
     })
     reader.readAsDataURL(imgToConvert);
 }
@@ -946,4 +959,81 @@ function createTimestamp(){
     var clock = new Date();
     return clock.getFullYear()+"-"+(clock.getMonth()+1)+"-"+clock.getDate()+"_"+clock.getHours()+"_"+clock.getMinutes()+"_"+clock.getSeconds()+"_"+clock.getMilliseconds()+".png";
     jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+}
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function() {
+
+    $('#imageFile').change(function(evt) {
+
+        var files = evt.target.files;
+        var file = files[0];
+
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+function ResizeImage() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        var filesToUploads = document.getElementById('imageFile').files;
+        var file = filesToUploads[0];
+        if (file) {
+
+            var reader = new FileReader();
+            // Set the image once loaded into file reader
+            reader.onload = function(e) {
+
+                var img = document.createElement("img");
+                img.src = e.target.result;
+
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+
+                var MAX_WIDTH = 200;
+                var MAX_HEIGHT = 200;
+                var width = img.width;
+                var height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+
+                dataurl = canvas.toDataURL(file.type);
+                document.getElementById('output').src = dataurl;
+            }
+            reader.readAsDataURL(file);
+
+        }
+
+    } else {
+        alert('The File APIs are not fully supported in this browser.');
+    }
 }
