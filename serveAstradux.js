@@ -231,6 +231,7 @@ function configureRequests(){
         update_FILECOUNTjs();
     });
     app.post(["/Astradux.html", "/"], function(req, res){
+        console.log("Incomming Post from /Astradux.html, command: "+req.body.command);
         if(req.body.command == "modData"){
             console.log("ModData from main.js: " + req.body.data);
             modifyPartData(req.body.data, res);
@@ -257,6 +258,7 @@ function configureRequests(){
         res.sendFile(__dirname+"/addPart.html");
     });
     app.post("/addPart.html", function(req, res){
+        console.log("Incomming Post from /addPart.html, command: "+req.body.command);
         if(req.body.command == "addCat"){
             console.log("catData from addPart.js:" + req.body.data);
             updateCatArray(req.body.data);
@@ -320,6 +322,7 @@ function configureRequests(){
         res.sendFile(__dirname+"/catagoryMap.html");
     });
     app.post("/catagoryMap.html", function(req, res){
+        console.log("Incomming Post from /catagoryMap.html, command: "+req.body.command);
         if(req.body.command == "addCat"){
             console.log("catData from displayCatagories.js:" + req.body.data);
             updateCatArray(req.body.data)
