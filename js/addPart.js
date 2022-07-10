@@ -1065,7 +1065,7 @@ function ResizeImage(uri) {
                     ctx.drawImage(img, 0, 0, width, height);
                     var smallerURI = canvas.toDataURL(file.type);
                     //document.getElementById('output').src = dataurl;
-                    jQuery($("#uri_hiddenInput")[0]).attr("value",smallerURI);
+                    jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
                     console.log("~Re-sized URI storage successful~");
                 }else{
                     console.log("Image found to be within acceptable size bounds");
