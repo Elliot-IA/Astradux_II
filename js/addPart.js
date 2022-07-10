@@ -949,7 +949,7 @@ function cam_caputeImg(){
     var photo = webcam.snap();
     //URIActive = true;
     $("#imagePlaceholder")[0].src = photo;
-    jQuery($("#uri_hiddenInput")[0]).attr("value",photo);
+    jQuery($("#uri_hiddenInput")[0]).attr("value","\'"+photo+"\'");
     timestamp_picName = createTimestamp();
     deactivateCamera();
     setTimeout(()=>{
