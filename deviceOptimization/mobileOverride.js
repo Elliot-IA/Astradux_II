@@ -56,6 +56,10 @@ if(pageName == "addPart.html"){
         });
         a("cat_dataLock").style.position = "absolute";
         a("cat_dataLock").style.marginTop = "65px";
+        
+        document.addEventListener("scroll",()=>{
+            imageElement.style.opacity = 1;
+        });
     }
 }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
     $("#goHome")[0].style = "display: none";

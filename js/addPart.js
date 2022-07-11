@@ -957,7 +957,7 @@ function cam_caputeImg(){
     //URIActive = true;
     $("#imagePlaceholder")[0].src = photo;
     jQuery($("#uri_hiddenInput")[0]).attr("value","\'"+photo+"\'");
-    timestamp_picName = createTimestamp();
+    createTimestamp();
     deactivateCamera();
     setTimeout(()=>{
         $("#name")[0].focus();
@@ -967,8 +967,9 @@ function cam_caputeImg(){
 
 function createTimestamp(){
     var clock = new Date();
-    return clock.getFullYear()+"-"+(clock.getMonth()+1)+"-"+clock.getDate()+"_"+clock.getHours()+"_"+clock.getMinutes()+"_"+clock.getSeconds()+"_"+clock.getMilliseconds()+".png";
+    timestamp_picName = clock.getFullYear()+"-"+(clock.getMonth()+1)+"-"+clock.getDate()+"_"+clock.getHours()+"_"+clock.getMinutes()+"_"+clock.getSeconds()+"_"+clock.getMilliseconds()+".png";
     jQuery($("#captureTimestamp_hiddenInput")[0]).attr("value",timestamp_picName);
+    return timestamp_picName;
 }
 
 
