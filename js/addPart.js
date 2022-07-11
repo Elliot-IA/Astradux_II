@@ -907,7 +907,14 @@ setTimeout(()=>{
 },10000);*/
 
 var cameraActive = false;
-$("#cameraIconWrap")[0].addEventListener("click", ()=>{activateCamera()});
+$("#cameraIconWrap")[0].addEventListener("click", ()=>{
+    if(device == "webpage"){
+        activateCamera();
+    }else{
+        inputElement.accept = "image/*";
+        inputElement.capture = "camera";
+    }
+});
 $("#curtian")[0].addEventListener("click", ()=>{
     deactivateCamera();
     setTimeout(()=>{

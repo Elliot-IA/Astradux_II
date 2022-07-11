@@ -588,9 +588,9 @@ function storeImage(name, URI, type){
     }
 
 
-    if(URI != ""){
+    /*if(URI != ""){
         astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
-    }
+    }*/
 }
 function closeProgram(){
     console.log("Program Complete");

@@ -767,6 +767,7 @@ function zoomImg(){
 }
 
 function loadUpLastInventoryFile(){
+    img_fetchQueue = [];
     [...document.getElementById("tilesHolder").children].forEach((el)=>{
         el.remove();
     });
@@ -1203,6 +1204,7 @@ function conduct_catagorySearch(catagory, type, currentCatIndexStr){   //type sp
 }
 
 function generalSearchProcedures(){
+    img_fetchQueue = [];
     document.getElementById("inquiry").blur();
     document.getElementById("spaceToGoHomeMessage").style.display = "none";
     if(showingSearchResults){
