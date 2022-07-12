@@ -751,8 +751,7 @@ function initiate_partModSetUp(){
     document.getElementById("fileN_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex][1].substring(9));
     document.getElementById("hiddenForm").submit();*/
     debugger; 
-    $.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))});
-    window.location = "addPart.html";
+    $.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))}).done(()=>{window.location = "/addPart.html";});;
 }
 function zoomImg(){
     document.getElementById("hiddenBtn").focus();

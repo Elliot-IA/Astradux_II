@@ -513,12 +513,11 @@ function submitPartMod(){
 
     console.log("modMessage: "+modMessage);
 
-    $.post("/addPart.html", {command: "ModPartData", data: modMessage});
+    $.post("/addPart.html", {command: "ModPartData", data: modMessage}).done(()=>{window.location = "/Astradux.html";});
 
     /*document.getElementById("command_hiddenInput").value = "ModPartData";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();*/
-    window.location = "/Astradux.html";
 }
 
 function showThenRemoveUndoBtn(){
@@ -533,11 +532,10 @@ function showThenRemoveUndoBtn(){
 }
 
 document.getElementById("abortBtn").addEventListener("click", ()=>{
-    $.post("/addPart.html", {command: "wipeModData"});
+    $.post("/addPart.html", {command: "wipeModData"}).done(()=>{window.location = "/Astradux.html";});
 
     /*document.getElementById("command_hiddenInput").value = "wipeModData";
     document.getElementById("hiddenForm").submit();*/
-    window.location.href = "Astradux.html";
 });
 document.getElementById("undoBtn").addEventListener("click", ()=>{
     tweekConfirmationBlock_AddUndone();
