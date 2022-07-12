@@ -190,16 +190,16 @@ function configureStandby(){
 
     app.get("/getImg", function(req, res){
         var queryObject = url.parse(req.url,true).query;
-        console.log("query object: "+JSON.stringify(queryObject)+"--- file name:"+queryObject.name+"    origin: "+queryObject.origin);
+        console.log("---query object: "+JSON.stringify(queryObject)+"--- file name:"+queryObject.name+"    origin: "+queryObject.origin);
         var clusterIndex = parseInt((queryObject.origin/5)+1);
-        console.log("Retrieving image "+queryObject.name+"'s data uri from from datacluster "+clusterIndex+"...");
+        console.log("---Retrieving image "+queryObject.name+"'s data uri from from datacluster "+clusterIndex+"...");
         collectionConnections[clusterIndex].findOne({name:queryObject.name},(error, data)=>{
             if(data == null){
-                console.log("(!) Image "+queryObject.name+" does not exist in datacluster "+clusterIndex);
+                console.log("---(!) Image "+queryObject.name+" does not exist in datacluster "+clusterIndex);
                 var questionMarkURI = imageToUri("./Images/missingImg.png");
                 res.json(buildResponse(questionMarkURI));
             }else{
-                console.log("Image Found!");
+                console.log("---Image Found!");
                 res.json(buildResponse(data.uri));
             }
         });
