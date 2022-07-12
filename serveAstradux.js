@@ -15,11 +15,11 @@ const imageToUri = require('image-to-uri');
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
-app.use((req, res/*, next*/) => {
+app.use((req, res, next) => {
     res.append('Cache-Control', 'no-cache');
     //res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     //res.append('Access-Control-Allow-Headers', 'Content-Type');
-    //next();
+    next();
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function(){
