@@ -47,7 +47,13 @@ window.onload = function(){
         document.getElementById("hiddenForm").submit();*/
     }else{
         $("#loadingInventoryFileMessage")[0].style.display = "block";
-        loadAndTileifyFrag(INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun], "Inventory");
+        if(INVENTORYFiles_Count != 0){
+            loadAndTileifyFrag(INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun], "Inventory");
+        }else{
+            console.log("No Inventory wow!");
+            a("loadingInventoryFileMessage").innerHTML = "Your Inventory is Empty!";
+            a("loadingInventoryFileMessage").style = "display: block;margin-top: 10vh;font-size: 5vw;";
+        }
     }
 
     document.getElementById("inquiry").addEventListener('click', function(){        //Clears the search box when pressed
@@ -740,12 +746,13 @@ function deleteEntry(){
     //exit_partView();
 }
 function initiate_partModSetUp(){
-    document.getElementById("command_hiddenInput").value = "setUpMod";
+    /*document.getElementById("command_hiddenInput").value = "setUpMod";
     document.getElementById("data_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\"");
     document.getElementById("fileN_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex][1].substring(9));
-    document.getElementById("hiddenForm").submit();
-
-    //$.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))});
+    document.getElementById("hiddenForm").submit();*/
+    debugger; 
+    $.post("/", {command: "setUpMod", data: JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\""), fileN: JSON.stringify(Inventory[showingResultIndex][1].substring(9))});
+    window.location = "addPart.html";
 }
 function zoomImg(){
     document.getElementById("hiddenBtn").focus();

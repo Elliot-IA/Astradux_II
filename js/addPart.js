@@ -513,11 +513,12 @@ function submitPartMod(){
 
     console.log("modMessage: "+modMessage);
 
-    //$.post("/addPart.html", {command: "ModPartData", data: modMessage});
+    $.post("/addPart.html", {command: "ModPartData", data: modMessage});
 
-    document.getElementById("command_hiddenInput").value = "ModPartData";
+    /*document.getElementById("command_hiddenInput").value = "ModPartData";
     document.getElementById("data_hiddenInput").value = modMessage;
-    document.getElementById("hiddenForm").submit();
+    document.getElementById("hiddenForm").submit();*/
+    window.location = "/Astradux.html";
 }
 
 function showThenRemoveUndoBtn(){
@@ -1078,6 +1079,9 @@ function ResizeImage(uri) {
                 }else{
                     console.log("Image found to be within acceptable size bounds");
                 }
+                setTimeout(()=>{
+                    $("#name")[0].focus();
+                }, 0);
             }
             reader.readAsDataURL(file);
         }

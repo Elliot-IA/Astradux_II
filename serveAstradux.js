@@ -239,7 +239,8 @@ function configureRequests(){
         }else if(req.body.command == "setUpMod"){
             console.log("setUpMod Triggered: Part Data from main.js:" + req.body.data);
             setUpPartMod(req.body.data, eval(req.body.fileN));
-            res.sendFile(__dirname+"/addPart.html");
+            res.status(204).send();
+            //res.sendFile(__dirname+"/addPart.html");
         }else if(req.body.command == "resetSEARCHQUERY"){
             console.log("Emptying SEARCHQUERY.js");
             update_searchDATA(req.body.data);
@@ -249,8 +250,8 @@ function configureRequests(){
             transfereLocation(req.body.data);
             res.status(204).send();
         }else{
-            console.log("(!)A post request was made from Astradux.html, but the command was not recognized");
-            res.send("(!)A post request was made from Astradux.html, but the command was not recognized");
+            console.log("(!)A post request was made from Astradux.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
+            res.send("(!)A post request was made from Astradux.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
         }
     });
 
@@ -287,20 +288,25 @@ function configureRequests(){
         }else if(req.body.command == "ModPartData"){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
             modifyPartData(req.body.data, res);
-            res.sendFile(__dirname+"/Astradux.html");
+            res.status(204).send();
+            
+            //res.sendFile(__dirname+"/Astradux.html");
         }else if(req.body.command == "undoAdd"){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
             modifyPartData(req.body.data, res);
         }else if(req.body.command == "triggerForignSearch"){
             console.log("Forign search Triggered from addPart");
             update_searchDATA(req.body.data);
-            res.sendFile("."+"/Astradux.html");
+            res.status(204).send();
+            
+            //res.sendFile("."+"/Astradux.html");
         }else if(req.body.command == "wipeModData"){
             console.log("Wiping MODDATA clean...");
             wipeModData();
             res.status(204).send();
         }else if(req.body.command == "sendUserHome"){
-            res.sendFile(__dirname+"/Astradux.html");
+            res.status(204).send();
+            //res.sendFile(__dirname+"/Astradux.html");
         }else if(req.body.command == "saveLocImg"){
             console.log("Processing requset to store a new Location_Image...");
             var filePath = req.body.timestamp;
@@ -313,8 +319,8 @@ function configureRequests(){
             });
             res.status(204).send();
         }else{
-            console.log("(!)A post request was made from addPart.html, but the command was not recognized");
-            res.send("(!)A post request was made from addPart.html, but the command was not recognized");
+            console.log("(!)A post request was made from addPart.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
+            res.send("(!)A post request was made from addPart.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
         }
     });
 
@@ -322,7 +328,7 @@ function configureRequests(){
         res.sendFile(__dirname+"/catagoryMap.html");
     });
     app.post("/catagoryMap.html", function(req, res){
-        console.log("Incomming Post from /catagoryMap.html, command: "+req.body.command);
+        console.log("Incomming Post from /catagoryMap.html. req body: "+JSON.stringify(req.body));
         if(req.body.command == "addCat"){
             console.log("catData from displayCatagories.js:" + req.body.data);
             updateCatArray(req.body.data)
@@ -332,8 +338,8 @@ function configureRequests(){
             update_searchDATA(req.body.data);
             res.sendFile(__dirname+"/Astradux.html");
         }else{
-            console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized");
-            res.send("(!)A post request was made from catagoryMap.html, but the command was not recognized");
+            console.log("(!)A post request was made from catagoryMap.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
+            res.send("(!)A post request was made from catagoryMap.html, but the command was not recognized. Command: "+ req.body.command+" Data: "+ req.body.data);
         }
     });
 
@@ -363,6 +369,11 @@ function addPart(partData, firstTime, res){
     astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
         n = invFiles.length;
         console.log("reading number of files: "+n);
+        if(n == 0){
+            console.log("Wow! This is your first Inventory File! Creating it now...");
+            fs.writeFileSync("./Inventory_Files/INVENTORY1.js", newINVENTORY_File_structure);
+            n=1;
+        }
         var partDataAddedTo_fileNum = n;
         //console.log("Number of Inventory Files: " + n);
         var nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();

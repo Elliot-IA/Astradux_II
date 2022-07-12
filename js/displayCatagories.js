@@ -203,9 +203,12 @@ function selectCat(loc_stringForm){
     }else if(insertSelectedCatTo_ == "inquiry"){
         document.getElementById("inquiry").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the search box 
         //alert('Temporarily Unavalable, put cat into search box and trigger an enter keypress somehow \n'+"You selected: "+eval(loc_stringForm)[0]);       //<Pre-node
-        document.getElementById("command_hiddenInput").value = "triggerForignSearch";
+        $.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]"});
+        
+        /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]";
-        document.getElementById("hiddenForm").submit();
+        document.getElementById("hiddenForm").submit();*/
+        window.location = "/Astradux.html"
     }
 }
 var clickedOnce = false;
@@ -218,7 +221,7 @@ function executeAddCat(){
     var currentCatLocation = "catagories";
     searchLayer(currentCatLocation, catToFind);       //Unnessarily hard way
 
-    $.post("/catagories.html", {command: "addCat", data: JSON.stringify(catagories)});
+    $.post("/catagoryMap.html", {command: "addCat", data: JSON.stringify(catagories)});
     
     /*document.getElementById("command_hiddenInput").value = "addCat";
     document.getElementById("data_hiddenInput").value = JSON.stringify(catagories);
@@ -263,8 +266,11 @@ function searchLayer(layer, target){
 
 document.addEventListener('keydown', event => {
     if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
-        document.getElementById("command_hiddenInput").value = "triggerForignSearch";
+        $.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
+        
+        /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+document.getElementById("inquiry").value+"\",\"\"]";
-        document.getElementById("hiddenForm").submit();
+        document.getElementById("hiddenForm").submit();*/
+        window.location = "/Astradux.html";
     }
 })
