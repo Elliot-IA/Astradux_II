@@ -279,7 +279,8 @@ document.addEventListener('keydown', event => {
             addtoInventory();
         }
     }else if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
-        $.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
+        //$.post("/addPart.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"});
+        setCookie("SEARCHQUERY", JSON.stringify([document.getElementById("inquiry").value,""]), "1");
 
         setTimeout(()=>{
             window.location.href = "Astradux.html";

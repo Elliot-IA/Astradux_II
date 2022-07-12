@@ -15,12 +15,12 @@ const imageToUri = require('image-to-uri');
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
 app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     res.append('Cache-Control', 'no-cache');
     //res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     //res.append('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
+    //next();
+});*/
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function(){
     console.log("Server started on port 3000! Working Directory:"+path.join(__dirname, ".")+"\n");
@@ -137,12 +137,30 @@ function regenerateInvFiles(){
             processedFiles++;
             if(numFiles ==  processedFiles){
                 console.log("v/ Inventory File Regeneration Complete!\n");
-                regenerateDataFiles();
+                //regenerateDataFiles();
+                collect_ASTRAGLOBALS();
             }
         });
     });
 }
-function regenerateDataFiles(){
+
+//#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
+
+var CATAGORIES = null;
+var LOCATIONS = null;
+collect_ASTRAGLOBALS(){
+    console.log("Grabing CATAGORIES & LOCATIONS from MongoDB and storing in global varibles...");
+    astrasystem.collection("GLOBALS").find({"name": "catagoryMap"}).toArray((error, catData)=>{
+        CATAGORIES = catData;
+        astrasystem.collection("GLOBALS").find({"name": "locationMap"}).toArray((error, locData)=>{
+            LOCATIONS = locData;
+            console.log("v/ CATAGORIES & LOCATIONS collected and stored!\n");
+            configureRequests();
+        });
+    });
+}
+
+/*function regenerateDataFiles(){
     astrasystem.collection("DATA_Files").find().toArray((error, dataFiles)=>{
         var numFiles = dataFiles.length;
         console.log("Regenerating Data Files...\t("+numFiles+")");
@@ -156,7 +174,7 @@ function regenerateDataFiles(){
             }
         });
     });
-}
+}*/
 function generateFile(fileName, fileContents, filePath){
     fs.writeFileSync(filePath, fileContents);
     console.log("Inv File: "+fileName+" - done regenerating");
@@ -295,7 +313,7 @@ function configureRequests(){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
             modifyPartData(req.body.data, res);
             res.status(204).send();
-            
+
             //res.sendFile(__dirname+"/Astradux.html");
         }else if(req.body.command == "undoAdd"){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
@@ -304,7 +322,7 @@ function configureRequests(){
             console.log("Forign search Triggered from addPart");
             update_searchDATA(req.body.data);
             res.status(204).send();
-            
+
             //res.sendFile("."+"/Astradux.html");
         }else if(req.body.command == "wipeModData"){
             console.log("Wiping MODDATA clean...");

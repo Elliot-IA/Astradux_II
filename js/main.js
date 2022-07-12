@@ -23,9 +23,9 @@ var forignSearchDelay = 500;
 window.onload = function(){
     createAndShuffle_CycleOrder();
 
-    if(document.querySelector("meta[name=queryDATA]").getAttribute("content") != "[\"\",\"\"]"){
+    if(getCookie("SEARCHQUERY") != ""/*document.querySelector("meta[name=queryDATA]").getAttribute("content") != "[\"\",\"\"]"*/){
         console.log("Running forign search...");
-        var forignQuery = eval(eval(document.querySelector("meta[name=queryDATA]").getAttribute("content")));
+        var forignQuery = eval(getCookie("SEARCHQUERY"));//eval(eval(document.querySelector("meta[name=queryDATA]").getAttribute("content")));
         document.getElementById("inquiry").value = forignQuery[0];
         if(forignQuery[1] == ""){
             setTimeout(()=>{
@@ -38,10 +38,11 @@ window.onload = function(){
         }else{
             alert("main.js found non-null queryDATA with an unrecognized search type");
         }
-        console.log("Reseting SEARCHQUERY.js...");
+        console.log("Reseting SEARCHQUERY Cookie...");
 
-        $.post("/", {command: "resetSEARCHQUERY", data: "[\"\",\"\"]"});
-
+        //$.post("/", {command: "resetSEARCHQUERY", data: "[\"\",\"\"]"});
+        resetCookie("SEARCHQUERY");
+        
         /*document.getElementById("command_hiddenInput").value = "resetSEARCHQUERY";
         document.getElementById("data_hiddenInput").value = "[\"\",\"\"]";
         document.getElementById("hiddenForm").submit();*/

@@ -203,9 +203,11 @@ function selectCat(loc_stringForm){
     }else if(insertSelectedCatTo_ == "inquiry"){
         document.getElementById("inquiry").value = eval(loc_stringForm)[0];     //Retrieves clicked block's string value and puts it in the search box 
         //alert('Temporarily Unavalable, put cat into search box and trigger an enter keypress somehow \n'+"You selected: "+eval(loc_stringForm)[0]);       //<Pre-node
-        $.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]"}).done(()=>{
-            window.location = "/Astradux.html";
-        });
+        setCookie("SEARCHQUERY", JSON.stringify([eval(loc_stringForm)[0],"catagory"]), "1");
+        
+        //$.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]"}).done(()=>{
+        window.location = "/Astradux.html";
+        //});
         
         /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+eval(loc_stringForm)[0]+"\",\"catagory\"]";
@@ -267,12 +269,15 @@ function searchLayer(layer, target){
 
 document.addEventListener('keydown', event => {
     if(event.keyCode === 13 && document.activeElement.id == 'inquiry') {  //checks whether the pressed key is "Enter"
-        $.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"}).done(()=>{
+        //$.post("/catagoryMap.html", {command: "triggerForignSearch", data: "[\""+document.getElementById("inquiry").value+"\",\"\"]"}).done(()=>{
         
+        setCookie("SEARCHQUERY", JSON.stringify([document.getElementById("inquiry").value,""]), "1");
+        
+            
         /*document.getElementById("command_hiddenInput").value = "triggerForignSearch";
         document.getElementById("data_hiddenInput").value = "[\""+document.getElementById("inquiry").value+"\",\"\"]";
         document.getElementById("hiddenForm").submit();*/
             window.location = "/Astradux.html";
-        });
+        //});
     }
 })
