@@ -1380,7 +1380,7 @@ function search_recursiveDriver(typeOfSearch){   //The recursive function that h
                 inventoryFragment.push([[element], "INVENTORY"+INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun]]);
             });
             document.querySelectorAll(".search_fileCountContainer").forEach((item)=>{
-                item.innerHTML = INVENTORYFiles_CyclesRun+"/"+inventoryFiles_Count;
+                item.innerHTML = INVENTORYFiles_CyclesRun+"/"+INVENTORYFiles_Count;
             });
             if(typeOfSearch == "full"){
                 console.log("Running a full search on Inventory fragment from: INVENTORY"+INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun]+"...");
