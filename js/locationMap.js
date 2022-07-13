@@ -5,14 +5,16 @@
 //)))))))))))))))))))))))))))))))))))))))))
 console.log("locationsMap JS File Initated");
 
-var locations = fetch_LOCATIONS();
+var locations = null;
 
 window.addEventListener('load', function(){
+    fetch_LOCATIONS(locStartup);
+});
+function locStartup(){
     console.log("Locations Array: ");
     console.log(locations);
     displayLocation("locations[4][1][4][0]"); //This draws the markers on the basement image when the page loads
-})
-
+}
 var canvas = document.getElementById("locationCanvas");
 var ctx = canvas.getContext("2d");
 var arrayLocation = [0];

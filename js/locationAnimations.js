@@ -6,7 +6,8 @@ console.log("locationAnimations JS File Initated");
 
 console.log("Attempting to load location data from meta tag...");
 var locations = null;
-fetch_LOCATIONS();
+function emptyFunc(){}
+fetch_LOCATIONS(emptyFunc);
 
 var breakAllLoopLayers_LA = false;
 var foundLocationIndex_LA = "";    //This will store the array location (in string form) of the found location if it exitst

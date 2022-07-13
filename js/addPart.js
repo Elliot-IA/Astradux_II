@@ -19,6 +19,9 @@ var catBlocksToDarken = [];
 var catBlocksToDarken_arr = [];
 
 window.onload = function(){
+    fetch_CATAGORIES(addPartStartup);
+}
+function addPartStartup(){
     document.body.style.cursor = "default";
     catagoryOnloadProcedure();
     $("#quantity")[0].value = 1;
@@ -728,7 +731,6 @@ imageElement.addEventListener("mouseleave", ()=>{
 
 /*-----------------------------From displayCatagories (replace with node.js functionality when figured out)----------------------------*/
 var catagories = null;
-fetch_CATAGORIES();
 
 var insertSelectedCatTo_ = "catagory";     //controls where the value of a catagory when clicked will be inserted 
 
@@ -995,12 +997,9 @@ function createTimestamp(){
 
 /*-------------------------IMG RESIZING STUFF-------------------------*/
 $(document).ready(function() {
-
     $('#imageFile').change(function(evt) {
-
         var files = evt.target.files;
         var file = files[0];
-
         if (file) {
             var reader = new FileReader();
             reader.onload = function(e) {

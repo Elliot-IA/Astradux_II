@@ -11,7 +11,7 @@ console.log("main.js File Initated");
 var Inventory = [];
 
 var INVENTORYFiles_Count = null;
-fetch_n();
+var catagories = null;
 var INVENTORYFiles_CycleOrder = [];
 var INVENTORYFiles_CyclesRun = 0;
 var cycleComplete = false;
@@ -21,9 +21,19 @@ var showingResultIndex = 0;
 var loadDelay = 500;
 var forignSearchDelay = 500;
 
+function fetch2Wrap(){fetch_n(startup)}
 window.onload = function(){
+    if(getCookie("SEARCHQUERY") == ""){
+        if(device != "webpage"){
+            $("#loadingInventoryFileMessage")[0].style = "display:block";
+        }else{
+            $("#loadingInventoryFileMessage")[0].style = "display:block;margin-top:55px;font-size:3vw";
+        }
+    }
+    fetch_CATAGORIES(fetch2Wrap);
+}
+function startup(){
     createAndShuffle_CycleOrder();
-
     if(getCookie("SEARCHQUERY") != ""/*document.querySelector("meta[name=queryDATA]").getAttribute("content") != "[\"\",\"\"]"*/){
         console.log("Running forign search...");
         var forignQuery = eval(getCookie("SEARCHQUERY"));//eval(eval(document.querySelector("meta[name=queryDATA]").getAttribute("content")));
@@ -43,12 +53,11 @@ window.onload = function(){
 
         //$.post("/", {command: "resetSEARCHQUERY", data: "[\"\",\"\"]"});
         resetCookie("SEARCHQUERY");
-        
+
         /*document.getElementById("command_hiddenInput").value = "resetSEARCHQUERY";
         document.getElementById("data_hiddenInput").value = "[\"\",\"\"]";
         document.getElementById("hiddenForm").submit();*/
     }else{
-        $("#loadingInventoryFileMessage")[0].style.display = "block";
         if(INVENTORYFiles_Count != 0){
             loadAndTileifyFrag(INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun], "Inventory");
         }else{
@@ -179,7 +188,7 @@ function loadAndTileifyFrag(n, storeInStr){
             createTile(tilesLoaded, document.getElementById("tilesHolder"));
         }
         fetchQueuedImages();
-        $("#loadingInventoryFileMessage")[0].style.display = "none";
+        $("#loadingInventoryFileMessage")[0].style = "";
         console.log("\'tilesLoaded\' holds: "+tilesLoaded); 
         document.getElementById("invisableSpacer").style.height = "0px";
         if(INVENTORYFiles_Count <= INVENTORYFiles_CyclesRun){
@@ -309,11 +318,11 @@ function fetchQueuedImages(){
 }
 var pressedTileEl = null;
 function redundantTilePressStuff(ev){
-        if(ev.target.nodeName == "P"){
-            pressedTileEl = ev.target;
-        }else{
-            pressedTileEl = ev.target.parentNode;
-        }
+    if(ev.target.nodeName == "P"){
+        pressedTileEl = ev.target;
+    }else{
+        pressedTileEl = ev.target.parentNode;
+    }
     document.getElementById("isActive_meta").setAttribute('content', 'yes');
     document.getElementById("viewPart").style.display = "block";
     document.getElementById("curtian").style.display = "block";
@@ -752,7 +761,7 @@ function initiate_partModSetUp(){
     document.getElementById("data_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex]).replace(/"/g, "\\\"");
     document.getElementById("fileN_hiddenInput").value = JSON.stringify(Inventory[showingResultIndex][1].substring(9));
     document.getElementById("hiddenForm").submit();*/
-    
+
     setCookie("MODDATA", JSON.stringify({data: Inventory[showingResultIndex], fileN: Inventory[showingResultIndex][1].substring(9)}));
 
     window.location = "/addPart.html";
@@ -1418,7 +1427,5 @@ document.addEventListener('keydown', (e)=> { //a to go to addAPart, arrow keys t
         }
     }
 });
-
-var catagories = fetch_CATAGORIES();
 
 var gearImageHTML  = "<!--CATION: Image not payed for, don't distribute-->\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" style=\"transform: scale(0.5)\" width=\"200px\" height=\"200px\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid\" id=\"gearImage\" id=\"gearAnimation\"><g transform=\"translate(50 50)\"> <g transform=\"translate(-17 -17) scale(0.5)\"> <g transform=\"rotate(36.7814)\"><animateTransform attributeName=\"transform\" type=\"rotate\" values=\"0;45\" keyTimes=\"0;1\" dur=\"0.2s\" begin=\"0s\" repeatCount=\"indefinite\"></animateTransform><path d=\"M37.3496987939662 -7 L47.3496987939662 -7 L47.3496987939662 7 L37.3496987939662 7 A38 38 0 0 1 31.359972760794346 21.46047782418268 L31.359972760794346 21.46047782418268 L38.431040572659825 28.531545636048154 L28.531545636048154 38.431040572659825 L21.46047782418268 31.359972760794346 A38 38 0 0 1 7.0000000000000036 37.3496987939662 L7.0000000000000036 37.3496987939662 L7.000000000000004 47.3496987939662 L-6.999999999999999 47.3496987939662 L-7 37.3496987939662 A38 38 0 0 1 -21.46047782418268 31.35997276079435 L-21.46047782418268 31.35997276079435 L-28.531545636048154 38.431040572659825 L-38.43104057265982 28.531545636048158 L-31.359972760794346 21.460477824182682 A38 38 0 0 1 -37.3496987939662 7.000000000000007 L-37.3496987939662 7.000000000000007 L-47.3496987939662 7.000000000000008 L-47.3496987939662 -6.9999999999999964 L-37.3496987939662 -6.999999999999997 A38 38 0 0 1 -31.35997276079435 -21.460477824182675 L-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23\" fill=\"#000000\"></path></g></g> <g transform=\"translate(0 22) scale(0.4)\"> <g transform=\"rotate(30.7186)\"><animateTransform attributeName=\"transform\" type=\"rotate\" values=\"45;0\" keyTimes=\"0;1\" dur=\"0.2s\" begin=\"-0.1s\" repeatCount=\"indefinite\"></animateTransform><path d=\"M37.3496987939662 -7 L47.3496987939662 -7 L47.3496987939662 7 L37.3496987939662 7 A38 38 0 0 1 31.359972760794346 21.46047782418268 L31.359972760794346 21.46047782418268 L38.431040572659825 28.531545636048154 L28.531545636048154 38.431040572659825 L21.46047782418268 31.359972760794346 A38 38 0 0 1 7.0000000000000036 37.3496987939662 L7.0000000000000036 37.3496987939662 L7.000000000000004 47.3496987939662 L-6.999999999999999 47.3496987939662 L-7 37.3496987939662 A38 38 0 0 1 -21.46047782418268 31.35997276079435 L-21.46047782418268 31.35997276079435 L-28.531545636048154 38.431040572659825 L-38.43104057265982 28.531545636048158 L-31.359972760794346 21.460477824182682 A38 38 0 0 1 -37.3496987939662 7.000000000000007 L-37.3496987939662 7.000000000000007 L-47.3496987939662 7.000000000000008 L-47.3496987939662 -6.9999999999999964 L-37.3496987939662 -6.999999999999997 A38 38 0 0 1 -31.35997276079435 -21.460477824182675 L-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23\" fill=\"#6b6b6b\"></path></g></g> <g transform=\"translate(28 4) scale(0.3)\"> <g transform=\"rotate(14.2814)\"><animateTransform attributeName=\"transform\" type=\"rotate\" values=\"0;45\" keyTimes=\"0;1\" dur=\"0.2s\" begin=\"-0.1s\" repeatCount=\"indefinite\"></animateTransform><path d=\"M37.3496987939662 -7 L47.3496987939662 -7 L47.3496987939662 7 L37.3496987939662 7 A38 38 0 0 1 31.359972760794346 21.46047782418268 L31.359972760794346 21.46047782418268 L38.431040572659825 28.531545636048154 L28.531545636048154 38.431040572659825 L21.46047782418268 31.359972760794346 A38 38 0 0 1 7.0000000000000036 37.3496987939662 L7.0000000000000036 37.3496987939662 L7.000000000000004 47.3496987939662 L-6.999999999999999 47.3496987939662 L-7 37.3496987939662 A38 38 0 0 1 -21.46047782418268 31.35997276079435 L-21.46047782418268 31.35997276079435 L-28.531545636048154 38.431040572659825 L-38.43104057265982 28.531545636048158 L-31.359972760794346 21.460477824182682 A38 38 0 0 1 -37.3496987939662 7.000000000000007 L-37.3496987939662 7.000000000000007 L-47.3496987939662 7.000000000000008 L-47.3496987939662 -6.9999999999999964 L-37.3496987939662 -6.999999999999997 A38 38 0 0 1 -31.35997276079435 -21.460477824182675 L-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23\" fill=\"#d6d6d6\"></path></g></g></g><!-- [ldio] generated by https://loading.io/ --></svg>";

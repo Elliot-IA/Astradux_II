@@ -41,30 +41,33 @@ function fetchQueuedImages(){
 
 }
 */
-function fetch_n(){
+function fetch_n(callback){
     console.log("Fetching n...");
     fetch('/getn')
         .then(response => response.json())
         .then(data => {
-            console.log("n fetched: "+ data);
-            INVENTORYFiles_Count = eval(data);
+        console.log("n fetched: "+ data);
+        INVENTORYFiles_Count = eval(data);
+        callback();
     });
 }
-function fetch_CATAGORIES(){
+function fetch_CATAGORIES(callback){
     console.log("Fetching CATAGORIES...");
     fetch('/getCATAGORIES')
         .then(response => response.json())
         .then(data => {
-            console.log("CATAGORIES fetched: "+ data);
-            catagories = eval(data);
+        console.log("CATAGORIES fetched: "+ data);
+        catagories = eval(data);
+        callback();
     });
 }
-function fetch_LOCATIONS(){
+function fetch_LOCATIONS(callback){
     console.log("Fetching LOCATIONS...");
     fetch('/getLOCATIONS')
         .then(response => response.json())
         .then(data => {
-            console.log("LOCATIONS fetched: "+ data);
-            locations = eval(data);
+        console.log("LOCATIONS fetched: "+ data);
+        locations = eval(data);
+        callback();
     });
 }
