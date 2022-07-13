@@ -148,7 +148,7 @@ function regenerateInvFiles(){
 
 var CATAGORIES = null;
 var LOCATIONS = null;
-collect_ASTRAGLOBALS(){
+function collect_ASTRAGLOBALS(){
     console.log("Grabing CATAGORIES & LOCATIONS from MongoDB and storing in global varibles...");
     astrasystem.collection("GLOBALS").find({"name": "catagoryMap"}).toArray((error, catData)=>{
         CATAGORIES = catData;
@@ -225,6 +225,29 @@ function configureStandby(){
             }else{
                 console.log("---Image Found!");
                 res.json(buildResponse(data.uri));
+            }
+        });
+    });
+    app.get("/getn", function(req, res){
+        res.json(n);
+    });
+    app.get("/getCATAGORIES", function(req, res){
+        astrasystem.collection("GLOBALS").findOne({name:"catagoryMap"},(error, data)=>{
+            if(data == null){
+                console.log("-<>-(!) count not fetch CATAGORIES!");
+            }else{
+                console.log("-<>-fetched CATAGORIES!");
+                res.json(data.data);
+            }
+        });
+    });
+    app.get("/getLOCATIONS", function(req, res){
+        astrasystem.collection("GLOBALS").findOne({name:"locationMap"},(error, data)=>{
+            if(data == null){
+                console.log("-<>-(!) count not fetch LOCATIONS!");
+            }else{
+                console.log("-<>-fetched LOCATIONS!");
+                res.json(data.data);
             }
         });
     });
@@ -482,22 +505,24 @@ function addPart(partData, firstTime, res){
 var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";
 
 function updateCatArray(newCatArray){
-    var CAT_content = fs.readFileSync("./Data_Files/CATAGORIES.js").toString();
+    /*var CAT_content = fs.readFileSync("./Data_Files/CATAGORIES.js").toString();
     var CAT_array = CAT_content.split("\n");
     CAT_array.splice(0, 1, "var catagories = "+ newCatArray +";");
     CAT_content = CAT_array.join("\n");
-    fs.writeFileSync("./Data_Files/CATAGORIES.js", CAT_content);
-    astrasystem.collection("DATA_Files").updateOne({name: "CATAGORIES.js"}, {$set: {data: CAT_content}});    //DB
+    fs.writeFileSync("./Data_Files/CATAGORIES.js", CAT_content);*/
+    CATAGORIES = newCatArray;
+    astrasystem.collection("GLOBALS").updateOne({name: "CATAGORIES.js"}, {$set: {data: newCatArray}});    //DB
     console.log("Cat Array Updated");
 }
 
 function updateLocArray(newLocArray){
-    var LOC_content = fs.readFileSync("./Data_Files/LOCATIONS.js").toString();
+    /*var LOC_content = fs.readFileSync("./Data_Files/LOCATIONS.js").toString();
     var LOC_array = LOC_content.split("\n");
     LOC_array.splice(0, 1, "var locations = "+ newLocArray +";");
     LOC_content = LOC_array.join("\n");
-    fs.writeFileSync("./Data_Files/LOCATIONS.js", LOC_content);
-    astrasystem.collection("DATA_Files").updateOne({name: "LOCATIONS.js"}, {$set: {data: LOC_content}});     //DB
+    fs.writeFileSync("./Data_Files/LOCATIONS.js", LOC_content);*/
+    LOCATIONS = newLocArray;
+    astrasystem.collection("GLOBALS").updateOne({name: "LOCATIONS.js"}, {$set: {data: newLocArray}});     //DB
     console.log("Loc Array Updated");
 }
 
@@ -541,7 +566,7 @@ function modifyPartData(File_and_Data, res){
     }
 };
 
-function setUpPartMod(newData, n){
+/*function setUpPartMod(newData, n){
     var modDataContents = fs.readFileSync("./js/MODDATA.js").toString();
     modDataArray = modDataContents.split("\n");
     modDataArray.splice(0, 1, "var partData = \""+newData+"\";");
@@ -566,17 +591,12 @@ function update_searchDATA(newData){
     searchDataContents = modDataArray.join("\n");
     fs.writeFileSync("./js/SEARCHQUERY.js", searchDataContents);
     console.log("SEARCHQUERY.js Modified");
-}
+}*/
 var n = null;
 function update_FILECOUNTjs(){
     console.log("Updating File count...");
     astrasystem.collection("INVENTORY_Files").find().toArray((error, dataFiles)=>{
         n = dataFiles.length;
-        var FILECOUNT_content = fs.readFileSync("./js/FILECOUNT.js").toString();
-        var FILECOUNT_contentArray = FILECOUNT_content.split("\n"); 
-        FILECOUNT_contentArray.splice(0, 1, "var inventoryFiles_Count = "+n+";");
-        FILECOUNT_content = FILECOUNT_contentArray.join("\n");
-        fs.writeFileSync("./js/FILECOUNT.js", FILECOUNT_content);
         console.log("v/ File count updated");
     });
 }

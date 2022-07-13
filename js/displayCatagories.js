@@ -7,7 +7,8 @@
 console.log("displayCatagoires JS File Initated");
 
 //This array stores the structure of the catagory tree. A branch with no leaves is an array with one entry, a branch with leaves stores its leaves as an array in its second index: ["branch", [leaves]]
-var catagories = [];
+var catagories = null;
+fetch_CATAGORIES();
 var catBlocksToDarken = [];
 var catBlocksToDarken_arr = [];
 
@@ -15,7 +16,6 @@ var collapseEvent = "";
 var insertSelectedCatTo_ = "inquiry";     //controls where the value of a catagory when clicked will be inserted 
 
 window.onload = function(){         //Most of the heavy lifting in this file is done by two functions. This triggers the building 
-    catagories = eval(document.querySelector("meta[name=CaragoryDATA]").getAttribute("content"));
     console.log("Raw Cataogies Array: "+catagories);        //of the catagory tree when the file loads
     console.log("Stringified Cataogies Array: "+JSON.stringify(catagories));
     var width1 = 90 / catagories.length;

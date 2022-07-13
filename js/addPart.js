@@ -31,7 +31,7 @@ window.onload = function(){
     });
 
 
-    if(document.querySelector("meta[name=ModDATA]").getAttribute("content") != "~PART_MOD~"){
+    if(getCookie("MODDATA") /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/ != ""){
         console.log("Part modification requested, adjusting page layout accordingly...");
         partModProtocol();
     }
@@ -273,7 +273,7 @@ document.addEventListener('keydown', event => {
             addTag(document.getElementById("tags").value);
         }
     }else if(event.keyCode === 13 && document.activeElement.id != 'tags' && document.activeElement.id != 'inquiry' && document.activeElement.id != 'locCreateInput'){
-        if(document.querySelector("meta[name=ModDATA]").getAttribute("content") != "~PART_MOD~"){
+        if(getCookie("MODDATA") /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/ != ""){
             submitPartMod();
         }else{
             addtoInventory();
@@ -436,52 +436,59 @@ function fillInPartData(dataArr){
 
         fetchImg(dataArr[5], modData_fileOrigin, "#imagePlaceholder");
     }
-    picURL = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0][5];
+    picURL = eval(JSON.parse(getCookie("MODDATA")).data) /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/[0][0][5];
     document.getElementById("addButton").innerHTML = "Save Changes";
-    document.getElementById("addButton").onclick = submitPartMod;
+    document.getElementById("addButton").onclick = function(){
+        resetCookie("MODDATA");
+        submitPartMod();
+    }
     checkLocExistence();
 
     searchLayer("catagories", dataArr[2]);   //In the works: collapsing the tree to the current catagory
     var curLocStr = "";
     var curcatStr = "";      //Varible to store location array values to add to curLocStr. Shrinks as program progresses
-    curLocStr += foundCatStr.substring(0,foundCatStr.indexOf("]")+1);
-    foundCatStr = foundCatStr.substring(foundCatStr.indexOf("]")+1,foundCatStr.length);
+    if(foundCatStr != undefined){
+        curLocStr += foundCatStr.substring(0,foundCatStr.indexOf("]")+1);
+        foundCatStr = foundCatStr.substring(foundCatStr.indexOf("]")+1,foundCatStr.length);
 
-    curLocStr += foundCatStr.substring(0,foundCatStr.indexOf("]")+1);
-    foundCatStr = foundCatStr.substring(foundCatStr.indexOf("]")+1,foundCatStr.length);
+        curLocStr += foundCatStr.substring(0,foundCatStr.indexOf("]")+1);
+        foundCatStr = foundCatStr.substring(foundCatStr.indexOf("]")+1,foundCatStr.length);
+    }
     //for(int i = 0; i >
     //collapseRow(catagories, margin1, "catagories", 1);    Maybe add a parameter "returnPath" to searchLayer() to get each collapse that has to happen
 }
 
 var modData_fileOrigin = null;
 function partModProtocol(){
-    if(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content"))) != undefined){
-        document.getElementById("abortBtnWrap").style.display = "block";
-        document.getElementById("partModBannerWrap").style.display = "block";
+    //if(eval(eval(JSON.parse(getCookie("MODDATA")).data) /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/ )) != undefined){
+    document.getElementById("abortBtnWrap").style.display = "block";
+    document.getElementById("partModBannerWrap").style.display = "block";
 
-        //debugger;
-        var inventoryFileOrStr = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[1];
-        //debugger;
-        modData_fileOrigin = inventoryFileOrStr.substring(inventoryFileOrStr.indexOf("Y")+1, inventoryFileOrStr.length);
+    //debugger;
+    var inventoryFileOrStr = eval(JSON.parse(getCookie("MODDATA")).data) /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/[1];
+    //debugger;
+    modData_fileOrigin = inventoryFileOrStr.substring(inventoryFileOrStr.indexOf("Y")+1, inventoryFileOrStr.length);
 
-        fillInPartData(eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0]);
+    fillInPartData(eval(JSON.parse(getCookie("MODDATA")).data)/*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/[0][0]);
 
-        console.log(">>>Mod Mode active<<<");
+    console.log(">>>Mod Mode active<<<");
 
-        $.post("/addPart.html", {command: "wipeModData", data: ""});
+    //setCookie("MODDATA","",1);
 
-        /*document.getElementById("command_hiddenInput").value = "wipeModData";
+    //$.post("/addPart.html", {command: "wipeModData", data: ""});
+
+    /*document.getElementById("command_hiddenInput").value = "wipeModData";
         document.getElementById("data_hiddenInput").value = "";
         document.getElementById("hiddenForm").submit();*/
 
-        //v     Collapse CatMap      v
-        breakAllLoopLayers = false;
-        searchLayer("catagories","Box");
-    }
+    //v     Collapse CatMap      v
+    breakAllLoopLayers = false;
+    searchLayer("catagories","Box");
+    //}
 }
 function submitPartMod(){
     document.getElementById("undoBtnWrap").style.display = "none";
-    var modMessage = "INVENTORY"+document.querySelector("meta[name=FILETOMOD]").content+":";
+    var modMessage = "INVENTORY"+/*document.querySelector("meta[name=FILETOMOD]").content*/eval(JSON.parse(getCookie("MODDATA")).fileN)+":";
 
     var partName = document.getElementById("name").value;
     var partLocation = document.getElementById("location").value;
@@ -491,7 +498,7 @@ function submitPartMod(){
     var description = document.getElementById("description").value;
     var isBin = document.getElementById("isBin").checked.toString();
 
-    var dataToMod = eval(eval(document.querySelector("meta[name=ModDATA]").getAttribute("content")))[0][0];
+    var dataToMod = eval(JSON.parse(getCookie("MODDATA")).data) /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/[0][0];
     dataToMod.splice(4,1, dataToMod[4].toString());
 
     //Add a space between each entry...
@@ -533,7 +540,11 @@ function showThenRemoveUndoBtn(){
 }
 
 document.getElementById("abortBtn").addEventListener("click", ()=>{
-    $.post("/addPart.html", {command: "wipeModData"}).done(()=>{window.location = "/Astradux.html";});
+    //$.post("/addPart.html", {command: "wipeModData"}).done(()=>{window.location = "/Astradux.html";});
+
+    resetCookie("MODDATA");
+    
+    window.location = "/Astradux.html";
 
     /*document.getElementById("command_hiddenInput").value = "wipeModData";
     document.getElementById("hiddenForm").submit();*/
@@ -541,7 +552,7 @@ document.getElementById("abortBtn").addEventListener("click", ()=>{
 document.getElementById("undoBtn").addEventListener("click", ()=>{
     tweekConfirmationBlock_AddUndone();
     document.getElementById("undoBtnWrap").style.display = "none";
-    var modMessage = "INVENTORY"+document.querySelector("meta[name=FILETOMOD]").content+":";
+    var modMessage = "INVENTORY"+/*document.querySelector("meta[name=FILETOMOD]").content*/eval(JSON.parse(getCookie("MODDATA")).fileN)+":";
     modMessage += lastDataAdded+">=-:-=>"+"[]";
     console.log("modMessage: "+modMessage);
 
@@ -716,7 +727,8 @@ imageElement.addEventListener("mouseleave", ()=>{
 
 
 /*-----------------------------From displayCatagories (replace with node.js functionality when figured out)----------------------------*/
-var catagories = eval(document.querySelector("meta[name=CaragoryDATA]").getAttribute("content"))
+var catagories = null;
+fetch_CATAGORIES();
 
 var insertSelectedCatTo_ = "catagory";     //controls where the value of a catagory when clicked will be inserted 
 

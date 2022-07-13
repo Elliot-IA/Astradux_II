@@ -5,7 +5,7 @@
 //)))))))))))))))))))))))))))))))))))))))))
 console.log("locationsMap JS File Initated");
 
-var locations = eval(document.querySelector("meta[name=LocationDATA]").getAttribute("content"));
+var locations = fetch_LOCATIONS();
 
 window.addEventListener('load', function(){
     console.log("Locations Array: ");

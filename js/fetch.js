@@ -1,4 +1,4 @@
-console.log("fetchImg.js Initialized!");
+console.log("fetch.js Initialized!");
 
 function fetchImg(imgName, fileOriginNum, destinationSelector){
     fetch('/getImg?name='+imgName+'&origin='+fileOriginNum)
@@ -6,9 +6,7 @@ function fetchImg(imgName, fileOriginNum, destinationSelector){
         .then(data => {
         //console.log(data)
         $(destinationSelector)[0].src = data.uri;
-    });/*
-        .then(response => {$(destinationSelector)[0].src = response;})
-        .then(data => console.log(data));    */
+    });
 }
 /*
 //Loading Images 1-by-1 approach that didn't really work that well for the Astradux since it was too slow, but might work well for something in the future
@@ -43,3 +41,30 @@ function fetchQueuedImages(){
 
 }
 */
+function fetch_n(){
+    console.log("Fetching n...");
+    fetch('/getn')
+        .then(response => response.json())
+        .then(data => {
+            console.log("n fetched: "+ data);
+            INVENTORYFiles_Count = eval(data);
+    });
+}
+function fetch_CATAGORIES(){
+    console.log("Fetching CATAGORIES...");
+    fetch('/getCATAGORIES')
+        .then(response => response.json())
+        .then(data => {
+            console.log("CATAGORIES fetched: "+ data);
+            catagories = eval(data);
+    });
+}
+function fetch_LOCATIONS(){
+    console.log("Fetching LOCATIONS...");
+    fetch('/getLOCATIONS')
+        .then(response => response.json())
+        .then(data => {
+            console.log("LOCATIONS fetched: "+ data);
+            locations = eval(data);
+    });
+}
