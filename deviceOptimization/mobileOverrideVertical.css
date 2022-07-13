@@ -559,3 +559,6 @@
     right: 20px;
     bottom: 190px;
 }
+#catagoryLoadingMsg{
+    display: none;
+}

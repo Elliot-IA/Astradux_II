@@ -1114,6 +1114,11 @@ button{
 #LocationSliderBtn{
     display: none;
 }
+#locationsLoadingMsg{
+    margin-top: -139px;
+}
+#catagoryLoadingMsg{}
+
 /*---- Categories ----*/
 #catagoriesContianer{
     text-align: center;

@@ -23,6 +23,8 @@ window.onload = function(){
 }
 function addPartStartup(){
     document.body.style.cursor = "default";
+    a("catagoryLoadingMsg").remove();
+    a("locationsLoadingMsg").remove();
     catagoryOnloadProcedure();
     $("#quantity")[0].value = 1;
     $("#quantity")[0].style="color: #999999";

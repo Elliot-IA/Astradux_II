@@ -23,6 +23,7 @@ function catStartup(){    //Most of the heavy lifting in this file is done by tw
     var width1 = 90 / catagories.length;
     var margin1 = 4 / catagories.length;
     var styleArray = [width1, margin1];     //This array controls margin and width style properties in cat1 blocks
+    a("catagoryLoadingMsg").remove();
     collapseRow(catagories, styleArray, "catagories", 1);   //This function call builds the entire catagory map
 
     document.getElementById("branchInput").addEventListener('click', function(){

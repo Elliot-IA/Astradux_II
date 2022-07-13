@@ -50,11 +50,11 @@
         </div>
 
         <div id="CatagorySliderBtn" class="sliderBtn">Catagoies</div>
-        <div id="selectCatContainer"><div id="catlabel">Category Map</div><div id="mainCatCont"></div></div>
+        <div id="selectCatContainer"><div id="catlabel">Category Map</div><div id="mainCatCont"></div><div id="catagoryLoadingMsg">Fetching Catagory Map...</div></div>
         <div id="addCat2"><button id="addLeafButton" onclick="executeAddCat()" style="font-size: 10px">Add Leaf</button><input id="newCatInput" style="font-size: 10px"> to Branch <input value="Focus to select from map" id="branchInput" style="font-size: 10px"></div>
 
         <div id="LocationSliderBtn" class="sliderBtn">Locations</div>
-        <div id="locationMultitool"><div id="catlabel" style="margin-left: 2px"><i>Locations</i></div><img id="canvasBackground" src="" width="300" height="200"><canvas id="locationCanvas" height="200" width="300"></canvas><div id="drawingMarkersMessage">Drawing Markers...</div><div id="locMapHome" onclick="goHome()"><img src="Images/homeicon.svg" height="25" style="padding: 2px" id="homeBtnImg"></div><div id="locMapBack" onclick="goBack()"><img src="Images/backicon.png" height="25" style="padding: 2px" id="backBtnImg"></div><div id="locMapEdit"><img id="locMapEditImg" src="Images/pencilIcon.png" height="20px"></div><div id="locCreationWrap"><div id="locCreationWrap_text">New Location Name:</div><input id="locCreateInput"></div><button id="createPathwayButton" onclick="initialte_or_cancel_CreateLoc()">Add Location</button></div>
+        <div id="locationMultitool"><div id="catlabel" style="margin-left: 2px"><i>Locations</i></div><img id="canvasBackground" src="" width="300" height="200"><canvas id="locationCanvas" height="200" width="300"></canvas><div id="drawingMarkersMessage">Drawing Markers...</div><div id="locMapHome" onclick="goHome()"><img src="Images/homeicon.svg" height="25" style="padding: 2px" id="homeBtnImg"></div><div id="locMapBack" onclick="goBack()"><img src="Images/backicon.png" height="25" style="padding: 2px" id="backBtnImg"></div><div id="locMapEdit"><img id="locMapEditImg" src="Images/pencilIcon.png" height="20px"></div><div id="locCreationWrap"><div id="locCreationWrap_text">New Location Name:</div><input id="locCreateInput"></div><button id="createPathwayButton" onclick="initialte_or_cancel_CreateLoc()">Add Location</button><div id="locationsLoadingMsg">Fetching Location Map...</div></div>
 
         <div id="container"><video autoplay="true" id="videoElement"></video></div>
 
