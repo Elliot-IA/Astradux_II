@@ -378,7 +378,7 @@ function configureRequests(){
         console.log("Incomming Post from /catagoryMap.html. req body: "+JSON.stringify(req.body));
         if(req.body.command == "addCat"){
             console.log("catData from displayCatagories.js:" + req.body.data);
-            updateCatArray(req.body.data)
+            updateCatArray(req.body.data);
             res.status(204).send();
         }else if(req.body.command == "triggerForignSearch"){
             console.log("Forign search Triggered from addPart");
@@ -505,25 +505,29 @@ function addPart(partData, firstTime, res){
 var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";
 
 function updateCatArray(newCatArray){
+    console.log("updateCatArray initiated...");
     /*var CAT_content = fs.readFileSync("./Data_Files/CATAGORIES.js").toString();
     var CAT_array = CAT_content.split("\n");
     CAT_array.splice(0, 1, "var catagories = "+ newCatArray +";");
     CAT_content = CAT_array.join("\n");
     fs.writeFileSync("./Data_Files/CATAGORIES.js", CAT_content);*/
     CATAGORIES = newCatArray;
-    astrasystem.collection("GLOBALS").updateOne({name: "CATAGORIES.js"}, {$set: {data: newCatArray}});    //DB
-    console.log("Cat Array Updated");
+    astrasystem.collection("GLOBALS").updateOne({name: "catagoryMap"}, {$set: {data: newCatArray}}).then((err,data)=>{
+        console.log("Cat Array Updated! Is now: "+CATAGORIES);    
+    });    //DB
 }
 
 function updateLocArray(newLocArray){
+    console.log("updateCatArray initiated...");
     /*var LOC_content = fs.readFileSync("./Data_Files/LOCATIONS.js").toString();
     var LOC_array = LOC_content.split("\n");
     LOC_array.splice(0, 1, "var locations = "+ newLocArray +";");
     LOC_content = LOC_array.join("\n");
     fs.writeFileSync("./Data_Files/LOCATIONS.js", LOC_content);*/
     LOCATIONS = newLocArray;
-    astrasystem.collection("GLOBALS").updateOne({name: "LOCATIONS.js"}, {$set: {data: newLocArray}});     //DB
-    console.log("Loc Array Updated");
+    astrasystem.collection("GLOBALS").updateOne({name: "locationMap"}, {$set: {data: newLocArray}}).then((err,data)=>{
+        console.log("Loc Array Updated! Is now: "+LOCATIONS);    
+    });    //DB
 }
 
 function modifyPartData(File_and_Data, res){
@@ -566,7 +570,7 @@ function modifyPartData(File_and_Data, res){
     }
 };
 
-/*function setUpPartMod(newData, n){
+function setUpPartMod(newData, n){
     var modDataContents = fs.readFileSync("./js/MODDATA.js").toString();
     modDataArray = modDataContents.split("\n");
     modDataArray.splice(0, 1, "var partData = \""+newData+"\";");
@@ -575,7 +579,7 @@ function modifyPartData(File_and_Data, res){
     fs.writeFileSync("./js/MODDATA.js", modDataContents);
     console.log("MODDATA.js Modified");
 }
-function wipeModData(){
+/*function wipeModData(){
     var modDataContents = fs.readFileSync("./js/MODDATA.js").toString();
     modDataArray = modDataContents.split("\n");
     modDataArray.splice(0, 1, "var partData = \"\";");
