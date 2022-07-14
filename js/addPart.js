@@ -548,7 +548,7 @@ document.getElementById("abortBtn").addEventListener("click", ()=>{
     //$.post("/addPart.html", {command: "wipeModData"}).done(()=>{window.location = "/Astradux.html";});
 
     resetCookie("MODDATA");
-    
+
     window.location = "/Astradux.html";
 
     /*document.getElementById("command_hiddenInput").value = "wipeModData";
@@ -901,6 +901,15 @@ function toggleSpeedMode(){
     }
 }
 
+function imageInputClick(){
+    if(device == "webpage"){
+        document.getElementById('picInput').click();
+    }else{
+        inputElement.accept = "";
+        inputElement.capture = "";
+        document.getElementById('picInput').click();
+    }
+}
 /*-------------------------CAMERA STUFF-------------------------*/
 const webcamElement = document.getElementById('webcam');
 const canvasElement = document.getElementById('canvas');
@@ -929,6 +938,7 @@ $("#cameraIconWrap")[0].addEventListener("click", ()=>{
     }else{
         inputElement.accept = "image/*";
         inputElement.capture = "camera";
+        document.getElementById('picInput').click();
     }
 });
 $("#curtian")[0].addEventListener("click", ()=>{
