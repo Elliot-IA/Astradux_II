@@ -905,8 +905,7 @@ function imageInputClick(){
     if(device == "webpage"){
         document.getElementById('picInput').click();
     }else{
-        inputElement.accept = "";
-        inputElement.capture = "";
+        document.getElementById('picInput').outerHTML = "<input type=\"file\" id=\"picInput\" accept=\"application/jpg, application/png, application/svg, application/gif, application/jpeg\" style=\"display: none;\" onchange=\"refreshImage()\">";
         document.getElementById('picInput').click();
     }
 }
