@@ -902,12 +902,12 @@ function toggleSpeedMode(){
 }
 
 function imageInputClick(){
-    if(device == "webpage"){
+    //if(device == "webpage"){
         document.getElementById('picInput').click();
-    }else{
+    /*}else{
         document.getElementById('picInput').outerHTML = "<input type=\"file\" id=\"picInput\" style=\"display: none;\" onchange=\"refreshImage()\">";
         document.getElementById('picInput').click();
-    }
+    }*/
 }
 /*-------------------------CAMERA STUFF-------------------------*/
 const webcamElement = document.getElementById('webcam');
