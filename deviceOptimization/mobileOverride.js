@@ -56,7 +56,7 @@ if(pageName == "addPart.html"){
         });
         a("cat_dataLock").style.position = "absolute";
         a("cat_dataLock").style.marginTop = "65px";
-        
+
         document.addEventListener("scroll",()=>{
             imageElement.style.opacity = 1;
         });
@@ -74,27 +74,7 @@ if(pageName == "addPart.html"){
     document.addEventListener("scroll",()=>{
         [...$(".search_sideBar_infoText")].forEach((el)=>{el.style.display = "none"});
     });
-    if(device == "mobileHorizontial"){
-        setTimeout(()=>{
-            $("#toolbox")[0].style.bottom = "";            
-            $("#toolbox")[0].style.transform = 'translate(121px)';
-        },100);
-        $("#toolbox_label")[0].onclick = ()=>{
 
-        }
-        addEl("div","background1","colBack","#col2");
-        addEl("div","background2","colBack","#col1");
-        b("colBack").forEach((el)=>{
-            el.addEventListener("click",()=>{
-                exit_partView();
-            });
-        });
-    }else if(device == "mobileVertical"){
-        setTimeout(()=>{
-            $("#toolbox")[0].style.bottom = "-130px";
-            $("#toolbox")[0].style.transform = '';
-        },100);
-    }
     $("#toolbox_label")[0].addEventListener("click",()=>{
         if(device == "mobileHorizontial"){
             if($("#toolbox")[0].style.transform == 'translate(121px)'){
@@ -222,7 +202,30 @@ function unfillSearchbar(){
     $("#search")[0].style = "";
     document.getElementById("searchCurtain").style.display = "none";
 }
+function homepageResize(){
+    console.log("running homepageResize...");
+    if(device == "mobileHorizontial"){
+        setTimeout(()=>{
+            $("#toolbox")[0].style.bottom = "";            
+            $("#toolbox")[0].style.transform = 'translate(121px)';
+        },100);
+        $("#toolbox_label")[0].onclick = ()=>{
 
+        }
+        addEl("div","background1","colBack","#col2");
+        addEl("div","background2","colBack","#col1");
+        b("colBack").forEach((el)=>{
+            el.addEventListener("click",()=>{
+                exit_partView();
+            });
+        });
+    }else if(device == "mobileVertical"){
+        setTimeout(()=>{
+            $("#toolbox")[0].style.bottom = "-130px";
+            $("#toolbox")[0].style.transform = '';
+        },100);
+    }
+}
 
 
 
