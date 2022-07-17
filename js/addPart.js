@@ -1042,6 +1042,7 @@ function dataURItoBlob(dataURI) {
 var MAX_WIDTH = null;
 var MAX_HEIGHT = null;
 
+var iphoneDelay = 300;
 function ResizeImage(uri) {
 
     //------------Convert the URI back to a file Object------------//
@@ -1078,8 +1079,8 @@ function ResizeImage(uri) {
                         MAX_WIDTH = 2500;
                         MAX_HEIGHT = 2500;
                     }else{
-                        MAX_WIDTH = 50;
-                        MAX_HEIGHT = 50;
+                        MAX_WIDTH = 300;
+                        MAX_HEIGHT = 300;
                     }
                     var resizeNeeded = false;
                     if (width > height) {
@@ -1106,18 +1107,20 @@ function ResizeImage(uri) {
                             var smallerURI = canvas.toDataURL(file.type);
                             //document.getElementById('output').src = dataurl;
                             var newImg = document.createElement("img");
-                            newImg.src = smallerURI;
-                            console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
-                            jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
-                            console.log("~Re-sized URI storage successful~");
+                            setTimeout(()=>{
+                                newImg.src = smallerURI;
+                                console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
+                                jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
+                                console.log("~Re-sized URI storage successful~");
+                            },iphoneDelay);
                         }else{
                             console.log("Image found to be within acceptable size bounds");
                         }
                         setTimeout(()=>{
                             $("#name")[0].focus();
                         }, 0);
-                    },1000);
-                },1000);
+                    },iphoneDelay);
+                },iphoneDelay);
             }
             reader.readAsDataURL(file);
         }
