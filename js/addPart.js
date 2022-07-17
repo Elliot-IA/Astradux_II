@@ -1086,24 +1086,26 @@ function ResizeImage(uri) {
                 }
                 canvas.width = width;
                 canvas.height = height;
-                if(resizeNeeded){
-                    console.log("Image found to be too big! Scaling down and resaving URI...");
-                    //canvas.style = "background-color:blue";
-                    var ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
-                    var smallerURI = canvas.toDataURL(file.type);
-                    //document.getElementById('output').src = dataurl;
-                    var newImg = document.createElement("img");
-                    newImg.src = smallerURI;
-                    console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
-                    jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
-                    console.log("~Re-sized URI storage successful~");
-                }else{
-                    console.log("Image found to be within acceptable size bounds");
-                }
                 setTimeout(()=>{
-                    $("#name")[0].focus();
-                }, 0);
+                    if(resizeNeeded){
+                        console.log("Image found to be too big! Scaling down and resaving URI...");
+                        //canvas.style = "background-color:blue";
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        var smallerURI = canvas.toDataURL(file.type);
+                        //document.getElementById('output').src = dataurl;
+                        var newImg = document.createElement("img");
+                        newImg.src = smallerURI;
+                        console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
+                        jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
+                        console.log("~Re-sized URI storage successful~");
+                    }else{
+                        console.log("Image found to be within acceptable size bounds");
+                    }
+                    setTimeout(()=>{
+                        $("#name")[0].focus();
+                    }, 0);
+                },100);
             }
             reader.readAsDataURL(file);
         }
