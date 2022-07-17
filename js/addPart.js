@@ -530,7 +530,7 @@ function submitPartMod(){
     /*document.getElementById("command_hiddenInput").value = "ModPartData";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();*/
-    
+
     resetCookie("MODDATA");
 }
 
@@ -679,7 +679,7 @@ function convertToURI(imgToConvert){
         console.log(picURI.substring(0,30)+"...");
 
         storeURIData();
-        
+
         /*if(device != "webpage"){
             var image = new Image();
             image.src = reader.result;
@@ -906,7 +906,7 @@ function toggleSpeedMode(){
 
 function imageInputClick(){
     //if(device == "webpage"){
-        document.getElementById('picInput').click();
+    document.getElementById('picInput').click();
     /*}else{
         document.getElementById('picInput').outerHTML = "<input type=\"file\" id=\"picInput\" style=\"display: none;\" onchange=\"refreshImage()\">";
         document.getElementById('picInput').click();
@@ -1059,53 +1059,55 @@ function ResizeImage(uri) {
             var reader = new FileReader();
             // Set the image once loaded into file reader
             reader.onload = function(e) {
-                var img = document.createElement("img");
-                img.src = e.target.result;
-                console.log("width : "+ img.width +"px, height: " + img.height +"px");
-                var canvas = document.createElement("canvas");
-                //document.body.appendChild(canvas);
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-                var MAX_WIDTH = 2500;
-                var MAX_HEIGHT = 2500;
-                var width = img.width;
-                var height = img.height;
-                var resizeNeeded = false;
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                        resizeNeeded = true;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                        resizeNeeded = true;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
                 setTimeout(()=>{
-                    if(resizeNeeded){
-                        console.log("Image found to be too big! Scaling down and resaving URI...");
-                        //canvas.style = "background-color:blue";
-                        var ctx = canvas.getContext("2d");
-                        ctx.drawImage(img, 0, 0, width, height);
-                        var smallerURI = canvas.toDataURL(file.type);
-                        //document.getElementById('output').src = dataurl;
-                        var newImg = document.createElement("img");
-                        newImg.src = smallerURI;
-                        console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
-                        jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
-                        console.log("~Re-sized URI storage successful~");
-                    }else{
-                        console.log("Image found to be within acceptable size bounds");
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+                    console.log("width : "+ img.width +"px, height: " + img.height +"px");
+                    var canvas = document.createElement("canvas");
+                    //document.body.appendChild(canvas);
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var MAX_WIDTH = 2500;
+                    var MAX_HEIGHT = 2500;
+                    var width = img.width;
+                    var height = img.height;
+                    var resizeNeeded = false;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                            resizeNeeded = true;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                            resizeNeeded = true;
+                        }
                     }
+                    canvas.width = width;
+                    canvas.height = height;
                     setTimeout(()=>{
-                        $("#name")[0].focus();
-                    }, 0);
-                },100);
+                        if(resizeNeeded){
+                            console.log("Image found to be too big! Scaling down and resaving URI...");
+                            //canvas.style = "background-color:blue";
+                            var ctx = canvas.getContext("2d");
+                            ctx.drawImage(img, 0, 0, width, height);
+                            var smallerURI = canvas.toDataURL(file.type);
+                            //document.getElementById('output').src = dataurl;
+                            var newImg = document.createElement("img");
+                            newImg.src = smallerURI;
+                            console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
+                            jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
+                            console.log("~Re-sized URI storage successful~");
+                        }else{
+                            console.log("Image found to be within acceptable size bounds");
+                        }
+                        setTimeout(()=>{
+                            $("#name")[0].focus();
+                        }, 0);
+                    },1000);
+                },1000);
             }
             reader.readAsDataURL(file);
         }
