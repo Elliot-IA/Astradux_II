@@ -37,7 +37,7 @@
 #viewPart{
     border: 8px black solid;
     border-radius: 55px;
-    background-image: url(../Images/partView_Background_Verticle.png);
+    background-image: url(../Style_File/partView_Background_Verticle.png);
     background-size: 100% 116%;
     top:11%;
     height: 72%;

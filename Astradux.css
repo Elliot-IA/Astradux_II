@@ -14,7 +14,7 @@ button{
 #topbar{
     display: inline;
     position: fixed;
-    background-color:#ffbc1f;
+    
     width:97.4%;
     height: 49px;
     border: 2px solid black;
@@ -178,7 +178,7 @@ button{
 #viewPart{
     border: 4px black solid;
     border-radius: 15px;
-    background-image: url(Images/partView_Background.png);
+    background-image: url(Style_File/partView_Background.png);
     box-shadow: 0px 0px 4px 2px #cccccc;
     display: none;
     position: fixed;
@@ -666,12 +666,10 @@ button{
     vertical-align: middle;
     font-size: 10px;
     font-family: Arial;
-    background-color: #fff3b5;
     border: black 1px solid;
     cursor: pointer;
 }
 #AAPcat:hover{
-    background-color: #fce983;
 }
 #AAPcat:active{
     background-color: yellow;
@@ -684,12 +682,10 @@ button{
     vertical-align: middle;
     font-size: 10px;
     font-family: Arial;
-    background-color: #b3dfff;
     border: black 1px solid;
     cursor: pointer;
 }
 #AAPcat_end:hover{
-    background-color: #96d3ff;
 }
 #AAPcat_end:active{
     background-color: yellow;
@@ -715,7 +711,6 @@ button{
     border-radius: 3px;
 }
 #createPathwayButton{
-    background-color: #ffbc1f;
     font-weight: bold;
     border-radius: 6px;
     border: 2px solid black;
@@ -1149,14 +1144,10 @@ button{
     vertical-align: middle;
     font-size: 20px;
     font-family: Arial;
-    background-color: #fff3b5;
     border: black 1px solid;
     cursor: pointer;
 }
-#cat1:hover{
-    background-color: #fce983;
-}
-#cat1:active{
+#cat1:active,#cat2:active,.#cat3:active,#cat4:active{
     background-color: yellow;
     color: white;
 }
@@ -1168,16 +1159,8 @@ button{
     vertical-align: middle;
     font-size: 18px;
     font-family: Arial;
-    background-color: #fff3b5;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat2:hover{
-    background-color: #fce983;
-}
-#cat2:active{
-    background-color: yellow;
-    color: white;
 }
 #cat3{
     height: 40px;
@@ -1187,16 +1170,8 @@ button{
     vertical-align: middle;
     font-size: 16px;
     font-family: Arial;
-    background-color: #fff3b5;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat3:hover{
-    background-color: #fce983;
-}
-#cat3:active{
-    background-color: yellow;
-    color: white;
 }
 #cat4{
     height: 30px;
@@ -1206,16 +1181,8 @@ button{
     vertical-align: middle;
     font-size: 15px;
     font-family: Arial;
-    background-color: #fff3b5;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat4:hover{
-    background-color: #fce983;
-}
-#cat4:active{
-    background-color: yellow;
-    color: white;
 }
 #cat1_end{
     height: 50px;
@@ -1225,16 +1192,8 @@ button{
     vertical-align: middle;
     font-size: 20px;
     font-family: Arial;
-    background-color: #b3dfff;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat1_end:hover{
-    background-color: #96d3ff;
-}
-#cat1_end:active{
-    background-color: yellow;
-    color: white;
 }
 #cat2_end{
     height: 45px;
@@ -1244,16 +1203,8 @@ button{
     vertical-align: middle;
     font-size: 18px;
     font-family: Arial;
-    background-color: #b3dfff;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat2_end:hover{
-    background-color: #96d3ff;
-}
-#cat2_end:active{
-    background-color: yellow;
-    color: white;
 }
 #cat3_end{
     height: 40px;
@@ -1263,16 +1214,8 @@ button{
     vertical-align: middle;
     font-size: 16px;
     font-family: Arial;
-    background-color: #b3dfff;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat3_end:hover{
-    background-color: #96d3ff;
-}
-#cat3_end:active{
-    background-color: yellow;
-    color: white;
 }
 #cat4_end{
     height: 30px;
@@ -1282,16 +1225,8 @@ button{
     vertical-align: middle;
     font-size: 15px;
     font-family: Arial;
-    background-color: #b3dfff;
     border: black 1px solid;
     cursor: pointer;
-}
-#cat4_end:hover{
-    background-color: #96d3ff;
-}
-#cat4_end:active{
-    background-color: yellow;
-    color: white;
 }
 #addCat{
 
@@ -1653,8 +1588,6 @@ button{
     position: relative;
     transform: translate(0px,-4px);
     text-decoration: underline overline;
-    color: black;
-    background-color: #FFBC1F;
     text-align: center;
     margin-bottom: 8px;
     height: 19px;
@@ -1665,7 +1598,6 @@ button{
     display: inline-block;
     width: 98%;
     text-align: center;
-    background-color: #ffbc1f;
     font-weight: bold;
 }
 #toolControlPanel{
@@ -1742,7 +1674,6 @@ button{
 /*---- Miscelaneous ----*/
 #goHome{
     border: 2px black solid;
-    background-color: #ffbc1f;
     border-radius: 7px;
     position: fixed;
     bottom: 20px;

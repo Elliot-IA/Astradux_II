@@ -444,7 +444,6 @@ function fillInPartData(dataArr){
     picURL = eval(JSON.parse(getCookie("MODDATA")).data) /*document.querySelector("meta[name=ModDATA]").getAttribute("content")*/[0][0][5];
     document.getElementById("addButton").innerHTML = "Save Changes";
     document.getElementById("addButton").onclick = function(){
-        resetCookie("MODDATA");
         submitPartMod();
     }
     checkLocExistence();
@@ -531,6 +530,8 @@ function submitPartMod(){
     /*document.getElementById("command_hiddenInput").value = "ModPartData";
     document.getElementById("data_hiddenInput").value = modMessage;
     document.getElementById("hiddenForm").submit();*/
+    
+    resetCookie("MODDATA");
 }
 
 function showThenRemoveUndoBtn(){

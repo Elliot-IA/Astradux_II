@@ -1,0 +1,20 @@
+#toolTitle,#goHome,#toolbox_label,#topbar,#createPathwayButton{
+background-color: #ffbc1f;
+color: #000000;
+}
+#cat1,#cat2,#cat3,#cat4,#AAPcat{
+background-color: #fff3b5;
+color: #000000;
+}
+#cat1:hover,#cat2:hover,#cat3:hover,#cat4:hover,#AAPcat:hover{
+background-color: #fce983;
+}
+#cat1_end,#cat2_end,#cat3_end,#cat4_end,#AAPcat_end{
+background-color: #96d3ff;
+color: #000000;
+}
+#cat1_end:hover,#cat2_end:hover,#cat3_end:hover,#cat4_end:hover,#AAPcat_end:hover{
+background-color: #b3dfff;z
+}#goHome:hover,.onPage{
+background-color: #e6a91c;
+}

@@ -49,7 +49,7 @@ function optimizeForDevice(){
         if(window.innerHeight > window.innerWidth){     //Vertical Mode
             device = "mobileVertical";
             console.log("Detected that user is in verticle mode");
-            $("#A")[0].src = "Images/AstraduxSignage_Shortened.png";
+            $("#A")[0].src = "Style_File/AstraduxSignage_Shortened.png";
             $("#searchLabel")[0].innerHTML = "";
             if($("#MOVCSS")[0] == undefined){
                 console.log("Applying verticle Stylization");
@@ -68,7 +68,7 @@ function optimizeForDevice(){
         }else{                                          //Horizontial Mode
             device = "mobileHorizontial";
             console.log("Detected that user is in horizontial mode");
-            $("#A")[0].src = "Images/AstraduxSignage.png";
+            $("#A")[0].src = "Style_File/AstraduxSignage.png";
             $("#searchLabel")[0].innerHTML = "Search: ";
             if($("#MOHCSS")[0] == undefined){
                 console.log("Applying horizontial Stylization");
@@ -114,7 +114,7 @@ function optimizeForDevice(){
         if($("#MOHCSS")[0] != undefined){
             $("#MOHCSS")[0].remove();
         }
-        $("#A")[0].src = "Images/AstraduxSignage.png";
+        $("#A")[0].src = "Style_File/AstraduxSignage.png";
         $("#searchLabel")[0].innerHTML = "Search: ";
     }
 }

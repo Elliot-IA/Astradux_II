@@ -1,11 +1,32 @@
 console.log("fetch.js Initialized!");
 
+const imgController = new AbortController();
+const imgSignal = imgController.signal;
+
+var img_fetchQueue = [];    //This array stores the images to fetch (names,origins,desitinations) before the fetch request goes out
+var img_fetchOutstandingRequests = [];  //This array stores which fetch request have been made and are still unfullfilled (In case we want to pause and resume)
+
 function fetchImg(imgName, fileOriginNum, destinationSelector){
-    fetch('/getImg?name='+imgName+'&origin='+fileOriginNum)
+    fetch('/getImg?name='+imgName+'&origin='+fileOriginNum, {imgSignal})
         .then(response => response.json())
         .then(data => {
         //console.log(data)
         $(destinationSelector)[0].src = data.uri;
+        img_fetchOutstandingRequests.splice(img_fetchOutstandingRequests.indexOf([imgName, fileOriginNum, destinationSelector]),1);
+    });
+}
+
+function fetchInvFile(i, callback){
+    console.log("fetching inventory fragment "+i+"..."); 
+    fetch('/getINV?i='+i)
+        .then(response => response.json())
+        .then(data => {
+        console.log(JSON.stringify(data).substring(0,30)+"...");
+        //window.localStorage.setItem("ASTRA_INVENTORY"+i, data.frament);
+        //window.localStorage.setItem("ASTRA_INVENTORY"+i+"_v", data.vnum);
+        //var newInventoryFrag = ;
+        console.log("v/ inventory fragment "+i+" fetched");
+        callback(data.inv);
     });
 }
 /*
@@ -43,11 +64,12 @@ function fetchQueuedImages(){
 */
 function fetch_n(callback){
     console.log("Fetching n...");
-    fetch('/getn')
+    fetch('/getn'/*+_and_versions*/)
         .then(response => response.json())
         .then(data => {
         console.log("n fetched: "+ data);
         INVENTORYFiles_Count = eval(data);
+        //INVENTORY_masterVersionArray_copy = eval(data).v;
         callback();
     });
 }

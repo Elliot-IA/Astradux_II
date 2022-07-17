@@ -6,7 +6,13 @@ console.log("locationAnimations JS File Initated");
 
 console.log("Attempting to load location data from meta tag...");
 var locations = null;
-function emptyFunc(){}
+function emptyFunc(){
+var fooElement = document.createElement("img"); 
+    fooElement.id = "fooElement";
+    fooElement.style.display = "none";
+    document.getElementById("body").appendChild(fooElement);
+    fooElement.src = "./LocationMap_Images/"+locations[1];
+}
 fetch_LOCATIONS(emptyFunc);
 
 var breakAllLoopLayers_LA = false;
@@ -127,16 +133,6 @@ function testAnimationFunction(){
     console.log("Test Animation Started");
     promptAnimation(document.getElementById("testLocation").value, 1000, 500);
 }
-
-
-window.addEventListener('load', function(){    
-    var fooElement = document.createElement("img"); 
-    fooElement.id = "fooElement";
-    fooElement.style.display = "none";
-    document.getElementById("body").appendChild(fooElement);
-    fooElement.src = "./LocationMap_Images/"+locations[1];
-    //preloadLocImages("locations[4]");
-});
 
 
 function preloadLocImages(layer){     //When Node stuff is figured out, export this to add a part and run it onload there too

@@ -11,6 +11,12 @@ const https = require('https');
 const url = require('url');
 const imageToUri = require('image-to-uri');
 
+var n = null;
+var MASTER_INVENTORY = {};
+//var MASTER_INVENTORY_vnums = {};
+var CATAGORIES = null;
+var LOCATIONS = null;
+
 //#######     --Setup Express Port--     #######                 #######                 #######                 #######                 #######
 app.use(express.static(path.join(__dirname, ".")));
 app.use(bodyParser.json({limit: '200mb'}));
@@ -130,10 +136,12 @@ async function generateImg(imgName, imgURI, imgPath){
 function regenerateInvFiles(){
     astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
         var numFiles = invFiles.length;
-        console.log("Regenerating Inventory Files...\t("+numFiles+")");
+        console.log("Storing Inventory into MASTER_INVENTORY object...\t("+numFiles+")");
         var processedFiles = 0;
         invFiles.forEach((file)=>{
-            generateFile(file.name, file.data, "./Inventory_Files/"+file.name);
+            //generateFile(file.name, file.data, "./Inventory_Files/"+file.name);
+            console.log("Collecting "+file.name+"...");
+            MASTER_INVENTORY[file.name] = file.data;
             processedFiles++;
             if(numFiles ==  processedFiles){
                 console.log("v/ Inventory File Regeneration Complete!\n");
@@ -141,13 +149,12 @@ function regenerateInvFiles(){
                 collect_ASTRAGLOBALS();
             }
         });
+        console.log("result: "+JSON.stringify(MASTER_INVENTORY).substring(0,30));
     });
 }
 
 //#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
 
-var CATAGORIES = null;
-var LOCATIONS = null;
 function collect_ASTRAGLOBALS(){
     console.log("Grabing CATAGORIES & LOCATIONS from MongoDB and storing in global varibles...");
     astrasystem.collection("GLOBALS").find({"name": "catagoryMap"}).toArray((error, catData)=>{
@@ -155,7 +162,7 @@ function collect_ASTRAGLOBALS(){
         astrasystem.collection("GLOBALS").find({"name": "locationMap"}).toArray((error, locData)=>{
             LOCATIONS = locData;
             console.log("v/ CATAGORIES & LOCATIONS collected and stored!\n");
-            configureRequests();
+            generateSytleFiles();
         });
     });
 }
@@ -179,6 +186,36 @@ function generateFile(fileName, fileContents, filePath){
     fs.writeFileSync(filePath, fileContents);
     console.log("Inv File: "+fileName+" - done regenerating");
 }
+
+function generateSytleFiles(){
+    console.log("Generating Style_Files (CSS & JS)...");
+    console.log("Style parameters pulled from colors.json: ");
+    var colorsJSON_fileContent = fs.readFileSync("./Style_File/colors.json").toString();
+    console.log(colorsJSON_fileContent);
+    console.log(typeof(colorsJSON_fileContent));
+    var colorsJSON_parsed = JSON.parse(colorsJSON_fileContent)[0];
+    console.log(colorsJSON_parsed);
+    console.log(typeof(colorsJSON_parsed));
+    var colorsJSON_stringified = JSON.stringify(colorsJSON_parsed);
+    console.log(colorsJSON_stringified);
+    console.log(typeof(colorsJSON_stringified));
+    
+    var str = '[{"UserName":"xxx","Rolename":"yyy"}]'; // your response in a string
+    var parsed = JSON.parse(str); // an *array* that contains the user
+    var user = parsed[0];         // a simple user
+    console.log(user.UserName);   // you'll get xxx
+    console.log(user.Rolename);   // you'll get yyy
+    
+    var colorsCSS_fileStructure = "#toolTitle,#goHome,#toolbox_label,#topbar,#createPathwayButton{\nbackground-color: "+colorsJSON_parsed.primaryColor+";\ncolor: "+colorsJSON_parsed.primaryTextColor+";\n}\n#cat1,#cat2,#cat3,#cat4,#AAPcat{\nbackground-color: "+colorsJSON_parsed.branchColor+";\ncolor: "+colorsJSON_parsed.branchTextColor+";\n}\n#cat1:hover,#cat2:hover,#cat3:hover,#cat4:hover,#AAPcat:hover{\nbackground-color: "+colorsJSON_parsed.branchHoverColor+";\n}\n#cat1_end,#cat2_end,#cat3_end,#cat4_end,#AAPcat_end{\nbackground-color: "+colorsJSON_parsed.leafColor+";\ncolor: "+colorsJSON_parsed.leafTextColor+";\n}\n#cat1_end:hover,#cat2_end:hover,#cat3_end:hover,#cat4_end:hover,#AAPcat_end:hover{\nbackground-color: "+colorsJSON_parsed.leafHoverColor+";z\n}\#goHome:hover,.onPage{\nbackground-color: "+colorsJSON_parsed.onPageColor+";\n}";
+    var colorsJS_fileStructure = "";
+    fs.writeFileSync("./Style_File/colors.css", colorsCSS_fileStructure);
+    fs.writeFileSync("./Style_File/colors.js", colorsJS_fileStructure);
+    console.log("v/ Style_Files Generated!");
+
+    configureRequests();
+}
+//Pull in colors from JSON file
+
 
 //#######     --Configure GET and POST Handling--     #######                 #######                 #######                 #######                 #######
 var regenerationInProgress = false;;
@@ -214,17 +251,31 @@ function configureStandby(){
 
     app.get("/getImg", function(req, res){
         var queryObject = url.parse(req.url,true).query;
-        console.log("---query object: "+JSON.stringify(queryObject)+"--- file name:"+queryObject.name+"    origin: "+queryObject.origin);
+        console.log("---Image Fetch Request: query object: "+JSON.stringify(queryObject)+" --- file name:"+queryObject.name+"    origin: "+queryObject.origin);
         var clusterIndex = parseInt((queryObject.origin/5)+1);
         console.log("---Retrieving image "+queryObject.name+"'s data uri from from datacluster "+clusterIndex+"...");
         collectionConnections[clusterIndex].findOne({name:queryObject.name},(error, data)=>{
             if(data == null){
                 console.log("---(!) Image "+queryObject.name+" does not exist in datacluster "+clusterIndex);
                 var questionMarkURI = imageToUri("./Images/missingImg.png");
-                res.json(buildResponse(questionMarkURI));
+                res.json(buildImgResponse(questionMarkURI));
             }else{
                 console.log("---Image Found!");
-                res.json(buildResponse(data.uri));
+                res.json(buildImgResponse(data.uri));
+            }
+        });
+    });
+    app.get("/getINV", function(req, res){
+        var queryObject = url.parse(req.url,true).query;
+        console.log(">>>Invenotry Fetch Request: query object: "+JSON.stringify(queryObject)+" <<->> file name: "+queryObject.i);
+        console.log(">>>Retrieving Inventory Fragment "+queryObject.i+"...");
+        astrasystem.collection("INVENTORY_Files").findOne({name:"INVENTORY"+queryObject.i},(error, data)=>{
+            if(data == null){
+                console.log(">>>(!) INVENTORY"+queryObject.i+" does not exist in database!");
+                res.json([["BAD FETCH", "____", "_____", ["____"], "_____", "", false]]);
+            }else{
+                console.log(">>>INVENTORY"+queryObject.i+" Found!");
+                res.json(buildInvResponse(data.data));
             }
         });
     });
@@ -266,8 +317,11 @@ const testObj = {
         "1": "Hello there"
     }
 }
-function buildResponse(uri){
+function buildImgResponse(uri){
     return {"uri": uri}
+}
+function buildInvResponse(frag){
+    return {"inv": frag}
 }
 
 function configureRequests(){
@@ -283,12 +337,12 @@ function configureRequests(){
             console.log("ModData from main.js: " + req.body.data);
             modifyPartData(req.body.data, res);
             res.status(204).send();
-        }else if(req.body.command == "setUpMod"){
+        }/*else if(req.body.command == "setUpMod"){
             console.log("setUpMod Triggered: Part Data from main.js:" + req.body.data);
             setUpPartMod(req.body.data, eval(req.body.fileN));
             res.status(204).send();
             //res.sendFile(__dirname+"/addPart.html");
-        }else if(req.body.command == "resetSEARCHQUERY"){
+        }*/else if(req.body.command == "resetSEARCHQUERY"){
             console.log("Emptying SEARCHQUERY.js");
             update_searchDATA(req.body.data);
             res.status(204).send();
@@ -336,7 +390,6 @@ function configureRequests(){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
             modifyPartData(req.body.data, res);
             res.status(204).send();
-
             //res.sendFile(__dirname+"/Astradux.html");
         }else if(req.body.command == "undoAdd"){
             console.log("Modifing Part Data. ModData from addPart.js: " + req.body.data);
@@ -411,98 +464,52 @@ const getAllDirFiles = function(dirPath, arrayOfFiles){     //This is used to lo
 }
 //update_FILECOUNTjs();
 
-var dataSafeBox = "";
+
+
 function addPart(partData, firstTime, res){
-    astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
-        n = invFiles.length;
-        console.log("reading number of files: "+n);
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, fragArray)=>{
+        n = fragArray.length;
+        console.log("reading number of fragments: "+n);
         if(n == 0){
-            console.log("Wow! This is your first Inventory File! Creating it now...");
-            fs.writeFileSync("./Inventory_Files/INVENTORY1.js", newINVENTORY_File_structure);
+            console.log("Wow! This is your first Inventory Fragment! Creating it now...");
+            MASTER_INVENTORY["INVENTORY1"] = "[]";
+            astrasystem.collection("INVENTORY_Files").insertOne({name: "INVENTORY1", data:"[]"/*, version: 0*/} );          //DB
             n=1;
         }
         var partDataAddedTo_fileNum = n;
-        //console.log("Number of Inventory Files: " + n);
-        var nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
-        //console.log("nthFile_content: "+ nthFile_content);
-        var nthFile_contentArray = nthFile_content.split("\n");
-        //console.log("nthFile_contentArray: "+ nthFile_contentArray);
-        var partsIn_nthFile = nthFile_contentArray.length-4;
-        //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
+        var nthFile_content = MASTER_INVENTORY["INVENTORY"+n];//fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
+        var partsIn_nthFile = eval(nthFile_content).length;//nthFile_contentArray.length-4;
         var newFile = false;
-
         if(partsIn_nthFile >= 100){
             findSpace:{
-                for(var i = n; i > 0; i--){
-                    var ithFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString();
-                    if(firstTime) dataSafeBox = ithFile_content;
-                    var ithFile_contentArray = ithFile_content.split("\n");
-                    var partsIn_ithFile = ithFile_content.length-4;
+                for(var i = n; i > 0; i--){ //Look for an existing INVENTORY Fragment with space vv
+                    var ithFile_content = MASTER_INVENTORY["INVENTORY"+i];
+                    console
+                    var partsIn_ithFile = ithFile_content.length;//ithFile_content.length-4;
                     if(partsIn_ithFile < 100){
-                        ithFile_contentArray[ithFile_contentArray.length-4] += ",";
-                        ithFile_contentArray.splice(ithFile_contentArray.length-3, 0, "\t"+eval(partData));
-                        ithFile_content = ithFile_contentArray.join("\n");
-                        fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", ithFile_content);
-                        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, { $set: {data: ithFile_content}} );          //DB
                         partDataAddedTo_fileNum = i;
                         break findSpace;
                     }
                 }
-                var xthFile_contentArray = newINVENTORY_File_structure.split("\n");
-                var xthFile_content = xthFile_contentArray.join("\n");
-                fs.writeFileSync("./Inventory_Files/INVENTORY"+(n+1)+".js", xthFile_content);
-                astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+(n+1)+".js"}, {$set: {data: xthFile_content}});    //DB
-                partDataAddedTo_fileNum = n+1;
-                update_FILECOUNTjs();
-                setUpPartMod("", n+1);
+                astrasystem.collection("INVENTORY_Files").insertOne({name: "INVENTORY"+(n+1), data:"[]"/*, version: 0*/} );          //DB
+                n++;
+                MASTER_INVENTORY["INVENTORY"+n] = "[]";
+                partDataAddedTo_fileNum = n;
             }
             newFile = true;
         }
-        astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
-            n = invFiles.length;
-            partDataAddedTo_fileNum = n;
-            //console.log("Number of Inventory Files: " + n);
-            nthFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
-            if(firstTime) dataSafeBox = nthFile_content;
-            //console.log("nthFile_content: "+ nthFile_content);
-            nthFile_contentArray = nthFile_content.split("\n");
-            //console.log("nthFile_contentArray: "+ nthFile_contentArray);
-            partsIn_nthFile = nthFile_contentArray.length-4;
-            //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
-
-            if(!newFile) nthFile_contentArray[nthFile_contentArray.length-4] += ",";
-            nthFile_contentArray.splice(nthFile_contentArray.length-3, 0, "\t"+eval(partData));
-            //console.log("Revised nthFile_contentArray: "+nthFile_contentArray);
-            nthFile_content = nthFile_contentArray.join("\n");
-            //console.log("File data being loaded into INVENTORY"+n+".js:\n "+nthFile_content);
-            fs.writeFileSync("./Inventory_Files/INVENTORY"+n+".js", nthFile_content);
-            astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+n+".js"}, {$set: {data: nthFile_content}});    //DB
-            setUpPartMod("", n);
-
-            try{
-                var rerunCheckArray = fs.readFileSync("./Inventory_Files/INVENTORY"+partDataAddedTo_fileNum+".js").toString().split("\n");
-                rerunCheckArray[rerunCheckArray.length-1] = "";
-                eval(rerunCheckArray.join("\n"));
-                console.log("INVENTORY_File"+partDataAddedTo_fileNum+" confirmed to still be valid and uncorrupted");
-                res.status(204).send();
-            }catch{
-                if(firstTime){
-                    console.log("(!)Uh oh, data corruption or invalid characters detected in INVENTORY_File"+partDataAddedTo_fileNum+", attempting to repair...");
-
-                    setTimeout(()=>{
-                        addPart(partData, false, res);
-                    },100);
-                }else{
-                    res.status(500).send();
-                    throw "Data in INVENTORY_File"+partDataAddedTo_fileNum+" was corruption or had invalid characters and an attempted repair was unsuccessful. Here is data salvaged from that Inventory File before it was re-written:\n\n"+dataSafeBox;
-                }
-            }
-
-            console.log("Part data added to file:  INVENTORY"+partDataAddedTo_fileNum+".js");
-        });
+        var fragmentStr = "INVENTORY"+partDataAddedTo_fileNum;
+        console.log("fragmentStr: "+ fragmentStr);
+        var fragmentToAppendTo = MASTER_INVENTORY[fragmentStr];
+        console.log("fragmentToAppendTo before append: "+fragmentToAppendTo);
+        var tempArray = eval(fragmentToAppendTo);
+        tempArray.push(eval(eval(partData)));
+        var appendedFragment = JSON.stringify(tempArray);
+        console.log("fragmentToAppendTo after append: "+appendedFragment);
+        MASTER_INVENTORY[fragmentStr] = tempArray;
+        astrasystem.collection("INVENTORY_Files").updateOne({name: fragmentStr}, {$set: {data: appendedFragment}}/*, {$inc:{v:1}}*/);    //DB
     });
 }
-var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";
 
 function updateCatArray(newCatArray){
     console.log("updateCatArray initiated...");
@@ -532,45 +539,63 @@ function updateLocArray(newLocArray){
 
 function modifyPartData(File_and_Data, res){
     var split1 = File_and_Data.indexOf(":");   //This'll work even if there's another ":" in the part data
+    console.log("split1: "+split1);
     var split2 = File_and_Data.indexOf(">=-:-=>");
+    console.log("split2: "+split2);
     var INVENTORY_file = File_and_Data.substring(0, split1);
-    var old_partData = File_and_Data.substring(split1+1, split2-1);
+    console.log("INVENTORY_file: "+INVENTORY_file);
+    var old_partData_str = File_and_Data.substring(split1+1, split2);
+    console.log("old_partData_str: " + old_partData_str);
+    var old_partData = eval(old_partData_str);
     console.log(old_partData);
     var new_partData = File_and_Data.substring(split2+7, File_and_Data.length);
-    var FRAG_content = fs.readFileSync("./Inventory_Files/"+INVENTORY_file+".js").toString();
-    var FRAG_array = FRAG_content.split("\n");
-    Loop:{
-        for(var i = 0; i < FRAG_array.length; i++){
-            if(FRAG_array[i].indexOf(old_partData) != -1){
-                console.log("Part Index Identified!");
-                console.log("Placement in FRAG_array: line " +(i+1)+" of "+FRAG_array.length);
+    console.log(new_partData);
+    //var FRAG_content = fs.readFileSync("./Inventory_Files/"+INVENTORY_file+".js").toString();
+    //var FRAG_array = FRAG_content.split("\n");
+    astrasystem.collection("INVENTORY_Files").find({name:INVENTORY_file}).toArray((error, data)=>{
+        console.log("data from inventory: "+JSON.stringify(data));
+        var FRAG_array = eval(data[0].data);
+        console.log("FRAG_array: "+FRAG_array);
+        Loop:{
+            for(var i = 0; i < FRAG_array.length; i++){
+                var FRAG_array_str = JSON.stringify(FRAG_array[i]);
+                var old_partData_str = JSON.stringify(old_partData);
+                if(FRAG_array_str == old_partData_str){
+                    console.log(FRAG_array_str +"=="+ old_partData_str);
+                    console.log("Part Index Identified!");
+                    console.log("Placement in FRAG_array: line " +(i+1)+" of "+FRAG_array.length);
 
-                if(new_partData == "[]"){
-                    FRAG_array.splice(i, 1);
-                    if(i == FRAG_array.length-3){
-                        console.log("Looks like this is the last element in the INVENTORY File, deleting preceeding comma...");
-                        FRAG_array.splice(i-1, 1, FRAG_array[i-1].substring(0,FRAG_array[i-1].length-1));
-                    }
-                }else{
-                    if(FRAG_array[i].charAt(FRAG_array[i].length-1) == ","){
-                        FRAG_array.splice(i, 1, "\t"+new_partData+",");
+                    if(new_partData == "[]"){
+                        FRAG_array.splice(i, 1);
+                        /*if(i == FRAG_array.length-3){
+                            console.log("Looks like this is the last element in the INVENTORY File, deleting preceeding comma...");
+                            FRAG_array.splice(i-1, 1, FRAG_array[i-1].substring(0,FRAG_array[i-1].length-1));
+                        }*/
                     }else{
-                        FRAG_array.splice(i, 1, "\t"+new_partData);
+                        /*if(FRAG_array[i].charAt(FRAG_array[i].length-1) == ","){
+                            FRAG_array.splice(i, 1, "\t"+new_partData+",");
+                        }else{
+                            FRAG_array.splice(i, 1, "\t"+new_partData);
+                        }*/
+                        FRAG_array.splice(i, 1, new_partData);
                     }
+                    //FRAG_content = FRAG_array.join("\n");
+                    //fs.writeFileSync("./Inventory_Files/"+INVENTORY_file+".js", FRAG_content);
+                    var result = JSON.stringify(FRAG_array);
+                    MASTER_INVENTORY[INVENTORY_file] = result;
+                    astrasystem.collection("INVENTORY_Files").updateOne({name: INVENTORY_file}, {$set: {data: result}});    //DB
+                    console.log("A part in file "+INVENTORY_file+" was modified");
+                    break Loop;
+                }else{
+                    console.log(FRAG_array_str +"    !=    "+ old_partData_str+"\n");
                 }
-                FRAG_content = FRAG_array.join("\n");
-                fs.writeFileSync("./Inventory_Files/"+INVENTORY_file+".js", FRAG_content);
-                astrasystem.collection("INVENTORY_Files").updateOne({name: INVENTORY_file+".js"}, {$set: {data: FRAG_content}});    //DB
-                console.log("A part in file "+INVENTORY_file+" was modified");
-                break Loop;
             }
+            console.log("A part Modification in fragment "+INVENTORY_file+" was attempted but no part matching the given old_partData was found");
         }
-        console.log("A part Modification in file "+INVENTORY_file+" was attempted but no part matching the given old_partData was found");
-        res.status(204).send();
-    }
-};
+    });
+}
 
-function setUpPartMod(newData, n){
+/*function setUpPartMod(newData, n){
     var modDataContents = fs.readFileSync("./js/MODDATA.js").toString();
     modDataArray = modDataContents.split("\n");
     modDataArray.splice(0, 1, "var partData = \""+newData+"\";");
@@ -579,7 +604,7 @@ function setUpPartMod(newData, n){
     fs.writeFileSync("./js/MODDATA.js", modDataContents);
     console.log("MODDATA.js Modified");
 }
-/*function wipeModData(){
+function wipeModData(){
     var modDataContents = fs.readFileSync("./js/MODDATA.js").toString();
     modDataArray = modDataContents.split("\n");
     modDataArray.splice(0, 1, "var partData = \"\";");
@@ -596,7 +621,6 @@ function update_searchDATA(newData){
     fs.writeFileSync("./js/SEARCHQUERY.js", searchDataContents);
     console.log("SEARCHQUERY.js Modified");
 }*/
-var n = null;
 function update_FILECOUNTjs(){
     console.log("Updating File count...");
     astrasystem.collection("INVENTORY_Files").find().toArray((error, dataFiles)=>{
@@ -608,16 +632,24 @@ function transfereLocation(locData){
     var split = locData.indexOf(">=-:-=>");
     var oldLoc = locData.substring(0, split);
     var newLoc = locData.substring(split+7, locData.length);
-    for(var i = 1; i <= getAllDirFiles("./Inventory_Files").length; i++){    //for(every inventory file)
+    var oldLoc_Globalified = new RegExp(oldLoc, "g");
+
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, data)=>{
+        data.forEach((frag)=>{
+            astrasystem.collection("INVENTORY_Files").updateOne({name: frag.name}, {$set: {data: frag.data.replace(oldLoc_Globalified, newLoc)}});
+            /*for(var i = 1; i <= getAllDirFiles("./Inventory_Files").length; i++){    //for(every inventory file)
         var FRAG_content = fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString();   //convert to a string
         //console.log("\n\nINVENTORY"+i+" before loc transfere: "+FRAG_content);
         var oldLoc_Globalified = new RegExp(oldLoc, "g");
         var newFrag = FRAG_content.replace(oldLoc_Globalified, newLoc);
-        fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", newFrag);  //just replace all instances of oldLoc with newLoc using a JS method and save
-        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i+".js"}, {$set: {data: newFrag}});    //DB
+        //fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", newFrag);  //just replace all instances of oldLoc with newLoc using a JS method and save
+        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"}, {$set: {data: newFrag}});    //DB
         //console.log("\n\nINVENTORY"+i+" after loc transfere: "+fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString());
-    }
-    console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+getAllDirFiles("./Inventory_Files").length+" INVENTORY files detected)");
+    }*/
+
+        });
+        console.log("Location "+oldLoc+" changed to "+newLoc+"    ("+data.length+" INVENTORY fragments detected)");
+    });
 }
 function storeImage(name, URI, type){
     if(type == "invImg"){
@@ -646,7 +678,6 @@ function storeImage(name, URI, type){
         });
     }
 
-
     /*if(URI != ""){
         astrasystem.collection("INVENTORY_Images").insertOne({"name":name, "uri":URI});
     }*/
@@ -659,3 +690,131 @@ function closeProgram(){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////JUNKYARD//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var dataSafeBox = "";
+function depreciated_addPart(partData, firstTime, res){
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
+        n = invFiles.length;
+        console.log("reading number of fragments: "+n);
+        if(n == 0){
+            console.log("Wow! This is your first Inventory Fragment! Creating it now...");
+            //fs.writeFileSync("./Inventory_Files/INVENTORY1", newINVENTORY_File_structure);
+            astrasystem.collection("INVENTORY_Files").insertOne({name: "INVENTORY1", data:"[]"/*, version: 0*/} );          //DB
+            n=1;
+        }
+        var partDataAddedTo_fileNum = null;
+        //console.log("Number of Inventory Files: " + n);
+        var nthFile_content = eval("MASTER_INVENTORY.INVENTORY"+n);//fs.readFileSync("./Inventory_Files/INVENTORY"+n+".js").toString();
+        //console.log("nthFile_content: "+ nthFile_content);
+        //var nthFile_contentArray = nthFile_content.split("\n");
+        //console.log("nthFile_contentArray: "+ nthFile_contentArray);
+        var partsIn_nthFile = eval(MASTER_INVENTORY["INVENTORY"+n]).length;//nthFile_contentArray.length-4;
+        //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
+        var newFile = false;
+
+        if(partsIn_nthFile >= 100){
+            findSpace:{
+                for(var i = n; i > 0; i--){ //Look for an existing INVENTORY Fragment with space vv
+                    //var ithFile_content = fs.readFileSync("./Inventory_Files/INVENTORY"+i+".js").toString();
+                    if(firstTime) dataSafeBox = eval(eval("MASTER_INVENTORY.INVENTORY"+n));//ithFile_content;
+                    //var ithFile_contentArray = ithFile_content.split("\n");
+                    var partsIn_ithFile = eval(MASTER_INVENTORY["INVENTORY"+i]).length;//ithFile_content.length-4;
+                    if(partsIn_ithFile < 100){
+                        /*ithFile_contentArray[ithFile_contentArray.length-4] += ",";
+                        ithFile_contentArray.splice(ithFile_contentArray.length-3, 0, "\t"+eval(partData));
+                        ithFile_content = ithFile_contentArray.join("\n");
+                        fs.writeFileSync("./Inventory_Files/INVENTORY"+i+".js", ithFile_content);*/
+                        partDataAddedTo_fileNum = i;
+                        //eval(MASTER_INVENTORY["INVENTORY"+partDataAddedTo_fileNum]).push(eval(partData));
+                        //astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+i}, { $set: {data: eval("MASTER_INVENTORY.INVENTORY"+i)}}/*, {$inc:{v:1}}*/);          //DB
+                        break findSpace;
+                    }
+                }
+
+                //Make a new INVENTORY Fragment vv
+
+                //var xthFile_contentArray = newINVENTORY_File_structure.split("\n");
+                //var xthFile_content = xthFile_contentArray.join("\n");
+                //fs.writeFileSync("./Inventory_Files/INVENTORY"+(n+1), xthFile_content);
+                astrasystem.collection("INVENTORY_Files").insertOne({name: "INVENTORY"+(n+1), data:"[]"/*, version: 0*/} );          //DB
+                n++;
+                partDataAddedTo_fileNum = n;
+                //update_FILECOUNTjs();
+                //setUpPartMod("", n+1);
+                MASTER_INVENTORY["INVENTORY"+partDataAddedTo_fileNum] = JSON.stringify([eval(partData)]);
+                //MASTER_INVENTORY_vnums.push(0);
+            }
+            newFile = true;
+        }
+        /*astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
+            n = invFiles.length;
+            //partDataAddedTo_fileNum = n;
+            //console.log("Number of Inventory Files: " + n);
+            nthFile_content = eval("MASTER_INVENTORY.INVENTORY"+(n)) //fs.readFileSync("./Inventory_Files/INVENTORY"+n).toString();
+            if(firstTime) dataSafeBox = nthFile_content;
+            //console.log("nthFile_content: "+ nthFile_content);
+            //nthFile_contentArray = nthFile_content.split("\n");
+            //console.log("nthFile_contentArray: "+ nthFile_contentArray);
+            //partsIn_nthFile = nthFile_contentArray.length-4;
+            //console.log("indexesIn_nthFile: "+ partsIn_nthFile);
+
+            //if(!newFile) nthFile_contentArray[nthFile_contentArray.length-4] += ",";
+            //nthFile_contentArray.splice(nthFile_contentArray.length-3, 0, "\t"+eval(partData));
+            //console.log("Revised nthFile_contentArray: "+nthFile_contentArray);
+            //nthFile_content = nthFile_contentArray.join("\n");
+            //console.log("File data being loaded into INVENTORY"+n+".js:\n "+nthFile_content);
+            //fs.writeFileSync("./Inventory_Files/INVENTORY"+n+".js", nthFile_content);
+
+            eval("MASTER_INVENTORY.INVENTORY"+(n)) = eval("MASTER_INVENTORY.INVENTORY"+(n)).push(partData);
+            astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+n}, {$set: {data: eval("MASTER_INVENTORY.INVENTORY"+n)}}/*, {$inc:{v:1}});    //DB
+        //setUpPartMod("", n);
+
+        /*try{
+                var rerunCheckArray = fs.readFileSync("./Inventory_Files/INVENTORY"+partDataAddedTo_fileNum+".js").toString().split("\n");
+                rerunCheckArray[rerunCheckArray.length-1] = "";
+                eval(rerunCheckArray.join("\n"));
+                console.log("INVENTORY_File"+partDataAddedTo_fileNum+" confirmed to still be valid and uncorrupted");
+                res.status(204).send();
+            }catch{
+                if(firstTime){
+                    console.log("(!)Uh oh, data corruption or invalid characters detected in INVENTORY_File"+partDataAddedTo_fileNum+", attempting to repair...");
+
+                    setTimeout(()=>{
+                        addPart(partData, false, res);
+                    },100);
+                }else{
+                    res.status(500).send();
+                    throw "Data in INVENTORY_File"+partDataAddedTo_fileNum+" was corruption or had invalid characters and an attempted repair was unsuccessful. Here is data salvaged from that Inventory File before it was re-written:\n\n"+dataSafeBox;
+                }
+            }
+
+            console.log("Part data added to frag:  INVENTORY"+partDataAddedTo_fileNum);
+            //MASTER_INVENTORY_vnums[partDataAddedTo_fileNum]++;
+        });*/
+
+        astrasystem.collection("INVENTORY_Files").updateOne({name: "INVENTORY"+partDataAddedTo_fileNum}, {$set: {data: eval("MASTER_INVENTORY.INVENTORY"+partDataAddedTo_fileNum)}}/*, {$inc:{v:1}}*/);    //DB
+
+    });
+}
+//var newINVENTORY_File_structure = "var InventoryFragment = [   //  [partname_0, location_1, catagory_2, [tags_3, ...], quantity_4, imageURL_5, isBin?_6  (+ discription_7)]   //\n];\n\ndocument.querySelector(\"meta[name=InventoryDATA]\").setAttribute(\"content\", JSON.stringify(InventoryFragment));";

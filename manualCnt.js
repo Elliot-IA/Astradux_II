@@ -69,58 +69,31 @@ function connectToDBs(){
 }
 function connectionTreshold(){
     if(connections == totalConnections){
-        startup();
+        perform();
     }
-}
-function startup(){
-    console.log("\nInitiating startup procedure...\n");
-    regenerateLocImgs();
-}
-function regenerateLocImgs(){
-    astrasystem.collection("LOCATION_Images").find().toArray((error, imagesArray)=>{
-        var numImgs = imagesArray.length;
-        console.log("Regenerating Location Images...\t("+numImgs+")");
-        var processedImgs = 0;
-        imagesArray.forEach((img)=>{
-            generateImg(img.name, img.uri, "./testFold/LocImgs/"+img.name);
-            processedImgs++;
-            if(numImgs ==  processedImgs){
-                console.log("v/ Regenerating Location Images Complete!");
-                regenerateInvFiles();
-            }
-        });
-    });
-}
-async function generateImg(imgName, imgURI, imgPath){
-    await imageDataURI.outputFile(imgURI, imgPath).then(res => {
-        console.log("Location Img: "+imgName+" - done regenerating");
-    });
-}
-function regenerateInvFiles(){
-    astrasystem.collection("INVENTORY_Files").find().toArray((error, invFiles)=>{
-        var numFiles = invFiles.length;
-        console.log("Regenerating Inventory Files...\t("+numFiles+")");
-        var processedFiles = 0;
-        invFiles.forEach((file)=>{
-            generateFile(file.name, file.data, "./testFold/InvFiles/"+file.name);
-            processedFiles++;
-            if(numFiles ==  processedFiles){
-                console.log("v/ Regenerating Inventory Files Complete!");
-                closeProgram();
-            }
-        });
-    });
-}
-function generateFile(fileName, fileContents, filePath){
-    fs.writeFileSync(filePath, fileContents);
-    console.log("Inv File: "+fileName+" - done regenerating");
 }
 function closeProgram(){
     console.log("Program Complete");
     process.exit(0);
 }
-
 connectToDBs();
+////////SETUP COMPLETE////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function perform(){
+    console.log("\nInitiating perform()...\n");
+    astrasystem.collection("INVENTORY_Files").find().toArray((error, data)=>{
+        data.forEach((fileCont)=>{
+            console.log("old name: "+fileCont.name);
+            var newName = fileCont.name.substring(0,fileCont.name.indexOf("."));
+            console.log("new name: "+newName);
+            
+            astrasystem.collection("INVENTORY_Files").updateOne({name: fileCont.name},{$set:{name:newName}});
+            
+            //console.log(JSON.stringify(user.data).split("\n")+"\n");
+        });
+    });
+}
+
+
 
 
 

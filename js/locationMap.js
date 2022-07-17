@@ -58,6 +58,9 @@ function displayLocation(arraylocation){
         document.getElementById("canvasBackground").src = eval(picURI);
         freshImg = false;
     }else{
+        if(typeof(arraylocation) == 'object'){  //this is a work around for displaying the root location not working after add location
+            arraylocation = "locations";
+        }
         document.getElementById("canvasBackground").src = "LocationMap_Images/"+eval(arraylocation+"[1]");
     }
     ctx.fillStyle = "blue";
@@ -342,6 +345,7 @@ document.addEventListener('keydown', event => {
                 locationExists = false;
                 if(newLoc_branch == "Full House"){ //The search doesn't include the outer-most location entry (full house)  
                     locationExists = true;
+                    foundLocIndex = locations;
                 }else{
                     searchLayerII("locations[4]", newLoc_branch);   //find branch in locations array and record its index
                 }

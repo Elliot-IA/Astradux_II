@@ -10,6 +10,7 @@ console.log("main.js File Initated");
 
 var Inventory = [];
 
+//var INVENTORY_masterVersionArray_copy = [];
 var INVENTORYFiles_Count = null;
 var catagories = null;
 var INVENTORYFiles_CycleOrder = [];
@@ -106,6 +107,8 @@ function startup(){
     });
 
     document.getElementById("loadPartsButton").addEventListener("click", ()=>{
+        /*imgController.abort(); // aborting request
+        console.log('all img requests aborted and intented to be resumed');*/
         loadAndTileifyFrag(INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun], "Inventory");
         $("#loadingInventoryFileMessage")[0].style.display = "block";
         console.log("Next Inventory Fragment added to Inventory Array");
@@ -176,10 +179,10 @@ function resizeZoomImg(){
 function loadAndTileifyFrag(n, storeInStr){
     document.getElementById("invisableSpacer").style.height = document.getElementById("loadPartsButton").clientHeight+2+"px";
     document.getElementById("loadPartsButton").style.display = "none";
-    var INVENTORY_script = document.createElement('script'); 
-    INVENTORY_script.onload = function(){   //do stuff with the script 
-        var newInventoryFrag = eval(document.querySelector("meta[name=InventoryDATA]").getAttribute("content"));
-        newInventoryFrag.forEach(element => {
+    //if(eval("localStorage.ASTRA_INVENTORY"+n+"_v") != INVENTORY_masterVersionArray[n]){           //This if is for storing 
+    fetchInvFile(n,(newInventoryFrag)=>{
+        //debugger;
+        eval(newInventoryFrag).forEach(element => {
             eval(storeInStr).push([[element], "INVENTORY"+n]);
         });
         console.log("INVENTORY"+n+" done loading into "+storeInStr);
@@ -187,6 +190,8 @@ function loadAndTileifyFrag(n, storeInStr){
         for(tilesLoaded; tilesLoaded < Inventory.length; tilesLoaded++){    //This for loop creates an HTML scale for every index of Inventory[]
             createTile(tilesLoaded, document.getElementById("tilesHolder"));
         }
+        img_fetchQueue = img_fetchQueue.concat(img_fetchOutstandingRequests);
+        img_fetchOutstandingRequests = [];
         fetchQueuedImages();
         $("#loadingInventoryFileMessage")[0].style = "";
         console.log("\'tilesLoaded\' holds: "+tilesLoaded); 
@@ -196,9 +201,7 @@ function loadAndTileifyFrag(n, storeInStr){
         }else{
             document.getElementById("loadPartsButton").style.display = "block";
         }
-    };
-    INVENTORY_script.src = "Inventory_Files/INVENTORY"+n+".js"; 
-    document.head.appendChild(INVENTORY_script);
+    });
 }
 
 function createAndShuffle_CycleOrder(){     //This function creates the "INVENTORYFiles_CycleOrder" array and puts the numbers in a random order
@@ -303,11 +306,11 @@ function createTile(index, appendTo){ //This function creates a tile for the Inv
     }   
     console.log("Tile Added");
 }
-var img_fetchQueue = [];
 function fetchQueuedImages(){
     if($("#loadingImg")[0].complete && $("#loadingImg")[0].naturalHeight !== 0){        //If the loading dot dot dot img is rendered
         for(var i = 0; i < img_fetchQueue.length; i++){
             fetchImg(img_fetchQueue[i][0],img_fetchQueue[i][1],img_fetchQueue[i][2]);
+            img_fetchOutstandingRequests.push(img_fetchQueue[i]);
         }
         img_fetchQueue = [];
     }else{
@@ -1225,7 +1228,10 @@ function conduct_catagorySearch(catagory, type, currentCatIndexStr){   //type sp
 }
 
 function generalSearchProcedures(){
+    /*imgController.abort(); // aborting request
+    console.log('all img requests aborted');*/
     img_fetchQueue = [];
+    img_fetchOutstandingRequests = [];
     document.getElementById("inquiry").blur();
     document.getElementById("spaceToGoHomeMessage").style.display = "none";
     if(showingSearchResults){
