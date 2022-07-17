@@ -382,6 +382,7 @@ function configureRequests(){
                 .then(res => console.log(res));*/
             addPart(req.body.data, true, res);
             console.log("v/ addPart_URI requset processed!");
+            res.status(204).send();
         }else if(req.body.command == "updateLOCs"){
             console.log("locData from addPart.js:" + req.body.data);
             updateLocArray(req.body.data);

@@ -1079,8 +1079,8 @@ function ResizeImage(uri) {
                         MAX_WIDTH = 2500;
                         MAX_HEIGHT = 2500;
                     }else{
-                        MAX_WIDTH = 500;
-                        MAX_HEIGHT = 500;
+                        MAX_WIDTH = 400;
+                        MAX_HEIGHT = 400;
                     }
                     var resizeNeeded = false;
                     if (width > height) {
