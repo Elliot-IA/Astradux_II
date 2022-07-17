@@ -1037,6 +1037,18 @@ function dataURItoBlob(dataURI) {
 
     return new Blob([ia], {type:mimeString});
 }
+
+
+var MAX_WIDTH = 2500;
+var MAX_HEIGHT = 2500;
+if(device == "webpage"){
+    MAX_WIDTH = 2500;
+    MAX_HEIGHT = 2500;
+}else{
+    MAX_WIDTH = 50;
+    MAX_HEIGHT = 50;
+}
+
 function ResizeImage(uri) {
 
     //------------Convert the URI back to a file Object------------//
@@ -1067,8 +1079,6 @@ function ResizeImage(uri) {
                     //document.body.appendChild(canvas);
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0);
-                    var MAX_WIDTH = 2500;
-                    var MAX_HEIGHT = 2500;
                     var width = img.width;
                     var height = img.height;
                     var resizeNeeded = false;
