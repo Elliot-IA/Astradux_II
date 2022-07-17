@@ -1067,6 +1067,7 @@ function ResizeImage(uri) {
             reader.onload = function(e) {
                 var img = document.createElement("img");
                 img.src = e.target.result;
+                console.log("width : "+ img.width +"px, height: " + img.height +"px");
                 var canvas = document.createElement("canvas");
                 //document.body.appendChild(canvas);
                 var ctx = canvas.getContext("2d");
