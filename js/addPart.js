@@ -1039,15 +1039,8 @@ function dataURItoBlob(dataURI) {
 }
 
 
-var MAX_WIDTH = 2500;
-var MAX_HEIGHT = 2500;
-if(device == "webpage"){
-    MAX_WIDTH = 2500;
-    MAX_HEIGHT = 2500;
-}else{
-    MAX_WIDTH = 50;
-    MAX_HEIGHT = 50;
-}
+var MAX_WIDTH = null;
+var MAX_HEIGHT = null;
 
 function ResizeImage(uri) {
 
@@ -1081,6 +1074,13 @@ function ResizeImage(uri) {
                     ctx.drawImage(img, 0, 0);
                     var width = img.width;
                     var height = img.height;
+                    if(device == "webpage"){
+                        MAX_WIDTH = 2500;
+                        MAX_HEIGHT = 2500;
+                    }else{
+                        MAX_WIDTH = 50;
+                        MAX_HEIGHT = 50;
+                    }
                     var resizeNeeded = false;
                     if (width > height) {
                         if (width > MAX_WIDTH) {
