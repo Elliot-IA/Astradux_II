@@ -171,6 +171,7 @@ if(pageName == "addPart.html"){
             $("#leftPointer")[0].style = "display: block;";
         }, 5);
     }
+    
 }
 
 var searchBarCover = document.createElement("div");
