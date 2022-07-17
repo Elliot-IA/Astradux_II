@@ -678,7 +678,9 @@ function convertToURI(imgToConvert){
 
         console.log(picURI.substring(0,30)+"...");
 
-        if(device != "webpage"){
+        storeURIData();
+        
+        /*if(device != "webpage"){
             var image = new Image();
             image.src = reader.result;
             image.onload = () =>{
@@ -688,7 +690,7 @@ function convertToURI(imgToConvert){
             }
         }else{
             storeURIData();
-        }
+        }*/
     })
     reader.readAsDataURL(imgToConvert);
 }
