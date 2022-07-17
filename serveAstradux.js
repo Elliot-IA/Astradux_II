@@ -564,6 +564,8 @@ function modifyPartData(File_and_Data, res){
                     console.log(FRAG_array_str +"=="+ old_partData_str);
                     console.log("Part Index Identified!");
                     console.log("Placement in FRAG_array: line " +(i+1)+" of "+FRAG_array.length);
+                    
+                    console.log("\nFragment before mod: "+ JSON.stringify(FRAG_array));
 
                     if(new_partData == "[]"){
                         FRAG_array.splice(i, 1);
@@ -577,11 +579,14 @@ function modifyPartData(File_and_Data, res){
                         }else{
                             FRAG_array.splice(i, 1, "\t"+new_partData);
                         }*/
-                        FRAG_array.splice(i, 1, new_partData);
+                        FRAG_array.splice(i, 1, eval(new_partData));
                     }
                     //FRAG_content = FRAG_array.join("\n");
                     //fs.writeFileSync("./Inventory_Files/"+INVENTORY_file+".js", FRAG_content);
                     var result = JSON.stringify(FRAG_array);
+                    
+                    console.log("\nFragment after mod: "+ result+"\n");
+                    
                     MASTER_INVENTORY[INVENTORY_file] = result;
                     astrasystem.collection("INVENTORY_Files").updateOne({name: INVENTORY_file}, {$set: {data: result}});    //DB
                     console.log("A part in file "+INVENTORY_file+" was modified");

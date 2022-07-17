@@ -1379,9 +1379,8 @@ function search_recursiveDriver(typeOfSearch){   //The recursive function that h
         }
         fetchQueuedImages();
     }else{
-        var INVENTORY_script = document.createElement('script');
-        INVENTORY_script.onload = function(){   //do stuff with the script after it's done putting data into the InventoryDATA meta
-            var newInventoryFrag = eval(document.querySelector("meta[name=InventoryDATA]").getAttribute("content"));
+        fetchInvFile(INVENTORYFiles_CycleOrder[(INVENTORYFiles_CyclesRun)],(newInventoryFrag_str)=>{
+            var newInventoryFrag = eval(newInventoryFrag_str);
             newInventoryFrag.forEach(element => {
                 inventoryFragment.push([[element], "INVENTORY"+INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun]]);
             });
@@ -1408,9 +1407,7 @@ function search_recursiveDriver(typeOfSearch){   //The recursive function that h
             console.log("Inventory fragment from: INVENTORY"+INVENTORYFiles_CycleOrder[INVENTORYFiles_CyclesRun]+" searched and inventoryFragment[] wiped");
             INVENTORYFiles_CyclesRun++;
 
-        };
-        INVENTORY_script.src = "Inventory_Files/INVENTORY"+INVENTORYFiles_CycleOrder[(INVENTORYFiles_CyclesRun)]+".js";
-        document.head.appendChild(INVENTORY_script);
+        });
     }
 }
 
