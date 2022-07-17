@@ -85,7 +85,7 @@ function optimizeForDevice(){
                 $("#widener")[0].style = "height: 30px";
             }
         }
-        
+
         if(pageName == "addPart.html"){
             if(device == "mobileHorizontial"){
                 addEl("div","horiBlock","","body");
@@ -96,20 +96,20 @@ function optimizeForDevice(){
                     $("#horiBlock")[0].remove();
                 }catch{}
             }
-        }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){
-            
-        }else{
-            
+        }else if(pageName == "catagoryMap.html" && $("#viewPart")[0] == undefined){ //Catmap
+
+        }else{      //Homepage
+            try{
+                homepageResize();
+            }catch{console.log("Failed to run homepageResize")}
         }
-        
-        
-        
-        
-        
-        try{
-            homepageResize();
-        }catch{console.log("Failed to run homepageResize")}
-        
+
+
+
+
+
+
+
     }else{
         console.log("User is on Computer...");
         device = "webpage";
