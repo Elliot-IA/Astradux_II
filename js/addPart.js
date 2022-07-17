@@ -1003,12 +1003,6 @@ function createTimestamp(){
 
 
 
-
-
-
-
-
-
 /*-------------------------IMG RESIZING STUFF-------------------------*/
 $(document).ready(function() {
     $('#imageFile').change(function(evt) {
@@ -1099,6 +1093,9 @@ function ResizeImage(uri) {
                     ctx.drawImage(img, 0, 0, width, height);
                     var smallerURI = canvas.toDataURL(file.type);
                     //document.getElementById('output').src = dataurl;
+                    var newImg = document.createElement("img");
+                    newImg.src = e.target.result;
+                    console.log("new image width : "+ newImg.width +"px, height: " + newImg.height +"px");
                     jQuery($("#uri_hiddenInput")[0]).attr("value", "\'"+smallerURI+"\'");
                     console.log("~Re-sized URI storage successful~");
                 }else{
