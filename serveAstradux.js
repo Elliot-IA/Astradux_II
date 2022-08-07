@@ -63,36 +63,42 @@ function connectToDBs(){
     console.log("Connecting to Databases...");
     astrasystem_client.connect((res,err)=>{
         console.log("~Astrasystem Connection Established~");
+        console.log("res: "+res+" err: "+err);
         astrasystem = astrasystem_client.db(account);
         connections++;
         connectionTreshold();
     });
     imagesCluster1_client.connect((res,err)=>{
         console.log("~imagesCluster1 Connection Established~");
+        console.log("res: "+res+" err: "+err);
         imagesCluster1 = imagesCluster1_client.db("database").collection("collection");
         connections++;
         connectionTreshold();
     });
     imagesCluster2_client.connect((res,err)=>{
         console.log("~imagesCluster2 Connection Established~");
+        console.log("res: "+res+" err: "+err);
         imagesCluster2 = imagesCluster2_client.db("database").collection("collection");
         connections++;
         connectionTreshold();
     });
     imagesCluster3_client.connect((res,err)=>{
         console.log("~imagesCluster3 Connection Established~");
+        console.log("res: "+res+" err: "+err);
         imagesCluster3 = imagesCluster3_client.db("database").collection("collection");
         connections++;
         connectionTreshold();
     });
     imagesCluster4_client.connect((res,err)=>{
         console.log("~imagesCluster4 Connection Established~");
+        console.log("res: "+res+" err: "+err);
         imagesCluster4 = imagesCluster4_client.db("database").collection("collection");
         connections++;
         connectionTreshold();
     });
     imagesCluster5_client.connect((res,err)=>{
         console.log("~imagesCluster5 Connection Established~");
+        console.log("res: "+res+" err: "+err);
         imagesCluster5 = imagesCluster5_client.db("database").collection("collection");
         connections++;
         connectionTreshold();
@@ -118,9 +124,13 @@ function regenerateLocImgs(){
     astrasystem.collection("LOCATION_Images").find().toArray((error, imagesArray)=>{
         numImgs = imagesArray.length;
         console.log("Regenerating Location Images...\t("+numImgs+")");
-        imagesArray.forEach((img)=>{
-            generateImg(img.name, img.uri, "./LocationMap_Images/"+img.name);
-        });
+        if(numImgs != 0){
+            imagesArray.forEach((img)=>{
+                generateImg(img.name, img.uri, "./LocationMap_Images/"+img.name);
+            });
+        }else{
+            regenerateInvFiles();
+        }
     });
 }
 async function generateImg(imgName, imgURI, imgPath){
@@ -138,18 +148,23 @@ function regenerateInvFiles(){
         var numFiles = invFiles.length;
         console.log("Storing Inventory into MASTER_INVENTORY object...\t("+numFiles+")");
         var processedFiles = 0;
-        invFiles.forEach((file)=>{
-            //generateFile(file.name, file.data, "./Inventory_Files/"+file.name);
-            console.log("Collecting "+file.name+"...");
-            MASTER_INVENTORY[file.name] = file.data;
-            processedFiles++;
-            if(numFiles ==  processedFiles){
-                console.log("v/ Inventory File Regeneration Complete!\n");
-                //regenerateDataFiles();
-                collect_ASTRAGLOBALS();
-            }
-        });
-        console.log("result: "+JSON.stringify(MASTER_INVENTORY).substring(0,30));
+        if(numFiles != 0){
+            invFiles.forEach((file)=>{
+                //generateFile(file.name, file.data, "./Inventory_Files/"+file.name);
+                console.log("Collecting "+file.name+"...");
+                MASTER_INVENTORY[file.name] = file.data;
+                processedFiles++;
+                if(numFiles ==  processedFiles){
+                    console.log("v/ Inventory File Regeneration Complete!\n");
+                    collect_ASTRAGLOBALS();
+                }
+            });
+            console.log("result: "+JSON.stringify(MASTER_INVENTORY).substring(0,30));
+        }else{
+            console.log("/|\\no Inventory Files to store");
+            console.log("\\|/\n");
+            collect_ASTRAGLOBALS();
+        }
     });
 }
 
@@ -199,13 +214,13 @@ function generateSytleFiles(){
     var colorsJSON_stringified = JSON.stringify(colorsJSON_parsed);
     console.log(colorsJSON_stringified);
     console.log(typeof(colorsJSON_stringified));
-    
+
     var str = '[{"UserName":"xxx","Rolename":"yyy"}]'; // your response in a string
     var parsed = JSON.parse(str); // an *array* that contains the user
     var user = parsed[0];         // a simple user
     console.log(user.UserName);   // you'll get xxx
     console.log(user.Rolename);   // you'll get yyy
-    
+
     var colorsCSS_fileStructure = "#toolTitle,#goHome,#toolbox_label,#topbar,#createPathwayButton{\nbackground-color: "+colorsJSON_parsed.primaryColor+";\ncolor: "+colorsJSON_parsed.primaryTextColor+";\n}\n#cat1,#cat2,#cat3,#cat4,#AAPcat{\nbackground-color: "+colorsJSON_parsed.branchColor+";\ncolor: "+colorsJSON_parsed.branchTextColor+";\n}\n#cat1:hover,#cat2:hover,#cat3:hover,#cat4:hover,#AAPcat:hover{\nbackground-color: "+colorsJSON_parsed.branchHoverColor+";\n}\n#cat1_end,#cat2_end,#cat3_end,#cat4_end,#AAPcat_end{\nbackground-color: "+colorsJSON_parsed.leafColor+";\ncolor: "+colorsJSON_parsed.leafTextColor+";\n}\n#cat1_end:hover,#cat2_end:hover,#cat3_end:hover,#cat4_end:hover,#AAPcat_end:hover{\nbackground-color: "+colorsJSON_parsed.leafHoverColor+";z\n}\#goHome:hover,.onPage{\nbackground-color: "+colorsJSON_parsed.onPageColor+";\n}";
     var colorsJS_fileStructure = "";
     fs.writeFileSync("./Style_File/colors.css", colorsCSS_fileStructure);
@@ -565,7 +580,7 @@ function modifyPartData(File_and_Data, res){
                     console.log(FRAG_array_str +"=="+ old_partData_str);
                     console.log("Part Index Identified!");
                     console.log("Placement in FRAG_array: line " +(i+1)+" of "+FRAG_array.length);
-                    
+
                     console.log("\nFragment before mod: "+ JSON.stringify(FRAG_array));
 
                     if(new_partData == "[]"){
@@ -585,9 +600,9 @@ function modifyPartData(File_and_Data, res){
                     //FRAG_content = FRAG_array.join("\n");
                     //fs.writeFileSync("./Inventory_Files/"+INVENTORY_file+".js", FRAG_content);
                     var result = JSON.stringify(FRAG_array);
-                    
+
                     console.log("\nFragment after mod: "+ result+"\n");
-                    
+
                     MASTER_INVENTORY[INVENTORY_file] = result;
                     astrasystem.collection("INVENTORY_Files").updateOne({name: INVENTORY_file}, {$set: {data: result}});    //DB
                     console.log("A part in file "+INVENTORY_file+" was modified");

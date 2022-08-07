@@ -226,7 +226,7 @@ function checkLocExistence(){
     console.log("Checking if that location exists");
     locationExists = false;
     var locationToFind = document.getElementById("location").value.split(":")[0];
-    if(document.getElementById("location").value == "" || document.getElementById("location").value == "Full House"){//The search doesn't include the outer-most location entry (full house), and want to deactivate if the location line is empty.  
+    if(document.getElementById("location").value == "" || document.getElementById("location").value == locations[0]){//The search doesn't include the outer-most location entry (full house), and want to deactivate if the location line is empty.  
         locationExists = true;
     }else{
         searchLocLayer("locations[4]", locationToFind);//comb through locations array
@@ -343,7 +343,7 @@ document.addEventListener('keydown', event => {
             if(newLocCreationStep == "newLoc_branch"){
                 newLoc_branch = document.getElementById("locCreateInput").value;
                 locationExists = false;
-                if(newLoc_branch == "Full House"){ //The search doesn't include the outer-most location entry (full house)  
+                if(newLoc_branch == locations[0]){ //The search doesn't include the outer-most location entry (full house)  
                     locationExists = true;
                     foundLocIndex = locations;
                 }else{
